@@ -1,0 +1,48 @@
+\documentclass[twoside,a4paper,12pt]{report} %draft
+%\usepackage[lmargin=100]{geometry}
+%\usepackage{showframe}
+
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage{pdfpages}
+\usepackage{biblatex}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{anysize}
+\usepackage{float}
+\usepackage[allcolors=blue]{hyperref}
+
+% for margins left, right top bottom
+\marginsize{3cm}{2.5cm}{2.5cm}{2.5cm}
+\addbibresource{bibliografia.bib}
+\pagestyle{fancy}
+\graphicspath{ {./figures/} }
+\renewcommand{\listfigurename}{Spis rysunków}
+\renewcommand{\listtablename}{Spis tabel}
+\renewcommand{\lstlistingname}{Fragment programu}
+\renewcommand{\lstlistlistingname}{Spis fragmentów programów}
+
+\begin{document}
+\includepdf[pages=-]{strona-tytulowa.pdf}
+\newpage\leavevmode\thispagestyle{empty}\newpage
+%\addcontentsline{toc}{chapter}{Spis treści}
+\tableofcontents
+
+\input{rozdzialy/wstep.tex}
+
+\printbibliography[
+heading=bibintoc,
+title={Bibliografia}
+]
+
+\listoffigures
+\addcontentsline{toc}{chapter}{Spis rysunków}
+
+\listoftables
+\addcontentsline{toc}{chapter}{Spis tabel}
+
+\lstlistoflistings
+\addcontentsline{toc}{chapter}{Spis fragmentów programów}
+
+\end{document}
