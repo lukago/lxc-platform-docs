@@ -1,7 +1,8 @@
 \documentclass[twoside,a4paper,12pt]{report} %draft
+\pdfminorversion=7
 %\usepackage[lmargin=100]{geometry}
 %\usepackage{showframe}
-
+\usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{polski}
 \usepackage{pdfpages}
@@ -13,9 +14,10 @@
 \usepackage{float}
 \usepackage[allcolors=blue]{hyperref}
 
-% for margins left, right top bottom
+% for margins left, right top botto
 \marginsize{3cm}{2.5cm}{2.5cm}{2.5cm}
-\addbibresource{bibliografia.bib}
+\setlength{\headheight}{14.5pt}
+\addbibresource{biblio.bib}
 \pagestyle{fancy}
 \graphicspath{ {./figures/} }
 \renewcommand{\listfigurename}{Spis rysunków}
@@ -24,25 +26,25 @@
 \renewcommand{\lstlistlistingname}{Spis fragmentów programów}
 
 \begin{document}
-\includepdf[pages=-]{strona-tytulowa.pdf}
-\newpage\leavevmode\thispagestyle{empty}\newpage
-%\addcontentsline{toc}{chapter}{Spis treści}
-\tableofcontents
+  \includepdf[pages=-]{includes/first-page.pdf}
+  \newpage\leavevmode\thispagestyle{empty}\newpage
+  %\addcontentsline{toc}{chapter}{Spis treści}
+  \tableofcontents
 
-\input{rozdzialy/wstep.tex}
+  \input{chapters/intro.tex}
 
-\printbibliography[
-heading=bibintoc,
-title={Bibliografia}
-]
+  \printbibliography[
+  heading=bibintoc,
+  title={Bibliografia}
+  ]
 
-\listoffigures
-\addcontentsline{toc}{chapter}{Spis rysunków}
+  \listoffigures
+  \addcontentsline{toc}{chapter}{Spis rysunków}
 
-\listoftables
-\addcontentsline{toc}{chapter}{Spis tabel}
+  \listoftables
+  \addcontentsline{toc}{chapter}{Spis tabel}
 
-\lstlistoflistings
-\addcontentsline{toc}{chapter}{Spis fragmentów programów}
+  \lstlistoflistings
+  \addcontentsline{toc}{chapter}{Spis fragmentów programów}
 
 \end{document}
