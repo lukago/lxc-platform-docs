@@ -1,7 +1,7 @@
 \documentclass[twoside,a4paper,12pt]{report} %draft
 \pdfminorversion=7
-%\usepackage[lmargin=100]{geometry}
-%\usepackage{showframe}
+
+% packages
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{polski}
@@ -14,12 +14,14 @@
 \usepackage{float}
 \usepackage[allcolors=blue]{hyperref}
 
-% for margins left, right top botto
+% for margins left, right top bot
 \marginsize{3cm}{2.5cm}{2.5cm}{2.5cm}
 \setlength{\headheight}{14.5pt}
 \addbibresource{biblio.bib}
 \pagestyle{fancy}
 \graphicspath{ {./figures/} }
+
+% lists
 \renewcommand{\listfigurename}{Spis rysunków}
 \renewcommand{\listtablename}{Spis tabel}
 \renewcommand{\lstlistingname}{Fragment programu}
@@ -28,15 +30,12 @@
 \begin{document}
   \includepdf[pages=-]{includes/first-page.pdf}
   \newpage\leavevmode\thispagestyle{empty}\newpage
-  %\addcontentsline{toc}{chapter}{Spis treści}
   \tableofcontents
 
-  \input{chapters/intro.tex}
+  \input{chapters/1intro.tex}
+  \input{chapters/2tech.tex}
 
-  \printbibliography[
-  heading=bibintoc,
-  title={Bibliografia}
-  ]
+  \printbibliography[heading=bibintoc, title={Bibliografia}]
 
   \listoffigures
   \addcontentsline{toc}{chapter}{Spis rysunków}
