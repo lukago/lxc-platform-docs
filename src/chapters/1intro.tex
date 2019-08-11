@@ -1,22 +1,22 @@
 \chapter{Wstęp}
-\label{ch:wstep}
+\label{ch:wstęp}
 Obecnie wszelkiego rodzaju rozwiązania wykorzystujące chmury obliczeniowe bardzo szybko
-zysują na popularności.
-Wiele przedsiębiorstw decycuje się na użycie wspomnianego rozwiązania, ponieważ jest bardziej
-korzystne pod wzlędem finansowym oraz dostarcza wiele sprawdzonych i gotowych rozwiązań.
-W przypadku wykorzystania chmury obliczeniowej nie ma potrzebu zakupu własnego sprzętu
-komuputerowego oraz zatrudniania specjalistów do stworzenia i utrzymania
+zyskują na popularności.
+Wiele przedsiębiorstw decyduje się na użycie wspomnianego rozwiązania, ponieważ jest bardziej
+korzystne pod względem finansowym oraz dostarcza wiele sprawdzonych i gotowych rozwiązań.
+W przypadku wykorzystania chmury obliczeniowej nie ma potrzeby zakupu własnego sprzętu
+komputerowego oraz zatrudniania specjalistów do stworzenia i utrzymania
 infrastruktury informatycznej.
 
 W Polsce w 2018 r.\ z płatnych usług chmury obliczeniowej korzystało 11,5\% przedsiębiorstw.
 Jest to o 1.5p.\ proc.\ więcej niż w roku 2017, co potwierdza stały i szybki wzrost popularności
-w tej dziedzine~\cite{einstein}.
-Podobny trend utrzymuję się nie tylko w Polsce ale i na całym świecie.
+w tej dziadzine~\cite{gus:cloud}.
+Podobny trend utrzymuje się nie tylko w Polsce, ale również w pozostałych krajach.
 W 2018 r.\ 26\% przedsiębiorstw w Unii Europejskiej korzystało z chmur
-obliczeniowych~\cite{einstein}.
+obliczeniowych~\cite{eurostat:cloud}.
 
-Jednym z rozwiązań chmury obliczeniowej jest model PaaS (Platform as a Service, z angielskiego
-"platforma jako usługa"), w któchych zewnętrzny system zarząca całym środowiskiem aplikacyjnym
+Jednym z rozwiązań chmury obliczeniowej jest model PaaS (ang. \textit{Platform as a Service})
+tj\. platforma jako usługa, w której zewnętrzny system zarządza całym środowiskiem aplikacyjnym
 i udostępnia wybrane usługi użytkownikom.
 Aby ułatwić zarządzanie wieloma systemami operacyjnymi opartymi o jądro Linux,
 które były wykorzystywanie przez studentów Politechniki Łódzkiej na przedmiocie Systemy Operacyjne,
@@ -25,52 +25,53 @@ prowadzący przedmiot wyrazili zapotrzebowanie na tego typu system informatyczny
 \section{Cel i zakres pracy}
 \label{sec:cel i zakres pracy}
 
-Celem tej pracy jest zbadanie możliwości jakie daje zastosowanie kontenerów
+Celem tej pracy jest zbadanie możliwości, jakie daje zastosowanie kontenerów
 Linux w zakresie tworzenia infrastruktury PaaS na przykładzie systemu do zastosowań dydaktycznych.
-System ten będzie integrował się z kontenerami Linux, inaczej LXC (ang.\ Linux Containers) za pomocą
-managera kontenerów systemowóych LXD\@.
+System ten będzie integrował się z kontenerami Linux, inaczej LXC (ang.\ \textit{Linux Containers}),
+za pomocą managera kontenerów systemowych LXD\@.
 Kontenery LXC będą składowane na dedykowanym serwerze, może to być inny serwer od tego na którym
 działa aplikacja, ale nie musi.
 Komunikacja ze zdalnym serwerem składującym kontenery będzie odbywać się z wykorzystaniem
 protokołu SSH\@.
-Dane o użytkownikach i informacje o składowanych kontenerach będą składowanie w relacyjnej
+Dane o użytkownikach i informacje o składowanych kontenerach będą zapisywane w relacyjnej
 bazie danych.
-System będzie składaj się z aplikacji serwerowej oraz aplikacji klienckiej.
-
+System będzie składał się z aplikacji serwerowej oraz aplikacji klienckiej.
+System umożliwi administratorowi zarządzanie wieloma kontenerami LXC oraz udostępni każdemu z
+użytkowników bezpieczny dostęp do własnego kontenera, który będzie zachowywał swój stan.
 
 Do zakresu pracy inżynierskiej należą następujące czynności:
 \begin{enumerate}
-  \item Przygotowanie osobnych repozytoriów kodu żródłowego,
+  \item Przygotowanie osobnych repozytoriów kodu źródłowego dla aplikacji serwerowej i klienckiej,
   przygotowanie środowiska programistycznego i narzędzi deweloperskich
   potrzebnych do stworzenia aplikacji.
   \item Utworzenie projektu aplikacji serwerowej,
-  zarządanego za pomocą narzędzia narzędzia automatyzującego budowę oprogramowania Apache Maven
+  zarządzanego za pomocą narzędzia narzędzia automatyzującego budowę oprogramowania Apache Maven.
   \item Utworzenie projektu aplikacji klienckiej,
-  zarządanego za pomocą narzędzia narzędzia automatyzującego budowę oprogramowania npm.
+  zarządzanego za pomocą narzędzia narzędzia automatyzującego budowę oprogramowania npm.
   \item Skonfigurowanie serwera do zarządzania kontenerami Linux.
   \item Skonfigurowanie systemu zarządzania bazami danych PostgreSQL\@.
   \item Określenie poziomów dostępu dla użytkowników systemie oraz zaprojektowanie
   przypadków użycia.
-  \item Zaprojektowanie struktur danych reprezentujących zasoby zarządane przez system.
-  \item Zaprojektowanie interfejstu programistycznego aplikacji serwerowej
-  w oparciu o REST i gniazda.
+  \item Zaprojektowanie struktur danych reprezentujących zasoby zarządzane przez system.
+  \item Zaprojektowanie interfejsu programistycznego aplikacji serwerowej w oparciu
+  o REST i gniazda.
   \item Zaprojektowanie warstwy logiki biznesowej systemu oraz jej implementacja.
-  \item Konfiguracja połączenia między serwerem z aplikacją serwerową
-  a serwerem do zarządzania kontenerami Linux.
+  \item Konfiguracja połączenia między serwerem z aplikacją serwerową a serwerem do zarządzania
+  kontenerami Linux.
   \item Zaprojektowanie oraz implementacja aplikacji klienckiej.
   \item Internacjonalizacja aplikacji klienckiej oraz jej lokalizacja w języku polskim i angielskim.
-  \item Zabezpieczenie systemu
+  \item Zabezpieczenie systemu.
   \item Konteneryzacja aplikacji klienckiej i serwerowej z wykorzystaniem narzędzia Docker,
-  z możliwosicią zmainy konfiguracji aplikacji bez potrzeby jej ponownego kompilowania.
+  z możliwością zmiany konfiguracji aplikacji bez potrzeby jej ponownego kompilowania.
   \item Przygotowanie danych inicjujących dla utworzonej aplikacji.
 \end{enumerate}
 
 \section{Dostępne rozwiązania}
-\label{sec:dostepne rozwiazania}
+\label{sec:dostępne rozwiązania}
 
-Platformy chmurowe w modelu Paas są obecne na rynku od kilkunastu lat.
-Obecnie są to już bardzo dojrzałe aplikacje posiadające
-bardzo szeroką gamę usług i funcjonalności.
+Platformy chmurowe w modelu PaaS są obecne na rynku od kilkunastu lat.
+Obecnie są to już bardzo dojrzałe aplikacje, posiadające bardzo szeroką gamę usług
+i funkcjonalności.
 Najpopularniejsze z nich to:
 
 \begin{itemize}
@@ -85,15 +86,15 @@ Użytkownicy mogą korzystać z platformy OpenShift przez konsolę Web, linię k
 zintegrowane środowisko.
 Posiadają szereg udogodnień dla konfiguracji szybkich wdrożeń aplikacji oraz dla szerokiego zakresu
 aplikacji rozproszonych.
-Korzystanie z serwisów wiąże się z opłatami adekwatnymi do zużycia zasobów infrastruktury
-informatyczniej na którch jest wrożona aplikacja.
+Korzystanie z serwisów wiąże się z opłatami, adekwatnymi do zużycia zasobów infrastruktury
+informatycznej, na których jest wdrożona aplikacja.
 
-Z analizy wynika powyższych rozwiązań, że na rynku istnieją wspierane rozwiązania PaaS
+Z analizy powyższych rozwiązań wynika, że na rynku istnieją wspierane rozwiązania PaaS,
 jednak wszystkie rozwiązania wiążą się z opłatami za korzystanie z usługi.
-Dodatkowo każde z rozwiązań skupia się przede wszystkim na usprawnianiu
-procesu wdrożenia oprogramowania.
+Dodatkowo każde z rozwiązań skupia się przede wszystkim na usprawnianiu procesu wdrożenia
+oprogramowania.
 Z tych powodów potrzebna jest implementacja własnego systemu wspomagającego zarządzanie
-wieloma kontenerami LXC dostosowanego do potrzeb dydaktycznych przedmiotu Systemy Operacyjne.
+wieloma kontenerami LXC, dostosowanego do potrzeb dydaktycznych przedmiotu Systemy Operacyjne.
 
 \section{Założenia}
 \label{sec:zalozenia}
@@ -102,25 +103,49 @@ Zaprojektowany system powinien spełniać następujące założenia:
 
 \begin{itemize}
   \item System jest wielodostępny - może korzystać z niego wielu użytkowników jednocześnie.
-  \item Konto każdego użytkownika systemu ma przypisaną jedną lub więcej ról, z którymi wiążą się
+  \item System zarządza kontenerami LXC wykonując polecenia powłoki na zdalnym serwerze, łącząc
+  się do niego poprzez SSH\@.
+  \item Każdy utworzony kontener powinien umożliwiać podłączenie się do niego za pomocą
+  protokołu SSH\@.
+  \item Każda operacja wykonywana przez aplikację na kontenerach LXC jest asynchroniczna.
+  \item Informacje o zmianie statusu utworzonych w systemie asynchronicznych zadań są przesyłane
+  do aplikacji klienckiej poprzez gniazda.
+  \item Każdy użytkownik systemu ma przypisaną przynajmniej jedną rolę, z którymi wiążą się
   określone poziomy dostępu.
   Możliwe role to klient lub administrator.
-  \item System jest wielodostępny - może korzystać z niego wielu użytkowników jednocześnie.
-  \item System jest wielodostępny - może korzystać z niego wielu użytkowników jednocześnie.
-  \item System jest wielodostępny - może korzystać z niego wielu użytkowników jednocześnie.
-  \item System jest wielodostępny - może korzystać z niego wielu użytkowników jednocześnie.
-  \item System jest wielodostępny - może korzystać z niego wielu użytkowników jednocześnie.
-  \item System jest wielodostępny - może korzystać z niego wielu użytkowników jednocześnie.
-  \item System jest wielodostępny - może korzystać z niego wielu użytkowników jednocześnie.
+  \item Każdy użytkownik w systemie może mieć przypisanych do swojego konta wiele kontenerów.
+  Może też nie mieć przypisanego żadnego kontenera.
+  \item Do uwierzytelnienia użytkownika w systemie należy podać poprawny login i hasło.
+  Dane użytkownika potrzebne uwierzytelnienia są przechowywane w relacyjnej bazie danych.
+  Hasło jest przechowywane w formie niejawnej.
+  \item Bezstanowość - aplikacja serwerowa nie przechowuje stanu o sesji użytkowników.
+  \item Autoryzacja użytkownika następuje prz każdym zapytaniu wysłanym do aplikacji serwerowej.
+  \item Nieuwierzytelniony użytkownik ma dostęp jedynie do strony głównej na której
+  może się uwierzytelnić.
+  \item Rola administratora umożliwia zarządzanie kontenerami.
+  Administrator może tworzyć i usuwać kontenery, zarządzać ich stanem oraz przypisywać je
+  do użytkowników.
+  Posiada także możliwość tworzenia nowych kont użytkowników, usuwania ich oraz zarządzania nimi,
+  w tym ma możliwość zmiany hasła do kont użytkowników.
+  Dodatkowo może przeglądać listę wszystkich zadań wykonanych na kontenerach przez wszystkich
+  użytkowników systemu takich jak włączenie kontenera czy pobranie informacji o jego stanie.
+  \item Rola klienta umożliwia zarządzanie stanem kontenerów przypisanych do uwierzytelnionego
+  konta.
+  Klient ma również możliwość zarządzania własnym kontem, w tym zmiany hasła.
+  Dodatkowo może przeglądać listę zadań wykonanych na kontenerach przypisanych do jego konta.
+  \item Pobrane dane o uruchomionym kontenerze powinny zawierać wszystkie dane potrzebne, aby
+  podłączyć się do niego za pomocą protokołu SSH, z wyłączeniem danych wrażliwych tj.\ hasło.
+  \item Aplikacja kliencka jest dostępna za pomocą przeglądarki internetowej i aktualizuje
+  wyświetlane dane reaktywnie, bez potrzeby odświeżania lub ładowania nowej strony.
 \end{itemize}
 
 \section{Stos technologiczny}
 \label{sec:stos technologiczny}
 
-W ramach pracy inżynierskiej, do zbudowania systemu informatycznego zostało użytych wiele
-technologii.
-Ich spis wraz z wersjami w jakich zostały użyte oraz licencjami znajduje się
-w tabeli~\ref{tab:technologie}.
+Do stworzenia ww.\ projektu wykorzystano dodatkowe narzędzia i technologie.
+Ich licencje pozwalają na wykorzystanie ich w ramach pracy inżynierskiej.
+Spis wszystkich użytych technologii wraz z wersjami i licencjami został przedstawiony
+poniżej w tabeli~\ref{tab:technologie}.
 
 \begin{table}[H]
   \centering
@@ -128,28 +153,48 @@ w tabeli~\ref{tab:technologie}.
     \hline
     Technologia & Wersja & Licencja \\
     \hline
-    OpenJDK & 11 & GPL \\
+    Apache Maven & 3.6.1 & Apache License 2.0~\cite{apachev2} \\
     \hline
-    OpenJDK & 11 & GPL \\
+    Docker & 19.03.1-ce & Apache License 2.0~\cite{apachev2} \\
     \hline
-    OpenJDK & 11 & GPL \\
+    Gson & 2.8.5 & Apache License 2.0~\cite{apachev2} \\
     \hline
-    OpenJDK & 11 & GPL \\
+    Guava & 27.1-jre & Apache License 2.0~\cite{apachev2} \\
     \hline
-    OpenJDK & 11 & GPL \\
+    Hibernate & 5.3.9.Final & LGPL 2.1~\cite{lgplv21} \\
     \hline
-    OpenJDK & 11 & GPL \\
+    JJWT & 0.9.1 & Apache License 2.0~\cite{apachev2} \\
     \hline
-    OpenJDK & 11 & GPL \\
+    LXD & 3.0.3 & Apache License 2.0~\cite{apachev2} \\
     \hline
-    OpenJDK & 11 & GPL \\
+    Material-UI & 3.5.1 & MIT~\cite{mit} \\
     \hline
-    OpenJDK & 11 & GPL \\
+    ModelMapper & 2.3.1 & Apache License 2.0~\cite{apachev2} \\
     \hline
-    OpenJDK & 11 & GPL \\
+    Node.js & 11.15.0 & MIT~\cite{mit} \\
+    \hline
+    Npm & 6.10.3 & Artistic License 2.0~\cite{artistic2} \\
+    \hline
+    OpenJDK & 11.0.1 & GPLv2~\cite{gplv2} \\
+    \hline
+    Project Reactor & 3.2.10.RELEASE & Apache License 2.0~\cite{apachev2} \\
+    \hline
+    React & 16.7.0 & MIT~\cite{mit} \\
+    \hline
+    Spring Boot & 2.1.4.RELEASE & Apache License 2.0~\cite{apachev2} \\
+    \hline
+    Spring Data & 2.1.6.RELEASE & Apache License 2.0~\cite{apachev2} \\
+    \hline
+    Spring Security & 5.1.5.RELEASE & Apache License 2.0~\cite{apachev2} \\
+    \hline
+    Spring Web & 5.1.6.RELEASE & Apache License 2.0~\cite{apachev2} \\
+    \hline
+    SpringFox & 2.9.2 & Apache License 2.0~\cite{apachev2} \\
+    \hline
+    SSHJ & 0.27.0 & Apache License 2.0~\cite{apachev2} \\
     \hline
   \end{tabular}
-  \caption{Technologie wykorzystane w ramach projektu}
+  \caption{Technologie użyte w ramach pracy inżynierskiej}
   \label{tab:technologie}
 \end{table}
 
