@@ -1,4 +1,10 @@
+# IntelliJ project files
+.idea
 *.iml
-*.idea
+
+# latexmk
 out/
 auxil/
+
+# MacOS
+.DS_Store
