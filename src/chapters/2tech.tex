@@ -1,14 +1,108 @@
 \chapter{Technologie i narzędzia}
 \label{ch:technologie i narzędzia}
 
-\section{Java}
-\label{sec:java}
-
-Welcome to JAVA!!!
+W poprzednim rozdziale przedstawiono spis użytych technologii.
+Ten rozdział skupia się na bardziej szczegółowym opisaniu tych narzędzi, tj.\ zasady ich działania
+oraz w jaki sposób zostały użyte w projekcie pracy inżynierskiej.
 
 \section{Apache Maven}
 \label{sec:apache maven}
 
-Welcome to MAVEN!!!
+Apache Maven jest narzędziem automatyzującym proces budowania aplikacji na platformie JVM\@.
+Sposób budowania aplikacji jest opisany w plikach XML\@.
+Dodatkowo możemy w nich skonfigurować właściwości aplikacji oraz w prosty sposób zarządzać
+zależnościami.
+Zależności Mavena mogą być pobrane zarówno z lokalnego jak i zdalnego repozytorium.
+Poza oficjalnym zdalnym repozytorium Mavena, możemy konfigurować również inne repozytoria zdalne,
+dostarczające własne moduły.
+Cechą wyróżniającą Mavena od innych tego typu narzędzi jest strategia posługiwania się przyjętymi
+konwencjami, zamiast używania własnej konfiguracji (ang.\ \textit{Convention Over Configuration}).
+Maven został wykorzystany w projekcie jako narzędzia do budowania aplikacji serwerowej.
+
+\section{Docker}
+\label{sec:docker}
+
+Docker to narzędzie ułatwiające proces wdrażania aplikacji przy użyciu kontenerów, czyli
+wirtualizacji na poziomie systemu operacyjnego.
+Kontenery Docker zawierają aplikację wraz z jej konfiguracją i wszystkimi zależnościami.
+W założeniu kontenery Docker są izolowanie od siebie oraz nie zachowują swojego stanu po wyłączeniu.
+Docker poza konteneryzacją dostarcza szereg dodatkowych mechanizmów.
+Jednym z nich są wolumeny, które umożliwiają dostęp do plików na systemie operacyjnym gospodarza,
+co umożliwia, np.\ kontenerowi z bazą danych, permanentnie zapisywać dane na dysku.
+Docker został użyty podczas implementacji projektu jako narzędzie do uruchamiania aplikacji
+serwerowej oraz klienckiej.
+
+\section{Guava}
+\label{sec:guava}
+
+Magnum Opus
+
+\section{Hibernate}
+\label{sec:hibernate}
+
+Magnum Opus
+
+\section{JJWT}
+\label{sec:jjwt}
+
+Magnum Opus
+
+\section{LXD}
+\label{sec:lxd}
+
+Magnum Opus
+
+\section{Material-UI}
+\label{sec:meterialui}
+
+Magnum Opus
+
+\section{ModelMapper}
+\label{sec:modelmapper}
+
+Magnum Opus
+
+\section{Node.js}
+\label{sec:nodejs}
+
+Magnum Opus
+
+\section{OpenJDK}
+\label{sec:openjdk}
+
+OpenJDK to zestaw narzędzi deweloperskich dla języka Java (ang.\ \textit{Java Development Kit}).
+Najważniejsze narzędzia wchodzące w skład OpenJDK to maszyna wirtualna
+Javy (w skrócie JVM, ang.\ \textit{Java Virtual Machine}), biblioteka standardowa,
+oraz kompilator \textit{javac}.
+Język Java jest wysokopoziomowym językiem programowania wspierającym wiele paradygmatów
+programowania, przede wszystkim paradygmat programowania obiektowego, ale również np.\ funkcyjnego.
+Jest to język silnie i statycznie typowany, kompilowany do kodu bajtowego (ang. \textit{bytecode}).
+Kod bajtowy jest uruchamiany przez maszynę wirtualną Javy i tłumaczony na kod kod binarny
+odpowiadający architekturze danego systemu, na którym maszyna wirtualna Javy jest zainstalowania.
+Dzięki temu zastosowanie maszyny wirtualnej umożliwiło programom napisanym w języku Java
+na uniezależnienie się od architektury.
+Dodatkowo maszyna wirtualna Javy optymalizuje czas wykonania programu dzięki zastosowania techniki
+JIT (ang.\ \textit{Just-In-Time compilation}), czyli kompilacji fragmentu kodu bajtowego do
+kodu maszynowego bezpośrednio przez wykonaniem danego fragmentu kodu.
+Kolejną zaletą języka Java jest obszerna biblioteka standardowa, dodająca szereg klas wpierających
+np.\ programowanie współbieżne i sieciowe czy operacje wejścia-wyjścia.
+Dzięki ww.\ aspektom język Java dobrze nadaje się do pisania złożonych aplikacji internetowych.
+Z tego powodu został wybrany jako język implementacji części serwerowej projektu pracy
+inżynierskiej.
+
+\section{Spring Framework}
+\label{sec:spring}
+
+Magnum Opus
+
+\section{SpringFox}
+\label{sec:springfox}
+
+Magnum Opus
+
+\section{SSHJ}
+\label{sec:ssj}
+
+Magnum Opus
 
 \clearpage
