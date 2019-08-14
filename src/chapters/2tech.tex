@@ -2,28 +2,29 @@
 \label{ch:technologie i narzędzia}
 
 W poprzednim rozdziale przedstawiono spis użytych technologii.
-Ten rozdział skupia się na bardziej szczegółowym opisaniu tych narzędzi, tj.\ zasady ich działania
-oraz w jaki sposób zostały użyte w projekcie pracy inżynierskiej.
+Ten rozdział skupia się na bardziej szczegółowym opisaniu tych narzędzi, opisuje zasady
+ich działania oraz w jaki sposób zostały użyte w projekcie pracy inżynierskiej.
 
 \section{Apache Maven}
 \label{sec:apache maven}
 
 Apache Maven jest narzędziem automatyzującym proces budowania aplikacji na platformie JVM\@.
-Sposób budowania aplikacji jest opisany w plikach XML\@.
-Dodatkowo możemy w nich skonfigurować właściwości aplikacji oraz w prosty sposób zarządzać
+Sposób budowania aplikacji jest definiowany w plikach XML\@.
+Dodatkowo można w nich skonfigurować właściwości aplikacji oraz w prosty sposób zarządzać
 zależnościami.
 Zależności Maven mogą być pobrane zarówno z lokalnego jak i zdalnego repozytorium.
-Poza oficjalnym zdalnym repozytorium Maven, możemy konfigurować również inne repozytoria zdalne,
+Poza oficjalnym zdalnym repozytorium Maven, można konfigurować również inne repozytoria zdalne,
 dostarczające własne moduły.
-Cechą wyróżniającą projekt Maven od innych tego typu narzędzi jest strategia posługiwania się przyjętymi
-konwencjami, zamiast używania własnej konfiguracji (ang.\ \textit{Convention Over Configuration}).
-Maven został wykorzystany w projekcie jako narzędzia do budowania aplikacji serwerowej.
+Cechą wyróżniającą projekt Maven od innych tego typu narzędzi, jest strategia posługiwania
+się przyjętymi konwencjami, zamiast używania własnej konfiguracji
+(ang.\ \textit{Convention Over Configuration}).
+Maven został wykorzystany w projekcie jako narzędzie do budowania aplikacji serwerowej.
 
 \section{Docker}
 \label{sec:docker}
 
-Docker to narzędzie ułatwiające proces wdrażania aplikacji przy użyciu kontenerów, czyli
-wirtualizacji na poziomie systemu operacyjnego.
+Docker to narzędzie ułatwiające proces wdrażania aplikacji przy użyciu wirtualizacji na poziomie
+systemu operacyjnego, czyli kontenerów.
 Kontenery Docker zawierają aplikację wraz z jej konfiguracją i wszystkimi zależnościami.
 W założeniu kontenery Docker są izolowanie od siebie oraz nie zachowują swojego stanu po wyłączeniu.
 Docker poza konteneryzacją dostarcza szereg dodatkowych mechanizmów.
@@ -35,21 +36,25 @@ serwerowej oraz klienckiej.
 \section{Guava}
 \label{sec:guava}
 
-Guava to biblioteka autorstwa Google zawierająca wiele klas użytkowych, jest to rozszerzenie biblioteki standardowej
-języka Java.
-Z tego powodu jest to jedna z najpopularniejszych zewnętrznych bibliotek używanych w projektach opartych na JVM\@.
-W projekcie pracy inżynierskiej również znalazła swoje zastosowanie np.\ podczas implementacji metod \textit{equals}
-i \textit{hashCode}.
+Guava to biblioteka autorstwa Google zawierająca wiele klas użytkowych, jest niejako rozszerzenie
+biblioteki standardowej języka Java.
+Guava dodaje m.in.\ nowe typy kolekcji, klasy wspierające współbieżność, łańcuchy znaków, operowanie
+na strumieniach wejścia i wyjścia.
+Z tego powodu jest to jedna z najpopularniejszych zewnętrznych bibliotek używanych w projektach
+opartych na JVM\@.
+W projekcie pracy inżynierskiej również znalazła swoje zastosowanie np.\ podczas implementacji
+metod \textit{equals}i \textit{hashCode}.
 
 \section{Hibernate}
 \label{sec:hibernate}
 
-Hibernate dostarcza mechanizm ORM (ang.\ \textit{Object Relational Mapping}), czyli mapowania relacyjno-obiektowego
-dla platformy JVM\@.
-Umożliwia to operowanie na encjach bazy relacyjnej za pomocą odpowiadających im obiektów zdefiniowanych w
-języku Java.
-Biblioteka Hibernate implementuje specyfikacje JPA (ang.\ \textit{Java Persistence API}), dzięki czemu może być
-z łatwością wykorzystana w każdej aplikacji wykorzystującej JPA np.\ aplikacjach Java EE\@.
+Hibernate dostarcza mechanizm ORM (ang.\ \textit{Object Relational Mapping}), czyli mapowania
+relacyjno-obiektowego dla platformy JVM\@.
+Umożliwia to operowanie na encjach bazy relacyjnej za pomocą odpowiadających im obiektów
+zdefiniowanych w języku Java.
+Biblioteka Hibernate implementuje specyfikacje JPA (ang.\ \textit{Java Persistence API}),
+dzięki czemu może być z łatwością wykorzystana w każdej aplikacji wykorzystującej
+JPA np.\ aplikacjach Java EE\@.
 Warstwę danych części serwerowej projektu pracy inżynierskiej, stanowi relacyjna baza danych.
 Ponieważ w części serwerowej projektu pracy inżynierskiej, do komunikacji z relacyjną bazą danych
 wykorzystano interfejs JPA, Hibernate został użyty jako główna implementacja tego interfejsu.
@@ -61,19 +66,25 @@ JJWT (inaczej Java JWT) to biblioteka napisana w języku Java, służąca do two
 JWT (ang.\ \textit{JSON Web Token}).
 JJWT jest zgodna ze specyfikacją RFC odnośnie JWT\@.
 W projekcie pracy inżynierskiej aplikacja serwerowa nie przechowuje stanu o sesji użytkowników.
-Z tego powodu do autoryzacji i uwierzytelniania użytkowników wykorzystano JWT, a biblioteka JJWT ułatwiła implementację
-tych mechanizmów.
+Z tego powodu do autoryzacji i uwierzytelniania użytkowników wykorzystano JWT, a biblioteka JJWT
+ułatwiła implementację tych mechanizmów.
 
 \section{LXD i kontenery Linux}
 \label{sec:lxd}
 
+Kontenery Linux to funkcjonalność Linuxa umożliwiająca wirtualizację na poziomie jądra systemu.
+Dzięki temu nie ma potrzeby ładowania nowego jądra dla każdego kontenera, co oszczędza wykorzystanie
+zasobów oraz jest o wiele bardziej wydajne.
 LXD to aplikacja do zarządzania kontenerami Linux.
-Aplikacja LXD jest zaimplementowana w języku Go, jednak dostarcza interfejs konsolowy, to właśnie za jego pomocą została
-zaimplementowana integracja z kontenerami w projekcie pracy inżynierskiej.
-LXD bazuje na obrazach, dostarczając wiele wcześniej przygotowanych obrazów dla szerokiej rangi dystrybucji Linuxa.
-Aplikacja LXD tworzy REST API przez które wykonywane są wszystkie operacje na kontenerach, nawet używając aplikację
-za pomocą linii komend, każda komenda wywołuje w swojej implementacji zapytanie na ww.\ interfejs REST\@.
-LXD nie jest alternatywą dla LXC, jest to aplikacja wykorzystująca LXC i dostarczająca dodatkowe funkcjonalności.
+Aplikacja LXD jest zaimplementowana w języku Go, jednak dostarcza interfejs konsolowy, to właśnie
+za jego pomocą została zaimplementowana integracja z kontenerami w projekcie pracy inżynierskiej.
+LXD bazuje na obrazach, dostarczając wiele wcześniej przygotowanych obrazów dla szerokiej rangi
+dystrybucji Linuxa.
+Aplikacja LXD tworzy REST API przez które wykonywane są wszystkie operacje na kontenerach,
+nawet używając aplikację za pomocą linii komend, każda komenda wywołuje w swojej implementacji
+zapytanie na ww.\ interfejs REST\@.
+LXD nie jest alternatywą dla LXC, jest to aplikacja wykorzystująca LXC i dostarczająca dodatkowe
+funkcjonalności.
 
 Najważniejsze z dodatkowych funkcjonalności LXD to:
 
@@ -82,26 +93,41 @@ Najważniejsze z dodatkowych funkcjonalności LXD to:
   danych, zamiast w zwykłych folderach, jak ma to miejsce przy wykorzystaniu LXC\@.
   \item Mechanizmy do prostego zarządzania sieciami kontenerów i ich integracja z siecią
   gospodarza np.\ za pomocą mostów sieciowych (ang.\ \textit{bridge}).
-  \item Przekazywanie urządzeń do kontenerów (ang.\ \textit{device passthrough}) np.\ urządzeń USB, GPU, NIC\@.
-  \item Mechanizmy do kontrolowania zasobów kontenerów takich jak wykorzystanie procesora, pamięci RAM czy przestrzeni
-  dyskowej.
+  \item Przekazywanie urządzeń do kontenerów (ang.\ \textit{device passthrough})
+  np.\ urządzeń USB, GPU, NIC\@.
+  \item Mechanizmy do kontrolowania zasobów kontenerów takich jak wykorzystanie procesora,
+  pamięci RAM czy przestrzeni dyskowej.
 \end{itemize}
 
 \section{ModelMapper}
 \label{sec:modelmapper}
 
 ModelMapper to biblioteka ułatwiająca mapowanie podobnych obiektów między sobą.
-W wielu aplikacjach często pojawiają się obiekty bardzo podobne do siebie (np.\ posiadające te same nazwy i typy pól),
-lecz pochodzą z równych modułów i używane są w innych kontekstach.
-Wykorzystując ModelMapper konwertowanie podobnych obiektów dzieje się automatycznie, nie ma potrzeby pisania własnych
-funkcji mapujących.
-W projekcie pracy inżynierskiej ModelMapper został wykorzystany na mapowanie pomiędzy obiektami reprezentującymi
-encje w bazie danych na obiekty typu DTO (ang.\ \textit{Data Transfer Object}).
+W wielu aplikacjach często pojawiają się obiekty bardzo podobne do siebie
+(np.\ posiadające te same nazwy i typy pól), lecz pochodzą z równych modułów i używane są w
+innych kontekstach.
+Wykorzystując ModelMapper konwertowanie podobnych obiektów dzieje się automatycznie,
+nie ma potrzeby pisania własnych funkcji mapujących.
+W projekcie pracy inżynierskiej ModelMapper został wykorzystany na mapowanie pomiędzy obiektami
+reprezentującymi encje w bazie danych na obiekty typu DTO (ang.\ \textit{Data Transfer Object}).
 
 \section{Node.js i Npm}
 \label{sec:nodejs}
 
-Magnum Opus
+JavaScript jest językiem o słabym i dynamicznym typowaniu, używanym głównie na stronach WWW
+i interpretowany przez przeglądarki internetowe.
+Node.js to środowiko uruchomieniowe dla języka JavaScript, stworzone na bazie silnika Chrome V8.
+Umożliwiło to używanie języka nie tylko na stronach WWW, ale również w pełnoprawnych aplikacjach,
+nie przeznaczonych do interpretacji przez przeglądarkę.
+Npm (ang.\ \textit{Node Package Manager}) został utworzony w technologii Node.js.
+Jest to narzędzie, którym w prosty sposób można zarządzać zależnościami programów napisanych
+napisanych w języku JavaScript.
+Dodatkowo Npm udostępnia szereg innych funkcjonalności do zarządzania projektami, np.\ definiowanie
+skryptów budujących i startujących tworzoną aplikację, czy zarządzanie wieloma wersjami projektów.
+Narzędzia Node.js i Npm zostały wykorzystane przy implementacji warstwy widoku projektu pracy
+inżynierskiej.
+Dostarczyły one możliwość zbudowania i transformacji kodu źródłowego do finalnej
+wersji interpretowanej przez przeglądarkę internetową.
 
 \section{OpenJDK}
 \label{sec:openjdk}
@@ -154,10 +180,12 @@ Magnum Opus
 \section{SSHJ}
 \label{sec:ssj}
 
-SSHJ to biblioteka napisana w języku Java ułatwiająca implementacje funkcjonalności wykorzystujących protokół SSH\@.
+SSHJ to biblioteka napisana w języku Java ułatwiająca implementacje funkcjonalności wykorzystujących
+protokół SSH\@.
 Dostarcza między innymi możliwości autoryzacji hasłem i kluczem publicznym, przekazywanie
-portów (ang.\ \textit{port forwarding}) oraz kanały do wykonywania zdalnych poleceń z powłoki systemu operacyjnego.
-W pracy inżynierskiej SSHJ wykorzystano do komunikacji ze zdalnym serwerem odpowiedzialnym za zarządzanie kontenerami
-Linux.
+portów (ang.\ \textit{port forwarding}) oraz kanały do wykonywania zdalnych poleceń z powłoki
+systemu operacyjnego.
+W pracy inżynierskiej SSHJ wykorzystano do komunikacji ze zdalnym serwerem odpowiedzialnym za
+zarządzanie kontenerami Linux.
 
 \clearpage
