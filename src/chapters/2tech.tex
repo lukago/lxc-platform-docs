@@ -35,34 +35,70 @@ serwerowej oraz klienckiej.
 \section{Guava}
 \label{sec:guava}
 
-Magnum Opus
+Guava to biblioteka autorstwa Google zawierająca wiele klas użytkowych, jest to rozszerzenie biblioteki standardowej
+języka Java.
+Z tego powodu jest to jedna z najpopularniejszych zewnętrznych bibliotek używanych w projektach opartych na JVM\@.
+W projekcie pracy inżynierskiej również znalazła swoje zastosowanie np.\ podczas implementacji metod \textit{equals}
+i \textit{hashCode}.
 
 \section{Hibernate}
 \label{sec:hibernate}
 
-Magnum Opus
+Hibernate dostarcza mechanizm ORM (ang.\ \textit{Object Relational Mapping}), czyli mapowania relacyjno-obiektowego
+dla platformy JVM\@.
+Umożliwia to operowanie na encjach bazy relacyjnej za pomocą odpowiadających im obiektów zdefiniowanych w
+języku Java.
+Biblioteka Hibernate implementuje specyfikacje JPA (ang.\ \textit{Java Persistence API}), dzięki czemu może być
+z łatwością wykorzystana w każdej aplikacji wykorzystującej JPA np.\ aplikacjach Java EE\@.
+Warstwę danych części serwerowej projektu pracy inżynierskiej, stanowi relacyjna baza danych.
+Ponieważ w części serwerowej projektu pracy inżynierskiej, do komunikacji z relacyjną bazą danych
+wykorzystano interfejs JPA, Hibernate został użyty jako główna implementacja tego interfejsu.
 
 \section{JJWT}
 \label{sec:jjwt}
 
-Magnum Opus
+JJWT (inaczej Java JWT) to biblioteka napisana w języku Java, służąca do tworzenia i weryfikacji
+JWT (ang.\ \textit{JSON Web Token}).
+JJWT jest zgodna ze specyfikacją RFC odnośnie JWT\@.
+W projekcie pracy inżynierskiej aplikacja serwerowa nie przechowuje stanu o sesji użytkowników.
+Z tego powodu do autoryzacji i uwierzytelniania użytkowników wykorzystano JWT, a biblioteka JJWT ułatwiła implementację
+tych mechanizmów.
 
-\section{LXD}
+\section{LXD i kontenery Linux}
 \label{sec:lxd}
 
-Magnum Opus
+LXD to aplikacja do zarządzania kontenerami Linux.
+Aplikacja LXD jest zaimplementowana w języku Go, jednak dostarcza interfejs konsolowy, to właśnie za jego pomocą została
+zaimplementowana integracja z kontenerami w projekcie pracy inżynierskiej.
+LXD bazuje na obrazach, dostarczając wiele wcześniej przygotowanych obrazów dla szerokiej rangi dystrybucji Linuxa.
+Aplikacja LXD tworzy REST API przez które wykonywane są wszystkie operacje na kontenerach, nawet używając aplikację
+za pomocą linii komend, każda komenda wywołuje w swojej implementacji zapytanie na ww.\ interfejs REST\@.
+LXD nie jest alternatywą dla LXC, jest to aplikacja wykorzystująca LXC i dostarczająca dodatkowe funkcjonalności.
 
-\section{Material-UI}
-\label{sec:meterialui}
+Najważniejsze z dodatkowych funkcjonalności LXD to:
 
-Magnum Opus
+\begin{itemize}
+  \item Przechowywanie konfiguracji i stanu kontenera, w relacyjnej bazie
+  danych, zamiast w zwykłych folderach, jak ma to miejsce przy wykorzystaniu LXC\@.
+  \item Mechanizmy do prostego zarządzania sieciami kontenerów i ich integracja z siecią
+  gospodarza np.\ za pomocą mostów sieciowych (ang.\ \textit{bridge}).
+  \item Przekazywanie urządzeń do kontenerów (ang.\ \textit{device passthrough}) np.\ urządzeń USB, GPU, NIC\@.
+  \item Mechanizmy do kontrolowania zasobów kontenerów takich jak wykorzystanie procesora, pamięci RAM czy przestrzeni
+  dyskowej.
+\end{itemize}
 
 \section{ModelMapper}
 \label{sec:modelmapper}
 
-Magnum Opus
+ModelMapper to biblioteka ułatwiająca mapowanie podobnych obiektów między sobą.
+W wielu aplikacjach często pojawiają się obiekty bardzo podobne do siebie (np.\ posiadające te same nazwy i typy pól),
+lecz pochodzą z równych modułów i używane są w innych kontekstach.
+Wykorzystując ModelMapper konwertowanie podobnych obiektów dzieje się automatycznie, nie ma potrzeby pisania własnych
+funkcji mapujących.
+W projekcie pracy inżynierskiej ModelMapper został wykorzystany na mapowanie pomiędzy obiektami reprezentującymi
+encje w bazie danych na obiekty typu DTO (ang.\ \textit{Data Transfer Object}).
 
-\section{Node.js}
+\section{Node.js i Npm}
 \label{sec:nodejs}
 
 Magnum Opus
@@ -90,6 +126,21 @@ Dzięki ww.\ aspektom język Java dobrze nadaje się do pisania złożonych apli
 Z tego powodu został wybrany jako język implementacji części serwerowej projektu pracy
 inżynierskiej.
 
+\section{PostgreSQL}
+\label{sec:postgres}
+
+Magnum Opus
+
+\section{Project Reactor}
+\label{sec:reactor}
+
+Magnum Opus
+
+\section{React i Material-UI}
+\label{sec:meterialui}
+
+Magnum Opus
+
 \section{Spring Framework}
 \label{sec:spring}
 
@@ -103,6 +154,10 @@ Magnum Opus
 \section{SSHJ}
 \label{sec:ssj}
 
-Magnum Opus
+SSHJ to biblioteka napisana w języku Java ułatwiająca implementacje funkcjonalności wykorzystujących protokół SSH\@.
+Dostarcza między innymi możliwości autoryzacji hasłem i kluczem publicznym, przekazywanie
+portów (ang.\ \textit{port forwarding}) oraz kanały do wykonywania zdalnych poleceń z powłoki systemu operacyjnego.
+W pracy inżynierskiej SSHJ wykorzystano do komunikacji ze zdalnym serwerem odpowiedzialnym za zarządzanie kontenerami
+Linux.
 
 \clearpage
