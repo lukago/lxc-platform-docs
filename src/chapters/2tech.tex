@@ -116,7 +116,7 @@ reprezentującymi encje w bazie danych na obiekty typu DTO (ang.\ \textit{Data T
 
 JavaScript jest językiem o słabym i dynamicznym typowaniu, używanym głównie na stronach WWW
 i interpretowany przez przeglądarki internetowe.
-Node.js to środowiko uruchomieniowe dla języka JavaScript, stworzone na bazie silnika Chrome V8.
+Node.js to środowisko uruchomianiowe dla języka JavaScript, stworzone na bazie silnika Chrome V8.
 Umożliwiło to używanie języka nie tylko na stronach WWW, ale również w pełnoprawnych aplikacjach,
 nie przeznaczonych do interpretacji przez przeglądarkę.
 Npm (ang.\ \textit{Node Package Manager}) został utworzony w technologii Node.js.
@@ -126,7 +126,7 @@ Dodatkowo Npm udostępnia szereg innych funkcjonalności do zarządzania projekt
 skryptów budujących i startujących tworzoną aplikację, czy zarządzanie wieloma wersjami projektów.
 Narzędzia Node.js i Npm zostały wykorzystane przy implementacji warstwy widoku projektu pracy
 inżynierskiej.
-Dostarczyły one możliwość zbudowania i transformacji kodu źródłowego do finalnej
+Dostarczyły one możliwość zbudowania i transformacji kodu źródłowego aplikacji klienckiej do finalnej
 wersji interpretowanej przez przeglądarkę internetową.
 
 \section{OpenJDK}
@@ -155,27 +155,41 @@ inżynierskiej.
 \section{PostgreSQL}
 \label{sec:postgres}
 
-Magnum Opus
+PostgreSQL to otwartoźródłowy i bezpłatny system zarządzania relacyjną bazą danych
+(ang.\ \textit{Relational Database Management System, RDBMS}), jest zgodny ze standardem SQL
+oraz go rozszerza.
+Jest to bardzo dojrzała platforma, rozwijana od ponad 30 lat, która dorównuje wielu
+rozwiązaniom komercyjnym w aspekcie wydajności i stabilności oraz oferowanych funkcjonalności.
+Umożliwia nawiązanie połączenia sieciowego z relacyjną bazą danych w modelu klient-serwer.
+Dzięki ww.\ zaletom tego oprogramowania został on wybrany do zarządzania bazą danych podczas
+implementacji części serwerowej pracy inżynierskiej.
 
 \section{Project Reactor}
 \label{sec:reactor}
 
-Magnum Opus
+Reactor to biblioteka wspierająca programowanie reaktywne na platformie JVM\@.
+Integruje się z interfejsami programistycznymi dodanymi w Javie 8, takimi jak \textit{Stream},
+\textit{CompletableFuture} oraz \textit{Duration}, implementuje również specyfikację
+\textit{Reactive Streams}.
+W projekcie pracy inżynierskiej Reactor został wykorzystany w części serwerowej projektu,
+wspierając implementację reaktywnego wysyłania wiadomości do gniazd.
 
 \section{React i Material-UI}
-\label{sec:meterialui}
+\label{sec:react}
 
-Magnum Opus
+React to biblioteka napisana w języku JavaScript wspierająca tworzenie interfejsów użytkownika.
+Główną zaletą biblioteki jest możliwość tworzenie interaktywnych interfejsów w prosty sposób.
+React aktualizuje widoki automatycznie podczas zmiany stanu aplikacji, przez co użytkownik nie musi
+ręcznie odświeżać widoku.
+Material-UI to biblioteka napisana z wykorzystaniem biblioteki React. Zawiera ona wiele gotowych
+i uniwersalnych komponentów, przydatnych podczas tworzenia interfejsów użytkownika, np/\ komponenty
+tabel, przycisków, ikon, list czy banerów.
+Obie te biblioteki były podstawą podczas tworzenia interfejsu użytkownika projektu pracy inżynierskiej.
 
 \section{Spring Framework}
 \label{sec:spring}
 
-Magnum Opus
-
-\section{SpringFox}
-\label{sec:springfox}
-
-Magnum Opus
+Spring Framework to...
 
 \section{SSHJ}
 \label{sec:ssj}
