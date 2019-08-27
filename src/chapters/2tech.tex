@@ -17,29 +17,31 @@ Poza oficjalnym zdalnym repozytorium Maven, można konfigurować również inne 
 dostarczające własne moduły.
 Cechą wyróżniającą projekt Maven od innych tego typu narzędzi, jest strategia posługiwania
 się przyjętymi konwencjami, zamiast używania własnej konfiguracji
-(ang.\ \textit{Convention Over Configuration}).
-Maven został wykorzystany w projekcie jako narzędzie do budowania aplikacji serwerowej.
+(ang.\ \textit{Convention Over Configuration})~\cite{mavencookbook}.
+Maven został wykorzystany w projekcie pracy inżynierskiej jako narzędzie do budowania
+aplikacji serwerowej.
 
 \section{Docker}
 \label{sec:docker}
 
 Docker to narzędzie ułatwiające proces wdrażania aplikacji przy użyciu wirtualizacji na poziomie
-systemu operacyjnego, czyli kontenerów.
+systemu operacyjnego czyli kontenerów.
 Kontenery Docker zawierają aplikację wraz z jej konfiguracją i wszystkimi zależnościami.
 W założeniu kontenery Docker są izolowanie od siebie oraz nie zachowują swojego stanu po wyłączeniu.
 Docker poza konteneryzacją dostarcza szereg dodatkowych mechanizmów.
 Jednym z nich są wolumeny, które umożliwiają dostęp do plików na systemie operacyjnym gospodarza,
-co umożliwia, np.\ kontenerowi z bazą danych, permanentnie zapisywać dane na dysku.
+co umożliwia, np.\ kontenerowi z bazą danych, permanentnie zapisywać dane
+na dysku~\cite{dockerpractice}.
 Docker został użyty podczas implementacji projektu jako narzędzie do uruchamiania aplikacji
 serwerowej oraz klienckiej.
 
 \section{Guava}
 \label{sec:guava}
 
-Guava to biblioteka autorstwa Google zawierająca wiele klas użytkowych, jest niejako rozszerzenie
+Guava to biblioteka autorstwa Google zawierająca wiele klas użytkowych, jest niejako rozszerzeniem
 biblioteki standardowej języka Java.
 Guava dodaje m.in.\ nowe typy kolekcji, klasy wspierające współbieżność, łańcuchy znaków, operowanie
-na strumieniach wejścia i wyjścia.
+na strumieniach wejścia i wyjścia~\cite{guavastarted}.
 Z tego powodu jest to jedna z najpopularniejszych zewnętrznych bibliotek używanych w projektach
 opartych na JVM\@.
 W projekcie pracy inżynierskiej również znalazła swoje zastosowanie np.\ podczas implementacji
@@ -52,19 +54,20 @@ Hibernate dostarcza mechanizm ORM (ang.\ \textit{Object Relational Mapping}), cz
 relacyjno-obiektowego dla platformy JVM\@.
 Umożliwia to operowanie na encjach bazy relacyjnej za pomocą odpowiadających im obiektów
 zdefiniowanych w języku Java.
-Biblioteka Hibernate implementuje specyfikacje JPA (ang.\ \textit{Java Persistence API}),
+Biblioteka Hibernate implementuje specyfikację JPA (ang.\ \textit{Java Persistence API}),
 dzięki czemu może być z łatwością wykorzystana w każdej aplikacji wykorzystującej
-JPA np.\ aplikacjach Java EE\@.
+JPA, np.\ aplikacjach Java EE~\cite{hibernatejpa}.
 Warstwę danych części serwerowej projektu pracy inżynierskiej, stanowi relacyjna baza danych.
-Ponieważ w części serwerowej projektu pracy inżynierskiej, do komunikacji z relacyjną bazą danych
-wykorzystano interfejs JPA, Hibernate został użyty jako główna implementacja tego interfejsu.
+Ponieważ w części serwerowej projektu pracy inżynierskiej do komunikacji z relacyjną bazą danych
+wykorzystano interfejs JPA, Hibernate został użyty jako główna implementacja
+tego interfejsu.
 
 \section{JJWT}
 \label{sec:jjwt}
 
 JJWT (inaczej Java JWT) to biblioteka napisana w języku Java, służąca do tworzenia i weryfikacji
 JWT (ang.\ \textit{JSON Web Token}).
-JJWT jest zgodna ze specyfikacją RFC odnośnie JWT\@.
+JJWT jest zgodna ze specyfikacją RFC odnośnie JWT~\cite{jjwtdocs}.
 W projekcie pracy inżynierskiej aplikacja serwerowa nie przechowuje stanu o sesji użytkowników.
 Z tego powodu do autoryzacji i uwierzytelniania użytkowników wykorzystano JWT, a biblioteka JJWT
 ułatwiła implementację tych mechanizmów.
@@ -72,19 +75,19 @@ ułatwiła implementację tych mechanizmów.
 \section{LXD i kontenery Linux}
 \label{sec:lxd}
 
-Kontenery Linux to funkcjonalność Linuxa umożliwiająca wirtualizację na poziomie jądra systemu.
+Kontenery Linux to funkcjonalność jądra Linux umożliwiająca wirtualizację na poziomie jądra systemu.
 Dzięki temu nie ma potrzeby ładowania nowego jądra dla każdego kontenera, co oszczędza wykorzystanie
 zasobów oraz jest o wiele bardziej wydajne.
 LXD to aplikacja do zarządzania kontenerami Linux.
-Aplikacja LXD jest zaimplementowana w języku Go, jednak dostarcza interfejs konsolowy, to właśnie
-za jego pomocą została zaimplementowana integracja z kontenerami w projekcie pracy inżynierskiej.
+Aplikacja LXD jest zaimplementowana w języku Go, jednak dostarcza interfejs konsolowy, za którego
+pomocą została zaimplementowana integracja z kontenerami w projekcie pracy inżynierskiej.
 LXD bazuje na obrazach, dostarczając wiele wcześniej przygotowanych obrazów dla szerokiej rangi
-dystrybucji Linuxa.
+dystrybucji systemów operacyjnych GNU/Linux.
 Aplikacja LXD tworzy REST API przez które wykonywane są wszystkie operacje na kontenerach,
 nawet używając aplikację za pomocą linii komend, każda komenda wywołuje w swojej implementacji
 zapytanie na ww.\ interfejs REST\@.
 LXD nie jest alternatywą dla LXC, jest to aplikacja wykorzystująca LXC i dostarczająca dodatkowe
-funkcjonalności.
+funkcjonalności~\cite{lxdpractical}.
 
 Najważniejsze z dodatkowych funkcjonalności LXD to:
 
@@ -93,7 +96,7 @@ Najważniejsze z dodatkowych funkcjonalności LXD to:
   danych, zamiast w zwykłych folderach, jak ma to miejsce przy wykorzystaniu LXC\@.
   \item Mechanizmy do prostego zarządzania sieciami kontenerów i ich integracja z siecią
   gospodarza np.\ za pomocą mostów sieciowych (ang.\ \textit{bridge}).
-  \item Przekazywanie urządzeń do kontenerów (ang.\ \textit{device passthrough})
+  \item Przekazywanie urządzeń do kontenerów (ang.\ \textit{device passthrough}),
   np.\ urządzeń USB, GPU, NIC\@.
   \item Mechanizmy do kontrolowania zasobów kontenerów takich jak wykorzystanie procesora,
   pamięci RAM czy przestrzeni dyskowej.
@@ -103,31 +106,33 @@ Najważniejsze z dodatkowych funkcjonalności LXD to:
 \label{sec:modelmapper}
 
 ModelMapper to biblioteka ułatwiająca mapowanie podobnych obiektów między sobą.
-W wielu aplikacjach często pojawiają się obiekty bardzo podobne do siebie
-(np.\ posiadające te same nazwy i typy pól), lecz pochodzą z równych modułów i używane są w
+W wielu aplikacjach często pojawiają się obiekty bardzo podobne do siebie,
+np.\ posiadające te same nazwy i typy pól, lecz pochodzą z równych modułów i używane są w
 innych kontekstach.
 Wykorzystując ModelMapper konwertowanie podobnych obiektów dzieje się automatycznie,
-nie ma potrzeby pisania własnych funkcji mapujących.
+nie ma potrzeby pisania własnych funkcji mapujących~\cite{modelmapperdocs}.
 W projekcie pracy inżynierskiej ModelMapper został wykorzystany na mapowanie pomiędzy obiektami
-reprezentującymi encje w bazie danych na obiekty typu DTO (ang.\ \textit{Data Transfer Object}).
+reprezentującymi encje w bazie danych na obiekty typu
+DTO (ang.\ \textit{Data Transfer Object}).
 
 \section{Node.js i Npm}
 \label{sec:nodejs}
 
 JavaScript jest językiem o słabym i dynamicznym typowaniu, używanym głównie na stronach WWW
 i interpretowany przez przeglądarki internetowe.
-Node.js to środowisko uruchomianiowe dla języka JavaScript, stworzone na bazie silnika Chrome V8.
+Node.js to środowisko uruchomieniowe dla języka JavaScript, stworzone na bazie silnika Chrome V8.
 Umożliwiło to używanie języka nie tylko na stronach WWW, ale również w pełnoprawnych aplikacjach,
-nie przeznaczonych do interpretacji przez przeglądarkę.
+nieprzeznaczonych do interpretacji przez przeglądarkę.
 Npm (ang.\ \textit{Node Package Manager}) został utworzony w technologii Node.js.
 Jest to narzędzie, którym w prosty sposób można zarządzać zależnościami programów napisanych
 napisanych w języku JavaScript.
 Dodatkowo Npm udostępnia szereg innych funkcjonalności do zarządzania projektami, np.\ definiowanie
-skryptów budujących i startujących tworzoną aplikację, czy zarządzanie wieloma wersjami projektów.
+skryptów budujących i startujących tworzoną aplikację, czy zarządzanie wieloma wersjami
+projektów~\cite{nodejsinaction}.
 Narzędzia Node.js i Npm zostały wykorzystane przy implementacji warstwy widoku projektu pracy
 inżynierskiej.
-Dostarczyły one możliwość zbudowania i transformacji kodu źródłowego aplikacji klienckiej do finalnej
-wersji interpretowanej przez przeglądarkę internetową.
+Dostarczyły one możliwość zbudowania i transformacji kodu źródłowego aplikacji klienckiej
+do finalnej wersji interpretowanej przez przeglądarkę internetową.
 
 \section{OpenJDK}
 \label{sec:openjdk}
@@ -140,14 +145,14 @@ Język Java jest wysokopoziomowym językiem programowania wspierającym wiele pa
 programowania, przede wszystkim paradygmat programowania obiektowego, ale również np.\ funkcyjnego.
 Jest to język silnie i statycznie typowany, kompilowany do kodu bajtowego (ang. \textit{bytecode}).
 Kod bajtowy jest uruchamiany przez maszynę wirtualną Javy i tłumaczony na kod kod binarny
-odpowiadający architekturze danego systemu, na którym maszyna wirtualna Javy jest zainstalowania.
+odpowiadający architekturze danego systemu, na którym maszyna wirtualna Javy jest zainstalowana.
 Dzięki temu zastosowanie maszyny wirtualnej umożliwiło programom napisanym w języku Java
 na uniezależnienie się od architektury.
 Dodatkowo maszyna wirtualna Javy optymalizuje czas wykonania programu dzięki zastosowania techniki
 JIT (ang.\ \textit{Just-In-Time compilation}), czyli kompilacji fragmentu kodu bajtowego do
 kodu maszynowego bezpośrednio przez wykonaniem danego fragmentu kodu.
 Kolejną zaletą języka Java jest obszerna biblioteka standardowa, dodająca szereg klas wpierających
-np.\ programowanie współbieżne i sieciowe czy operacje wejścia-wyjścia.
+np.\ programowanie współbieżne i sieciowe czy operacje wejścia-wyjścia~\cite{openjdkcookbook}.
 Dzięki ww.\ aspektom język Java dobrze nadaje się do pisania złożonych aplikacji internetowych.
 Z tego powodu został wybrany jako język implementacji części serwerowej projektu pracy
 inżynierskiej.
@@ -159,18 +164,19 @@ PostgreSQL to otwartoźródłowy i bezpłatny system zarządzania relacyjną baz
 (ang.\ \textit{Relational Database Management System, RDBMS}), jest zgodny ze standardem SQL
 oraz go rozszerza.
 Jest to bardzo dojrzała platforma, rozwijana od ponad 30 lat, która dorównuje wielu
-rozwiązaniom komercyjnym w aspekcie wydajności i stabilności oraz oferowanych funkcjonalności.
-Umożliwia nawiązanie połączenia sieciowego z relacyjną bazą danych w modelu klient-serwer.
-Dzięki ww.\ zaletom tego oprogramowania został on wybrany do zarządzania bazą danych podczas
-implementacji części serwerowej pracy inżynierskiej.
+rozwiązaniom komercyjnym w aspekcie wydajności, stabilności oraz oferowanych funkcjonalności.
+Umożliwia nawiązanie połączenia sieciowego z relacyjną bazą danych w modelu
+klient-serwer ~\cite{psqlmasterbook}.
+Dzięki ww.\ zaletom tego oprogramowania został on wybrany do zarządzania bazą danych
+w części serwerowej pracy inżynierskiej.
 
 \section{Project Reactor}
 \label{sec:reactor}
 
 Reactor to biblioteka wspierająca programowanie reaktywne na platformie JVM\@.
-Integruje się z interfejsami programistycznymi dodanymi w Javie 8, takimi jak \textit{Stream},
-\textit{CompletableFuture} oraz \textit{Duration}, implementuje również specyfikację
-\textit{Reactive Streams}.
+Integruje się z interfejsami programistycznymi dodanymi w Javie 8, takimi jak \textit{Stream},
+\textit{CompletableFuture} oraz \textit{Duration}, implementuje również specyfikację
+\textit{Reactive Streams}~\cite{reactordocs}.
 W projekcie pracy inżynierskiej Reactor został wykorzystany w części serwerowej projektu,
 wspierając implementację reaktywnego wysyłania wiadomości do gniazd.
 
@@ -180,16 +186,53 @@ wspierając implementację reaktywnego wysyłania wiadomości do gniazd.
 React to biblioteka napisana w języku JavaScript wspierająca tworzenie interfejsów użytkownika.
 Główną zaletą biblioteki jest możliwość tworzenie interaktywnych interfejsów w prosty sposób.
 React aktualizuje widoki automatycznie podczas zmiany stanu aplikacji, przez co użytkownik nie musi
-ręcznie odświeżać widoku.
-Material-UI to biblioteka napisana z wykorzystaniem biblioteki React. Zawiera ona wiele gotowych
-i uniwersalnych komponentów, przydatnych podczas tworzenia interfejsów użytkownika, np/\ komponenty
-tabel, przycisków, ikon, list czy banerów.
-Obie te biblioteki były podstawą podczas tworzenia interfejsu użytkownika projektu pracy inżynierskiej.
+ręcznie odświeżać widoku~\cite{reactpro}.
+Material-UI to biblioteka napisana z wykorzystaniem biblioteki React.
+Zawiera ona wiele gotowych i uniwersalnych komponentów, przydatnych podczas tworzenia interfejsów
+użytkownika, np.\ komponenty tabel, przycisków, ikon, list czy banerów~\cite{meterialuicookbook}.
+Obie te biblioteki były podstawą podczas tworzenia interfejsu użytkownika projektu pracy
+inżynierskiej.
 
 \section{Spring Framework}
 \label{sec:spring}
 
-Spring Framework to...
+Spring Framework to szkielet tworzenia aplikacji (ang.\ \textit{application framework})
+dla platformy JVM\@.
+Został stworzony jako alternatywa dla technologi EJB, oferując lżejszy i prostszy model
+programowania.
+Główne funkcjonalności i założenia szkieletu Spring to:
+
+\begin{itemize}
+  \item mechanizmy wstrzykiwania zależności umożliwiające luźne powiązanie zależności,
+  \item użycie szkieletu Spring jest nieinwazyjne dzięki oparciu na obiektach POJO
+  (ang.\ \textit{Plain Old Java Object}),
+  \item programowanie deklaratywne poprzez aspekty i przyjęte konwencje,
+  \item eliminowanie sekcji powtarzalnego kodu za pomocą aspektów i szablonów.
+\end{itemize}
+
+Poza ww.\ fikcjonalnościami wchodzącymi w skład tzw.\ rdzenia szkieletu Spring, istnieją również
+dodatkowe moduły, które możemy dodawać do naszej aplikacji w zależności
+od potrzeb~\cite{springinaction}.
+W projekcie pracy inżynierskiej zostały wykorzystane następujące moduły:
+
+\begin{itemize}
+  \item Spring Boot - moduł ułatwiający implementację podczas pracy z wszystkimi modułami
+  szkieletu Spring.
+  Najważniejsze z dodanych funkcjonalności to możliwość automatycznej konfiguracji za pomocą
+  adnotacji w języku Java oraz startery grupujące zależności,
+  co ułatwia pracę z wykorzystaniem narzędzi takich jak Maven.
+  \item Spring Data - moduł ułatwiający implementację komunikacji z warstwą danych aplikacji, w tym
+  z relacyjnymi bazami danych.
+  Integruje się on w interfejsami JPA, automatycznie konfiguruje Hibernate czyli
+  implementacje kontraktów opisanych w JPA\@.
+  Dostarcza również możliwość korzystania repozytoriów JPA za pomocą prostych interfejsów.
+  \item Spring Security - moduł odpowiedzialny za zabezpieczenia aplikacji.
+  Dodaje funkcjonalności umożliwiające zabezpieczenie udostępnianych przez serwer interfejsów,
+  uwierzytelnianie użytkowników i weryfikację ich poziomów dostępu czy konfiguracje
+  protokołu HTTPS\@.
+  \item Spring Web - moduł umożliwiający tworzenie aplikacji internetowych.
+  Dodaje możliwość konfiguracji serwera i adresów HTTP które udostępniać będzie aplikacja.
+\end{itemize}
 
 \section{SSHJ}
 \label{sec:ssj}
@@ -198,7 +241,7 @@ SSHJ to biblioteka napisana w języku Java ułatwiająca implementacje funkcjona
 protokół SSH\@.
 Dostarcza między innymi możliwości autoryzacji hasłem i kluczem publicznym, przekazywanie
 portów (ang.\ \textit{port forwarding}) oraz kanały do wykonywania zdalnych poleceń z powłoki
-systemu operacyjnego.
+systemu operacyjnego~\cite{sshjdocs}.
 W pracy inżynierskiej SSHJ wykorzystano do komunikacji ze zdalnym serwerem odpowiedzialnym za
 zarządzanie kontenerami Linux.
 
