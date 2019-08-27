@@ -1,0 +1,104 @@
+\chapter{Projekt systemu}
+\label{ch:projekt_systemu}
+
+System informatyczny będący tematem pracy inżynierskiej został zrealizowany w architekturze
+wielowarstwowej.
+W dalszych sekcjach znajduje się szczegółowy opis każdej z warstw.
+Przedstawione zostały poziomy dostępu użytkowników, modele danych,
+wykorzystane wzorce projektowe, zabezpieczenia aplikacji oraz sposoby przepływu informacji
+w przekroju całego systemu informatycznego.
+Ogólny schemat przepływu danych pomiędzy elementami systemu został przedstawiony
+na rysunku~\ref{fig:arch}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.59]{figures/arch.png}
+  \caption{Schemat przepływu danych pomiędzy elementami systemu}
+  \label{fig:arch}
+\end{figure}
+\newpage
+
+\section{Poziomy dostępów}
+\label{sec:przypadki_uzycia}
+
+W zaprojektowanym systemie istnieje kilka poziomów dostępów dla użytkownika.
+Poszczególne poziomy dostępów to:
+\begin{itemize}
+  \item Poziom Gościa, jest przypisywany dla niezalogowanych użytkowników.
+  \item Poziom Klienta, jest przypisywany do zalogowanych użytkowników, których konto ma przypisany
+  poziom dostępu klienta.
+  Umożliwia dostęp do danych związanych z danym kontem i ich ograniczoną modyfikację.
+  \item Poziom Administratora, jest przypisywany do zalogowanych użytkowników, których konto ma
+  przypisany poziom dostępu administratora.
+  Umożliwia dostęp do danych o użytkownikach i kontenerach oraz modyfikację tych danych.
+\end{itemize}
+
+Wszystkie przypadki użycie dla poszczególnych poziomów dostępów przedstawia
+tabela~\ref{tab:przypadki_uzycia}.
+Litery G, K, A oznaczają odpowiednio poziomy dostępów Gościa, Klienta i Administratora.
+
+\newpage
+\begin{table}[H]
+  \centering
+  \caption{Macierz decyzyjna przypadków użycia}
+  \begin{tabular}{|r|l|c|c|c|}
+    \hline
+    Lp. & Przypadek użycia & G & K & A \\
+    \hline
+    1 & Zaloguj & X & &  \\
+    \hline
+    2 & Wyloguj & & X & X \\
+    \hline
+    3 & Utwórz konto & & & X \\
+    \hline
+    4 & Wyświetl listę wszystkich użytkowników & & & X \\
+    \hline
+    5 & Usuń konto użytkownika & & & X \\
+    \hline
+    6 & Wyświetl dane swojego konta & & X & X \\
+    \hline
+    7 & Wyświetl dane dowolnego konta & & & X \\
+    \hline
+    8 & Wyświetl listę kontenerów przypisanych do swojego konta & & X & X \\
+    \hline
+    9 & Wyświetl listę wszystkich kontenerów & & & X \\
+    \hline
+    10 & Wyświetl status kontenera przypisanego do swojego konta & & X & X \\
+    \hline
+    11 & Wyświetl status kontenera przypisanego do dowolnego konta & & & X \\
+    \hline
+    12 & Uruchom kontener przypisany do swojego konta & & X & X \\
+    \hline
+    13 & Uruchom kontener przypisany do dowolnego konta & & & X \\
+    \hline
+    14 & Wyłącz kontener przypisany do swojego konta & & X & X \\
+    \hline
+    15 & Wyłącz kontener przypisany do dowolnego konta & & & X \\
+    \hline
+    16 & Modyfikuj dane personalne dowolnego konta & & & X \\
+    \hline
+    17 & Dodaj poziomy dostępów do dowolnego konta & & & X \\
+    \hline
+    18 & Usuń poziomy dostępów z dowolnego konta & & & X \\
+    \hline
+    19 & Modyfikuj dane personalne swojego konta & & X & X \\
+    \hline
+    20 & Zmień hasło do swojego konta & & X & X \\
+    \hline
+    21 & Zmień hasło do dowolnego konta & & & X \\
+    \hline
+    22 & Pobierz informacje adresowe o serwerze dla kontenerów LXC & & X & X \\
+    \hline
+    23 & Wyświetl listę utworzonych zadań zleconych ze swojego konta & & X & X \\
+    \hline
+    24 & Wyświetl listę utworzonych zadań zleconych z dowolnego konta & & & X \\
+    \hline
+    25 & Połącz z gniazdem z danymi o stanie wszystkich zadań & & & X \\
+    \hline
+    26 & Połącz z gniazdem z danymi stanie zadań dla swojego konta & & X & \\
+    \hline
+    27 & Rozłącz z gniazdem przesyłającym informacje o stanie zadań & & X & X \\
+    \hline
+  \end{tabular}
+  \label{tab:przypadki_uzycia}
+\end{table}
