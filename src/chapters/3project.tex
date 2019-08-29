@@ -102,3 +102,69 @@ Litery G, K, A oznaczają odpowiednio poziomy dostępów Gościa, Klienta i Admi
   \end{tabular}
   \label{tab:przypadki_uzycia}
 \end{table}
+
+\section{Wzorce projektowe}
+\label{sec:wzorce_projekctowe}
+
+Podczas implementacji złożonych systemów informatycznych istotną rolę odgrywa struktura kodu
+źródłowego oraz zdefiniowanie powiązań i sposobów komunikacji pomiędzy poszczególnymi elementami
+wchodzącymi w skład tak zdefiniowanej struktury.
+Wzorce projektowe są uniwersalnymi i sprawdzonymi metodami rozwiązywania tego typu problemów.
+Poniżej zostały opisane najważniejsze ze wzorców, które zostały wykorzystanie podczas projektowania
+pracy inżynierskiej.
+
+\subsection{Model-Widok-Kontroler}
+\label{subsec:webmvc}
+
+Wzorzec Model-Widok-Kontroler, w skrócie MVC (ang.\ \textit{Model-View-Controller}) to wzorzec
+architektoniczny służący do organizowania struktury aplikacji posiadających graficzne interfejsy
+użytkownika.
+Wzorzec MVC powstał oryginalnie dla aplikacji desktopowych, dlatego w projekcie została
+wykorzystana jego zmodyfikowana wersja dla aplikacji internetowych.
+Wzorzec MVC dla aplikacji internetowych definiuje strukturę aplikacji podzieloną na trzy części:
+
+\begin{itemize}
+  \item Model.
+  Reprezentuje logikę biznesową aplikacji.
+  \item Widok.
+  Jest odpowiedzialny na wyświetlenie graficznego interfejsu użytkownika.
+  Wysyła żądania generowane przez użytkownika do kontrolera oraz aktualizuje widoki na podstawie
+  odpowiedzi kontrolera na te żądania.
+  \item Kontroler.
+  Koordynuje komunikację pomiędzy widokiem a modelem.
+  Przekazuje żądania wysłane z widoku do modelu oraz przekazuje odpowiedzi na te żądania do widoku
+  na podstawie komunikatów z modelu.
+\end{itemize}
+
+\subsection{Wstrzykiwanie zależności}
+\label{subsec:di}
+
+Wstrzykiwanie zależności (ang.\ \textit{Dependency Injection}) w programowaniu obiektowym
+polega na dostarczaniu zależności dla obiektu poprzez inny obiekt.
+Dzięki zastosowaniu wzorca wstrzykiwania obiekty są niezależne od sposobów tworzenia
+pozostałych obiektów, powiązania pomiędzy obiektami stają się bardziej luźne.
+Umożliwia to m.in.\ realizację paradygmatu odwrócenia sterowania
+(ang.\ \textit{Inversion of Control})oraz ułatwia testowanie aplikacji dzięki możliwości
+wstrzykiwania atrapy obiektów.
+
+\section{Warstwa danych}
+\label{sec:warstwa_danych}
+
+W skład warstwy danych projektu pracy inżynierskiej wchodzą dwa systemy informatyczne.
+Pierwszy z nich to system zarządzania relacyjnymi bazami danych, w której są składowane dane
+użytkowników systemu i przypisanych do nich kontenerów.
+Drugi system informatyczny warstwy danych to serwer odpowiedzialny za składowanie kontenerów LXC\@.
+W poniższych podsekcjach znajduje się szczegółowy opis każdego z tych modułów.
+
+\section{Serwer składujący kontenery LXC}
+\label{sec:serwer_lxc}
+
+W skład warstwy danych projektu pracy inżynierskiej wchodzą dwa systemy informatyczne.
+Pierwszy z nich to serwer odpowiedzialny za składowanie kontenerów LXC\@.
+Kontenery LXC stanowią część systemu operacyjnego. Z tego powody nie mogą być w prosty sposób
+przechowywane w bazach danych, które specjalizują się w przechowywaniu innych typów danych.
+Aby rozwiązać ten problem w projekcie pracy inżynierskiej, podjęto decyzje o wykorzystaniu
+osobnego serwera, którego zadaniem byłoby składowanie kontenerów.
+
+
+\clearpage
