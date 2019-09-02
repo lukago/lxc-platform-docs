@@ -75,12 +75,9 @@ ułatwiła implementację tych mechanizmów.
 \section{LXD i kontenery Linux}
 \label{sec:lxd}
 
-Kontenery Linux to funkcjonalność jądra Linux umożliwiająca wirtualizację na poziomie jądra systemu.
-Dzięki temu nie ma potrzeby ładowania nowego jądra dla każdego kontenera, co oszczędza wykorzystanie
-zasobów oraz jest o wiele bardziej wydajne.
-LXD to aplikacja do zarządzania kontenerami Linux.
-Aplikacja LXD jest zaimplementowana w języku Go, jednak dostarcza interfejs konsolowy, za którego
-pomocą została zaimplementowana integracja z kontenerami w projekcie pracy inżynierskiej.
+LXD to aplikacja do zarządzania LXC czyli kontenerami Linux.
+Aplikacja LXD jest zaimplementowana w języku Go, jednak dostarcza interfejs konsolowy oraz
+interfejs sieciowy, za którego pomocą możliwa jest integracja z programem z poziomu innych języków.
 LXD bazuje na obrazach, dostarczając wiele wcześniej przygotowanych obrazów dla szerokiej rangi
 dystrybucji systemów operacyjnych GNU/Linux.
 Aplikacja LXD tworzy REST API przez które wykonywane są wszystkie operacje na kontenerach,
@@ -96,7 +93,7 @@ Najważniejsze z dodatkowych funkcjonalności LXD to:
   danych, zamiast w zwykłych folderach, jak ma to miejsce przy wykorzystaniu LXC\@.
   \item Mechanizmy do prostego zarządzania sieciami kontenerów i ich integracja z siecią
   gospodarza np.\ za pomocą mostów sieciowych (ang.\ \textit{bridge}).
-  \item Przekazywanie urządzeń do kontenerów (ang.\ \textit{device passthrough}),
+  \item Prostsze przekazywanie urządzeń do kontenerów (ang.\ \textit{device passthrough}),
   np.\ urządzeń USB, GPU, NIC\@.
   \item Mechanizmy do kontrolowania zasobów kontenerów takich jak wykorzystanie procesora,
   pamięci RAM czy przestrzeni dyskowej.
@@ -204,11 +201,11 @@ programowania.
 Główne funkcjonalności i założenia szkieletu Spring to:
 
 \begin{itemize}
-  \item mechanizmy wstrzykiwania zależności umożliwiające luźne powiązanie zależności,
-  \item użycie szkieletu Spring jest nieinwazyjne dzięki oparciu na obiektach POJO
-  (ang.\ \textit{Plain Old Java Object}),
-  \item programowanie deklaratywne poprzez aspekty i przyjęte konwencje,
-  \item eliminowanie sekcji powtarzalnego kodu za pomocą aspektów i szablonów.
+  \item Mechanizmy wstrzykiwania zależności umożliwiające luźne powiązanie zależności.
+  \item Użycie szkieletu Spring jest nieinwazyjne dzięki oparciu na obiektach POJO
+  (ang.\ \textit{Plain Old Java Object}).
+  \item Programowanie deklaratywne poprzez aspekty i przyjęte konwencje.
+  \item Eliminowanie sekcji powtarzalnego kodu za pomocą aspektów i szablonów.
 \end{itemize}
 
 Poza ww.\ funkcjonalnościami wchodzącymi w skład tzw.\ rdzenia szkieletu Spring, istnieją również
@@ -230,12 +227,12 @@ W projekcie pracy inżynierskiej zostały wykorzystane następujące moduły:
   Integruje się on w interfejsami JPA, automatycznie konfiguruje Hibernate czyli
   implementacje kontraktów opisanych w JPA\@.
   Dostarcza również możliwość korzystania repozytoriów JPA za pomocą prostych interfejsów.
-  \item \textit{Spring Security}.
+  \item \textbf{Spring Security}.
   Moduł odpowiedzialny za zabezpieczenia aplikacji.
   Dodaje funkcjonalności umożliwiające zabezpieczenie udostępnianych przez serwer interfejsów,
   uwierzytelnianie użytkowników i weryfikację ich poziomów dostępu czy konfiguracje
   protokołu HTTPS\@.
-  \item \textit{Spring Web}.
+  \item \textbf{Spring Web}.
   Moduł umożliwiający tworzenie aplikacji internetowych.
   Dodaje możliwość konfiguracji serwera i adresów HTTP które udostępniać będzie aplikacja.
 \end{itemize}
