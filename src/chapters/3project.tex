@@ -234,15 +234,50 @@ W systemie Linux kontenery mogą działać dzięki specyficznym funkcjonalności
 Najważniejsze z tych funkcjonaliści to:
 
 \begin{itemize}
-  \item \textbf{Grupy kontroli (cgroups)}.
+  \item \textbf{Grupy kontroli (\textit{cgroups})}.
   Dostarczają mechanizmy grupowania zadań i procesów w hierarchiczne grupy.
-  \item \textbf{Przestrzenie nazw (namespaces)}.
+  \item \textbf{Przestrzenie nazw (\textit{namespaces})}.
   Dostarczają warstwy abstrakcji dla globalnych zasobów systemu, które będą widoczne
   dla procesów wewnątrz tej samej przestrzeni nazw jako izolowania instancja globalnego
   zasobu.
-  \item \textbf{System plików lub rootfs}.
+  \item \textbf{System plików lub \textit{rootfs}}.
   Obraz kontenera posiada własny system plików o własnym rdzeniu o podobnej strukturze do
   systemu plików zamontowanego na każdej maszynie z systemem operacyjnym GNU/Linux.
 \end{itemize}
+
+\section{RDBMS}
+\label{sec:rdbms}
+
+Poza kontenerami, projekt pracy inżynierskiej przechowuje również informacje o kontach użytkowników,
+do jakich kontenerów posiadają one dostęp oraz podstawowe dane o tych kontenerach
+jak np.\ adres IP\@.
+Poniżej na rysunku~\ref{fig:datarel} przedstawiono relacje pomiędzy tymi danymi.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.75]{figures/datarel.png}
+  \caption{Relacje między strukturami danych}
+  \label{fig:datarel}
+\end{figure}
+
+Z tego powodu w skład warstwy danych projektu pracy inżynierskiej wchodzi również drugi system.
+Jest to system zarządzania relacyjną bazą danych, inaczej
+RDBMS (ang.\ \textit{Relational Database Management System}).
+RDBMS dostarcza narzędzia potrzebne do interakcji z bazami danych, np. poprzez dostarczoną
+implementację specyfikacji języka SQL\@.
+Dodatkowo zawiera mechanizmy pozwalające zachować integralność danych. Najważniejszym
+takim mechanizmem są transakcje bazodanowe, które opisano bardziej szczegółowo w następnej
+podsekcji.
+
+\subsection{Transakcje bazodanowe}
+\label{subsec:transakcje}
+
+Konteneryzacja jest kolejnym logicznym krokiem w rozwoju technologii wirtualizacji.
+Kontenery dostarczają mechanizm wirtualizacji na poziomie systemu operacyjnego jak również
+na poziomie aplikacji.
+Projekt pracy inżynierskiej wykorzystuje technologię konteneryzacji na poziomie systemu
+operacyjnego opartego o jądro Linux.
+
+Główne zalety kontenerów Linux to:
 
 \clearpage
