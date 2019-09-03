@@ -245,6 +245,29 @@ Najważniejsze z tych funkcjonaliści to:
   systemu plików zamontowanego na każdej maszynie z systemem operacyjnym GNU/Linux.
 \end{itemize}
 
+\subsection{Serwer LXC}
+\label{subsec:serwerlxc}
+
+Konteneryzacja jest kolejnym logicznym krokiem w rozwoju technologii wirtualizacji.
+Kontenery dostarczają mechanizm wirtualizacji na poziomie systemu operacyjnego jak również
+na poziomie aplikacji.
+Projekt pracy inżynierskiej wykorzystuje technologię konteneryzacji na poziomie systemu
+operacyjnego opartego o jądro Linux.
+
+\begin{enumerate}
+  \item Read uncommitted.
+  Transakcja może odczytywać dane zmienione przez inne transakcje, które jeszcze się
+  nie zakończyły.
+  \item Read committed.
+  Transakcja może odczytywać tylko te dane, które zostały zapisane przez zakończone
+  transakcje.
+  \item Repeatable reads.
+  Transakcja może odczytywać dane z momentu rozpoczęcia transakcji.
+  \item Serializable.
+  Transakcje wykonane współbieżnie będą miały ten sam rezultat to transakcje
+  wykonywane szeregowo.
+\end{enumerate}
+
 \section{RDBMS}
 \label{sec:rdbms}
 
@@ -260,24 +283,71 @@ Poniżej na rysunku~\ref{fig:datarel} przedstawiono relacje pomiędzy tymi danym
   \label{fig:datarel}
 \end{figure}
 
-Z tego powodu w skład warstwy danych projektu pracy inżynierskiej wchodzi również drugi system.
+Z tego powodu w skład warstwy danych projektu pracy inżynierskiej wchodzi również drugi system.
 Jest to system zarządzania relacyjną bazą danych, inaczej
 RDBMS (ang.\ \textit{Relational Database Management System}).
-RDBMS dostarcza narzędzia potrzebne do interakcji z bazami danych, np. poprzez dostarczoną
+RDBMS dostarcza narzędzia potrzebne do interakcji z bazami danych, np.\ poprzez dostarczoną
 implementację specyfikacji języka SQL\@.
-Dodatkowo zawiera mechanizmy pozwalające zachować integralność danych. Najważniejszym
-takim mechanizmem są transakcje bazodanowe, które opisano bardziej szczegółowo w następnej
-podsekcji.
+Dodatkowo zawiera mechanizmy pozwalające zachować integralność danych.
+Najważniejszym takim mechanizmem są transakcje bazodanowe i blokady optymistyczne, które opisano
+bardziej szczegółowo w następnych podsekcjach.
 
 \subsection{Transakcje bazodanowe}
 \label{subsec:transakcje}
 
-Konteneryzacja jest kolejnym logicznym krokiem w rozwoju technologii wirtualizacji.
-Kontenery dostarczają mechanizm wirtualizacji na poziomie systemu operacyjnego jak również
-na poziomie aplikacji.
-Projekt pracy inżynierskiej wykorzystuje technologię konteneryzacji na poziomie systemu
-operacyjnego opartego o jądro Linux.
+Transakcje bazodanowa to zbiór operacji, które muszą być wykonane jako całość albo wcale.
+Celem transakcji jest zapewnienie integralności danych.
+Jeśli podczas wykonywania transakcji wystąpi błąd, wszystkie zmiany są wycofywane.
+Dopiero podczas zakończenia transakcji po weryfikacji poprawności wykonania wszystkich
+operacji zmiany są trwale zapisywane w pamięci.
 
-Główne zalety kontenerów Linux to:
+Aby transakcje uznać za bezpieczne powinny spełniać one zasady ACID\@, które określone
+są następująco:
+
+\begin{itemize}
+  \item \textbf{Niepodzielność (ang.\ \textit{atomicity})}.
+  Transakcja ma wykonać się w całości albo wcale.
+  \item \textbf{Spójność (ang.\ \textit{consistency})}.
+  Po zakończeniu transakcji dane w bazie muszą być spójne, spełniać zasady i ograniczenia
+  poszczególnych kolumn w tabelach.
+  \item \textbf{Izolacja (ang.\ \textit{isolation})}.
+  Izolacja określa w jaki sposób transakcje wykonywane współbieżnie oddziałują na siebie.
+  Standard SQL definiuje następujące poziomy izolacji:
+  \begin{enumerate}
+    \item Read uncommitted.
+    Transakcja może odczytywać dane zmienione przez inne transakcje, które jeszcze się
+    nie zakończyły.
+    \item Read committed.
+    Transakcja może odczytywać tylko te dane, które zostały zapisane przez zakończone
+    transakcje.
+    \item Repeatable reads.
+    Transakcja może odczytywać dane z momentu rozpoczęcia transakcji.
+    \item Serializable.
+    Transakcje wykonane współbieżnie będą miały ten sam rezultat to transakcje
+    wykonywane szeregowo.
+  \end{enumerate}
+  \item \textbf{Trwałość (ang.\ \textit{durability})}.
+  Po zakończeniu transakcji jej rezultat zostanie trwale zapisany w bazie danych, np.\
+  w przypadku awarii systemu lub braku zasilania.
+\end{itemize}
+
+\subsection{Blokady optymistyczne}
+\label{subsec:optimisticlock}
+
+Projekt pracy inżynierskiej jest z założenia systemem wielodostępowym, w którym wielu
+użytkowników może jednocześnie modyfikować te same dane.
+Z tego powodu jeden z użytkowników może pracować na nieaktualnych danych, bez wiedzy,
+że zostały one zmienione przez innego użytkownika.
+Taka sytuacja może naruszyć integralność danych.
+Aby rozwiązać ten problem zastosowano mechanizm blokad optymistycznych.
+Każda krotka w bazie danych ma pole wersji, która jest inkrementowana wraz
+z każdą transakcją, która ją modyfikuje.
+Jednocześnie do użytkownika przesyłane są numery wersji dla poszczególnych
+danych, odpowiadające numerom wersji krotek w bazie danych w momencie ich odczytu.
+Użytkownik po wykonaniu zmian, przekazuje ten sam numer wersji.
+Jeśli dane ulegną zmianie w trakcie wykonywania zmian, przesłany numer wersji nie
+będzie zgodny z wersją w bazie danych.
+Transakcja nie zakońćzy się, a użytkownik zostanie poinformowany o tym błędzie i
+będzie mógł pobrać dane jeszcze raz w celu aktualizacji danych.
 
 \clearpage
