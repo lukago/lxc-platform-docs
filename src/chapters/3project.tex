@@ -347,7 +347,44 @@ danych, odpowiadające numerom wersji krotek w bazie danych w momencie ich odczy
 Użytkownik po wykonaniu zmian, przekazuje ten sam numer wersji.
 Jeśli dane ulegną zmianie w trakcie wykonywania zmian, przesłany numer wersji nie
 będzie zgodny z wersją w bazie danych.
-Transakcja nie zakońćzy się, a użytkownik zostanie poinformowany o tym błędzie i
+Transakcja nie zakończy się, a użytkownik zostanie poinformowany o tym błędzie i
 będzie mógł pobrać dane jeszcze raz w celu aktualizacji danych.
+
+\subsection{Komunikacją z bazą danych}
+\label{subsec:kumunikacjadb}
+
+W warstwie aplikacyjnej wykonywane są operacje na encjach relacyjnej bazy danych.
+Aby ułatwić oprogramowanie takich operacji wykorzystano mechanizm mapowania relacyjno
+obiektowego za pomocą interfejsów JPA i implementacji JPA o nazwie
+Hibernate~\cite{hibernatejpa}.
+
+Połączenie z bazą danych realizowane jest za interfejsu
+JDBC (ang. \textit{Java Database Connectivity}).
+JDBC definiuje interfejsy w jaki sposób klient, czyli aplikacja serwerowa projektu
+pracy inżynierskiej, może połączyć się do bazy danych.
+Każdy system zarządzania bazy danych musi mieć odpowiedni sterownik JDBC czyli
+własną implementację tego interfejsu ze względu na różnice w implementacji
+każdego systemu RDBMS\@.
+
+\subsection{Komunikacją z serwerem LXC}
+\label{subsec:kumunikacjalxc}
+
+W warstwie aplikacyjnej wykonywane są operacje na encjach relacyjnej bazy danych.
+Aby ułatwić oprogramowanie takich operacji wykorzystano mechanizm mapowania relacyjno
+obiektowego za pomocą interfejsów JPA i implementacji JPA o nazwie Hibernate.
+
+\subsection{REST API}
+\label{subsec:kumunikacjarest}
+
+W warstwie aplikacyjnej wykonywane są operacje na encjach relacyjnej bazy danych.
+Aby ułatwić oprogramowanie takich operacji wykorzystano mechanizm mapowania relacyjno
+obiektowego za pomocą interfejsów JPA i implementacji JPA o nazwie Hibernate.
+
+\subsection{Gniazda}
+\label{subsec:kumunikacjasocket}
+
+W warstwie aplikacyjnej wykonywane są operacje na encjach relacyjnej bazy danych.
+Aby ułatwić oprogramowanie takich operacji wykorzystano mechanizm mapowania relacyjno
+obiektowego za pomocą interfejsów JPA i implementacji JPA o nazwie Hibernate.
 
 \clearpage
