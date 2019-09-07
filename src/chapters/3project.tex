@@ -103,51 +103,6 @@ Litery G, K, A oznaczają odpowiednio poziomy dostępów Gościa, Klienta i Admi
   \label{tab:przypadki_uzycia}
 \end{table}
 
-\section{Wzorce projektowe}
-\label{sec:wzorce_projekctowe}
-
-Podczas implementacji złożonych systemów informatycznych istotną rolę odgrywa struktura kodu
-źródłowego oraz zdefiniowanie powiązań i sposobów komunikacji pomiędzy poszczególnymi elementami
-wchodzącymi w skład tak zdefiniowanej struktury.
-Wzorce projektowe są uniwersalnymi i sprawdzonymi metodami rozwiązywania tego typu problemów.
-Poniżej zostały opisane najważniejsze ze wzorców, które zostały wykorzystanie podczas projektowania
-pracy inżynierskiej.
-
-\subsection{Model-Widok-Kontroler}
-\label{subsec:webmvc}
-
-Wzorzec Model-Widok-Kontroler, w skrócie MVC (ang.\ \textit{Model-View-Controller}) to wzorzec
-architektoniczny służący do organizowania struktury aplikacji posiadających graficzne interfejsy
-użytkownika.
-Wzorzec MVC powstał oryginalnie dla aplikacji desktopowych, dlatego w projekcie została
-wykorzystana jego zmodyfikowana wersja dla aplikacji internetowych.
-
-Wzorzec MVC dla aplikacji internetowych definiuje strukturę aplikacji podzieloną na trzy części:
-
-\begin{itemize}
-  \item \textbf{Model}.
-  Reprezentuje logikę biznesową aplikacji.
-  \item \textbf{Widok}.
-  Jest odpowiedzialny na wyświetlenie graficznego interfejsu użytkownika.
-  Wysyła żądania generowane przez użytkownika do kontrolera oraz aktualizuje widoki na podstawie
-  odpowiedzi kontrolera na te żądania.
-  \item \textbf{Kontroler}.
-  Koordynuje komunikację pomiędzy widokiem a modelem.
-  Przekazuje żądania wysłane z widoku do modelu oraz przekazuje odpowiedzi na te żądania do widoku
-  na podstawie komunikatów z modelu.
-\end{itemize}
-
-\subsection{Wstrzykiwanie zależności}
-\label{subsec:di}
-
-Wstrzykiwanie zależności (ang.\ \textit{Dependency Injection}) w programowaniu obiektowym
-polega na dostarczaniu zależności dla obiektu poprzez inny obiekt.
-Dzięki zastosowaniu wzorca wstrzykiwania obiekty są niezależne od sposobów tworzenia
-pozostałych obiektów, powiązania pomiędzy obiektami stają się bardziej luźne.
-Umożliwia to m.in.\ realizację paradygmatu odwrócenia sterowania
-(ang.\ \textit{Inversion of Control})oraz ułatwia testowanie aplikacji dzięki możliwości
-wstrzykiwania atrapy obiektów.
-
 \section{Serwer LXC}
 \label{sec:serwer_lxc}
 
@@ -245,27 +200,32 @@ Najważniejsze z tych funkcjonaliści to:
   systemu plików zamontowanego na każdej maszynie z systemem operacyjnym GNU/Linux.
 \end{itemize}
 
-\subsection{Serwer LXC}
-\label{subsec:serwerlxc}
+\subsection{Konfiguracja}
+\label{subsec:kofig}
 
-Konteneryzacja jest kolejnym logicznym krokiem w rozwoju technologii wirtualizacji.
-Kontenery dostarczają mechanizm wirtualizacji na poziomie systemu operacyjnego jak również
-na poziomie aplikacji.
-Projekt pracy inżynierskiej wykorzystuje technologię konteneryzacji na poziomie systemu
-operacyjnego opartego o jądro Linux.
+Serwer LXC odpowiedzialny za składowanie kontenerów powinien spełniać założenia, które
+umożliwią integrację z nim poprzez warstwę aplikacji.
+Projekt systemu zakłada, że serwer ten spełnia następujące wymogi:
 
 \begin{enumerate}
-  \item Read uncommitted.
-  Transakcja może odczytywać dane zmienione przez inne transakcje, które jeszcze się
-  nie zakończyły.
-  \item Read committed.
-  Transakcja może odczytywać tylko te dane, które zostały zapisane przez zakończone
-  transakcje.
-  \item Repeatable reads.
-  Transakcja może odczytywać dane z momentu rozpoczęcia transakcji.
-  \item Serializable.
-  Transakcje wykonane współbieżnie będą miały ten sam rezultat to transakcje
-  wykonywane szeregowo.
+  \item Serwer jest uruchomiony z zainstalowanym systemem GNU/Linux.
+  \item Wersja jądra Linux to przynajmniej wersja 3.8.
+  Jest to wymagane do najważniejszych funkcjonalności kontenerów LXC\@.
+  \item Serwer jest podłączony do sieci dostępnej dla aplikacji serwerowej.
+  \item Serwer ma otwarty port przez który można połączyć się do niego protokołem SSH.\
+  \item Serwer przy próbie połączenia przez SSH wymaga uwierzytelnienia loginem i hasłem.
+  \item Serwer ma stworzone dodatkowe konto nie będące kontem typu \textit{root} i na to konto
+  realizowanie będą połączenia SSH z aplikacji serwerowej.
+  \item Uwierzytelnienie się bezpośrednio na konto typu \textit{root} przez protokół
+  SSH jest zablokowane.
+  \item Serwer ma zainstalowany program LXD\@.
+  \item Serwer ma stworzony bazowy kontener na podstawie którego będą tworzone
+  inne kontenery.
+  \item Bazowy kontener ma stworzonego użytkownika który nie jest kontem typu \textit{root}.
+  Można się do niego połączyć przez SSH podając login i hasło, uwierzytelnianie bezpośrednio na
+  konto typu \textit{root} jest zablokowane.
+  \item Adres IP serwera, port serwera, dane wymagane do uwierzytelnienia przez SSH do serwera oraz
+  dane bazowego kontenera są jawne dla aplikacji serwerowej.
 \end{enumerate}
 
 \section{RDBMS}
@@ -295,7 +255,7 @@ bardziej szczegółowo w następnych podsekcjach.
 \subsection{Transakcje bazodanowe}
 \label{subsec:transakcje}
 
-Transakcje bazodanowa to zbiór operacji, które muszą być wykonane jako całość albo wcale.
+Transakcje bazodanowe to zbiór operacji, które muszą być wykonane jako całość albo wcale.
 Celem transakcji jest zapewnienie integralności danych.
 Jeśli podczas wykonywania transakcji wystąpi błąd, wszystkie zmiany są wycofywane.
 Dopiero podczas zakończenia transakcji po weryfikacji poprawności wykonania wszystkich
@@ -350,8 +310,68 @@ będzie zgodny z wersją w bazie danych.
 Transakcja nie zakończy się, a użytkownik zostanie poinformowany o tym błędzie i
 będzie mógł pobrać dane jeszcze raz w celu aktualizacji danych.
 
-\subsection{Komunikacją z bazą danych}
-\label{subsec:kumunikacjadb}
+\section{Warstwa aplikacji}
+\label{sec:warstwa_apk}
+
+W skład warstwy aplikacji wchodzi aplikacja serwerowa.
+Warstwa aplikacji jest odpowiedzialna za integrację z warstwą prezentacji oraz z warstwą danych.
+W projekcie pracy inżynierskiej aplikacja serwerowa składa się kilku różnych następujących modułów.
+
+Najważniejsze z modułów aplikacji serwerowej to:
+
+\begin{itemize}
+  \item \textbf{Repozytoria}.
+  Są odpowiedzialne za komunikację z relacyjną bazą danych.
+  Konwertują wywołania metod na odpowiednie zapytania do bazy danych oraz mapują odpowiedzi
+  tych zapytań na obiekty.
+  \item \textbf{Serwisy}.
+  Są odpowiedzialne za logikę biznesową aplikacji.
+  Serwisy decydują kiedy metody repozytoriów zostaną wywołanie i w jakim kontekście, ponieważ to one
+  przetwarzają dane z tych repozytoriów.
+  Są one również odpowiedzialne za nawiązanie połączenia z serwerem do składowania kontenerów LXC\@.
+  \item \textbf{Kontrolery}.
+  Są odpowiedzialne za wystawianie interfejsów REST\@.
+  Konwertują rządania HTTP oraz obiekty encji na obiekty DTO\@.
+  Przekazują skonwertowane rządania do serwisów oraz mapują wyniki działań serwisów na obiekty DTO
+  i odpowiedzi HTTP\@.
+  \item \textbf{Encje}.
+  Reprezentują encje w bazach danych w oparciu o adnotacje JPA\@.
+  Są to anemiczne obiekty, nieposiadające żadnej logiki poza metodami dostępowymi od posczególnych
+  pól.
+  \item \textbf{DTO}\@.
+  Oznaczają obiekty które będą przesyłanie pomiędzy warstwą widoku i warstwą
+  aplikacji (ang. \textit{Data Transfer Object}).
+  Stosuje się je w celu poprawy bezpieczeństwa aplikacji oraz lepszej separacji modułów.
+  Obiekty DTO mogą ukrywać niektóre pola obecne w obiektach encji, np.\ skrót hasła lub numer
+  identyfikacyjny krotki w bazie danych.
+  Podobnie jak encje, są to obiekty anemiczne.
+\end{itemize}
+
+Aplikacja serwerowa wykorzystuje wiele technologii.
+W następnych podsekcjach opisano dodatkowe szczegóły dotyczące projektu aplikacji serwerowej.
+
+\subsection{Integracja z serwerem LXC}
+\label{subsec:intlxc}
+
+Istotnym elementem projektu aplikacji serwerowerj było zdefiniowanie komunikacji z serwerem
+odpowiedzialnym za składowanie kontenerów Linux.
+Serwer ten zarządza kontenerami za pomocą wcześniej opisanego narzędzia LXD które dostarcza
+interfejs dostępny z poziomu lini poleceń.
+
+Z tego powodu aplikacja serwerowa nawiązuje połączenie SSH z serwerem LXC\@.
+SSH (ang.\ \textit{Secure Shell}) to protokół umożliwiający wykonywanie zdalnych poleceń powłoki
+w bezpieczny, szyfrowany sposób.
+Następnie w trakcie trwania sesji połączenia SSH, aplikacja serwerowa określone polecenia
+do zarządzania kontenerami na zdalnym serwerze.
+
+Polecenia wykonywane na serwerze LXC są zdefiniowane w konfiguracji aplikacji serwerowej
+jako ściśle określone szablony.
+Szablony tych poleceń mają postać zwykłego łańcucha znaków, który jest odpowiednio formatowany
+do potrzeb aktualnie przetwarzanego żądania, poprzez zamianę tzw.\ specyfikatorów formatu
+(ang.\ \textit{format specifiers}) na odpowiednie wartości, np.\ nazwę kontenera.
+
+\subsection{Integracja z bazą danych}
+\label{subsec:intdb}
 
 W warstwie aplikacyjnej wykonywane są operacje na encjach relacyjnej bazy danych.
 Aby ułatwić oprogramowanie takich operacji wykorzystano mechanizm mapowania relacyjno
@@ -360,31 +380,186 @@ Hibernate~\cite{hibernatejpa}.
 
 Połączenie z bazą danych realizowane jest za interfejsu
 JDBC (ang. \textit{Java Database Connectivity}).
-JDBC definiuje interfejsy w jaki sposób klient, czyli aplikacja serwerowa projektu
+JDBC definiuje interfejsy w jaki sposób klient, czyli tym przypadku aplikacja serwerowa projektu
 pracy inżynierskiej, może połączyć się do bazy danych.
 Każdy system zarządzania bazy danych musi mieć odpowiedni sterownik JDBC czyli
 własną implementację tego interfejsu ze względu na różnice w implementacji
 każdego systemu RDBMS\@.
 
-\subsection{Komunikacją z serwerem LXC}
-\label{subsec:kumunikacjalxc}
+\subsection{Interfejs REST}
+\label{subsec:intrest}
 
-W warstwie aplikacyjnej wykonywane są operacje na encjach relacyjnej bazy danych.
-Aby ułatwić oprogramowanie takich operacji wykorzystano mechanizm mapowania relacyjno
-obiektowego za pomocą interfejsów JPA i implementacji JPA o nazwie Hibernate.
+Aplikacja serwerowa dostarcza własny interfejs dostępny poprzez protokół HTTP, za pomocą którego
+inne aplikacje mogą z niego skorzystać.
+Architektura tego interfejsu oparta jest o REST\@.
+REST (ang.\ \textit{Representational State Transfer}) umożliwia dostęp do zasobów sieciowych
+za pomocą uniwersalnych i bezstanowych operacji.
+W przypadku projektu aplikacji serwerowerj, aplikacja kliencka wysyła żądanie HTTP
+wraz z odpowiednimi nagłówkami na odpowiedni adres URI\@.
 
-\subsection{REST API}
-\label{subsec:kumunikacjarest}
+Protokół HTTP przewiduje wiele metod określających typ żądania, które w mają swoje realne
+odzwierciedlenie w aplikacji serwerowerj przy zastosowaniu architektury REST\@.
+Najważniejsze z metod HTTP to:
 
-W warstwie aplikacyjnej wykonywane są operacje na encjach relacyjnej bazy danych.
-Aby ułatwić oprogramowanie takich operacji wykorzystano mechanizm mapowania relacyjno
-obiektowego za pomocą interfejsów JPA i implementacji JPA o nazwie Hibernate.
+\begin{itemize}
+  \item \textbf{GET}.
+  Oznacza żądanie pobrania danych zasobu wskazanego przez adres URI\@.
+  \item \textbf{POST}.
+  Oznacza żądanie dodania nowego zasobu danymi przesłanego przez klienta.
+  \item \textbf{PATCH}.
+  Oznacza żądanie aktualizacji zasobu danymi przesłanymi przez klienta.
+  \item \textbf{PUT}.
+  Oznacza żądanie zamiany danego zasobu nowym zasobem określonym danymi przesłanymi przez klienta.
+  \item \textbf{DELETE}.
+  Oznacza żądanie usunięcia danych zasobu wskazanego przez adres URI\@.
+\end{itemize}
 
-\subsection{Gniazda}
-\label{subsec:kumunikacjasocket}
+W przypadku zapytań POST, PUT i PATCH wysyłana jest dodatkowa treść żądania.
+Serwer odpowiada na te zapytania wysyłając kod odpowiedzi HTTP definiujący status przetworzonego
+żądania oraz ewentualną treść odpowiedzi, w przypadku projektu format treści odpowiedzi i zapytań to
+JSON\@.
+Kody odpowiedzi HTTP są również ściśle zdefiniowane w specyfikacji protokołu HTTP\@.
+Kody są 3-cyfrowe, gdzie pierwsza cyfra oznacza kategorię odpowiedzi:
 
-W warstwie aplikacyjnej wykonywane są operacje na encjach relacyjnej bazy danych.
-Aby ułatwić oprogramowanie takich operacji wykorzystano mechanizm mapowania relacyjno
-obiektowego za pomocą interfejsów JPA i implementacji JPA o nazwie Hibernate.
+\begin{itemize}
+  \item \textbf{1xx}.
+  Kody informacyjne, informują o odebraniu żądania, przetwarzania żądania może wciąż trwać.
+  \item \textbf{2xx}.
+  Kody dla pomyślnego przetworzenia żądania, informują że żądanie zostało odebrane, zrozumiane i
+  i przetworzone.
+  \item \textbf{3xx}.
+  Kody przekierowania, informują o dodatkowych czynnościach które muszą być podjęte
+  aby zakończyć żądanie.
+  \item \textbf{4xx}.
+  Kody błędu klienta, informują że żądanie wysłane przez klienta zawiera błędy i nie może
+  być przetworzone.
+  \item \textbf{5xx}.
+  Kody błędu serwera, informują że serwer podczas próby przetworzenia poprawnego żądania napotkał na
+  niespodziewany błąd przez co nie mógł zakończyć pomyślnego przetworzenia tego żądania.
+\end{itemize}
+
+\subsection{WebSocket}
+\label{subsec:websocket}
+
+Aplikacja serwerowa dostarcza interfejsy do zarządzania kontenerami.
+Są one dostępne poprzez opisany wyżej interfejs REST, jednak czas odpowiedzi na żądanie jest
+niedeterministyczny.
+Z tego powodu aplikacja po przyjęciu takiego żądania zwracana jest odpowiedź HTTP 202 informującą
+użytkownika, że żądanie zostało poprawnie przyjęte do realizacji.
+Reszta żądania jest wykonywana asynchronicznie.
+
+Aby powiadomić użytkownika o zakończeniu wykonywania takiego żądania wykorzystano gniazda TCP
+za pomocą technologii WebSocket.
+Gniazda TCP umożliwiają dwukierunkową komunikację, dzięki temu serwer ma możliwość wysłania
+informacji bez wcześniejszego zapytania klienta.
+Technologia WebSocket umożliwiła wykorzystanie gniazd TCP w przeglądarkach internetowych
+w oparciu o istniejącą infrastrukturę HTTP\@.
+Wykorzystanie technologii WebSocket pozwala zmniejszyć obciążenie sieci, serwera oraz przeglądarki
+internetowej.
+
+\section{Warstwa widoku}
+\label{sec:warstwa_widoku}
+
+Warstwa widoku jest odpowiedzialna za interakcję z użytkownikiem, przesyłaniem jego akcji
+do aplikacji serwerowerj oraz wyświetlanie danych pobranych z serwera w przystępny dla
+człowieka sposób.
+W skład warstwy widoku wchodzi aplikacja kliencka działająca w przeglądarce wykonana
+z użyciem technologii React.
+Dzięki zastosowaniu technologii React aplikacja kliencka jest zupełnie odrębną aplikacją,
+która komunikuje się warstwą widoku za pomocą zapytań HTTP i technologii WebSocket.
+
+\subsection{SPA}
+\label{subsec:spa}
+
+Aplikacja kliencka została wykonana jako aplikacja typu
+SPA (ang.\ \textit{Single Page Application}).
+SPA to inaczej jednostronicowa aplikacja internetowa.
+Strona wykonana w technologii SPA, podczas interakcji z użytkownikiem,
+aktualizuje tylko wybrane elementy na stronie.
+Nie ma potrzeby odświeżania całej strony i pobierania całej nowej zawartości na nowo, w tym
+danych które nie uległy zmianie i nie wymagają aktualizacji.
+Umożliwia to  oszczędzanie zasobów sieci, serwera i aplikacji klienckiej.
+Dzięki takiej oszczędności cały system informatyczny działa wydajniej.
+
+
+\section{Wzorce projektowe}
+\label{sec:wzorce_projekctowe}
+
+Podczas implementacji złożonych systemów informatycznych istotną rolę odgrywa struktura kodu
+źródłowego oraz zdefiniowanie powiązań i sposobów komunikacji pomiędzy poszczególnymi elementami
+wchodzącymi w skład tak zdefiniowanej struktury.
+Wzorce projektowe są uniwersalnymi i sprawdzonymi metodami rozwiązywania tego typu problemów.
+Poniżej zostały opisane najważniejsze ze wzorców, które zostały wykorzystanie podczas projektowania
+pracy inżynierskiej.
+
+\subsection{Model-Widok-Kontroler}
+\label{subsec:webmvc}
+
+Wzorzec Model-Widok-Kontroler, w skrócie MVC (ang.\ \textit{Model-View-Controller}) to wzorzec
+architektoniczny służący do organizowania struktury aplikacji posiadających graficzne interfejsy
+użytkownika.
+Wzorzec MVC powstał oryginalnie dla aplikacji desktopowych, dlatego w projekcie została
+wykorzystana jego zmodyfikowana wersja dla aplikacji internetowych.
+
+Wzorzec MVC dla aplikacji internetowych definiuje strukturę aplikacji podzieloną na trzy części:
+
+\begin{itemize}
+  \item \textbf{Model}.
+  Reprezentuje logikę biznesową aplikacji.
+  \item \textbf{Widok}.
+  Jest odpowiedzialny na wyświetlenie graficznego interfejsu użytkownika.
+  Wysyła żądania generowane przez użytkownika do kontrolera oraz aktualizuje widoki na podstawie
+  odpowiedzi kontrolera na te żądania.
+  \item \textbf{Kontroler}.
+  Koordynuje komunikację pomiędzy widokiem a modelem.
+  Przekazuje żądania wysłane z widoku do modelu oraz przekazuje odpowiedzi na te żądania do widoku
+  na podstawie komunikatów z modelu.
+\end{itemize}
+
+\subsection{Wstrzykiwanie zależności}
+\label{subsec:di}
+
+Wstrzykiwanie zależności (ang.\ \textit{Dependency Injection}) w programowaniu obiektowym
+polega na dostarczaniu zależności dla obiektu poprzez inny obiekt.
+Dzięki zastosowaniu wzorca wstrzykiwania obiekty są niezależne od sposobów tworzenia
+pozostałych obiektów, powiązania pomiędzy obiektami stają się bardziej luźne.
+Umożliwia to m.in.\ realizację paradygmatu odwrócenia sterowania
+(ang.\ \textit{Inversion of Control})oraz ułatwia testowanie aplikacji dzięki możliwości
+wstrzykiwania atrapy obiektów.
+
+\section{Bezpieczeństwo}
+\label{sec:bezpieczenstwo}
+
+System informatyczny dostępny dla wielu użytkowników powinien być zabezpieczony
+przed atakami hakerskimi.
+Najbardziej powszechnym i podstawowym takim zabiezpieczeniem jest mechanizm
+uwierzytelniania i autoryzacji.
+Istotną rolę pełni również szyfrowanie wrażliwych danych.
+Dane wrażliwe powinny być przesłane w postaci niejawnej oraz w ten sam sposób przechowywane
+w systemie.
+Jednak na dzisiejsze systemy informatyczne, a szczególnie te działające za pośrednictwem sieci
+internetowej, są narażone na większą ilość zagrożeń.
+Zabezpieczenia oraz zagrożenia systemu zrealizowanego w ramach pracy inżynierskiej zostały opisane
+w następnych podsekcjach.
+
+\subsection{JWT}
+\label{subsec:jwt}
+
+JWT to.
+
+\subsection{HTTPS}
+\label{subsec:https}
+
+JWT to.
+
+\subsection{Szyfrowanie}
+\label{subsec:szyfrowanie}
+
+JWT to.
+
+\subsection{Ataki}
+\label{subsec:ataki}
+
+JWT to.
 
 \clearpage

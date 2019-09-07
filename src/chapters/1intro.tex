@@ -54,7 +54,7 @@ Do zakresu pracy inżynierskiej należą następujące czynności:
   przypadków użycia.
   \item Zaprojektowanie struktur danych reprezentujących zasoby zarządzane przez system.
   \item Zaprojektowanie interfejsu programistycznego aplikacji serwerowej w oparciu
-  o REST i gniazda.
+  o REST i WebSocket.
   \item Zaprojektowanie warstwy logiki biznesowej systemu oraz jej implementacja.
   \item Konfiguracja połączenia między serwerem z aplikacją serwerową a serwerem do zarządzania
   kontenerami Linux.
@@ -109,7 +109,7 @@ Zaprojektowany system powinien spełniać następujące założenia:
   protokołu SSH\@.
   \item Każda operacja wykonywana przez aplikację na kontenerach LXC jest asynchroniczna.
   \item Informacje o zmianie statusu utworzonych w systemie asynchronicznych zadań są przesyłane
-  do aplikacji klienckiej poprzez gniazda.
+  do aplikacji klienckiej poprzez WebSocket.
   \item Każdy użytkownik systemu ma przypisaną przynajmniej jedną rolę, z którymi wiążą się
   określone poziomy dostępu.
   Możliwe role to klient lub administrator.
