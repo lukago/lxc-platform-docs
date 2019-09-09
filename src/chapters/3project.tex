@@ -331,12 +331,12 @@ Najważniejsze z modułów aplikacji serwerowej to:
   Są one również odpowiedzialne za nawiązanie połączenia z serwerem do składowania kontenerów LXC\@.
   \item \textbf{Kontrolery}.
   Są odpowiedzialne za wystawianie interfejsów REST\@.
-  Konwertują rządania HTTP oraz obiekty encji na obiekty DTO\@.
-  Przekazują skonwertowane rządania do serwisów oraz mapują wyniki działań serwisów na obiekty DTO
+  Konwertują żądania HTTP oraz obiekty encji na obiekty DTO\@.
+  Przekazują skonwertowane żądania do serwisów oraz mapują wyniki działań serwisów na obiekty DTO
   i odpowiedzi HTTP\@.
   \item \textbf{Encje}.
   Reprezentują encje w bazach danych w oparciu o adnotacje JPA\@.
-  Są to anemiczne obiekty, nieposiadające żadnej logiki poza metodami dostępowymi od posczególnych
+  Są to anemiczne obiekty, nieposiadające żadnej logiki poza metodami dostępowymi od poszczególnych
   pól.
   \item \textbf{DTO}\@.
   Oznaczają obiekty które będą przesyłanie pomiędzy warstwą widoku i warstwą
@@ -353,10 +353,10 @@ W następnych podsekcjach opisano dodatkowe szczegóły dotyczące projektu apli
 \subsection{Integracja z serwerem LXC}
 \label{subsec:intlxc}
 
-Istotnym elementem projektu aplikacji serwerowerj było zdefiniowanie komunikacji z serwerem
+Istotnym elementem projektu aplikacji serwerowej było zdefiniowanie komunikacji z serwerem
 odpowiedzialnym za składowanie kontenerów Linux.
 Serwer ten zarządza kontenerami za pomocą wcześniej opisanego narzędzia LXD które dostarcza
-interfejs dostępny z poziomu lini poleceń.
+interfejs dostępny z poziomu linii poleceń.
 
 Z tego powodu aplikacja serwerowa nawiązuje połączenie SSH z serwerem LXC\@.
 SSH (ang.\ \textit{Secure Shell}) to protokół umożliwiający wykonywanie zdalnych poleceń powłoki
@@ -394,11 +394,11 @@ inne aplikacje mogą z niego skorzystać.
 Architektura tego interfejsu oparta jest o REST\@.
 REST (ang.\ \textit{Representational State Transfer}) umożliwia dostęp do zasobów sieciowych
 za pomocą uniwersalnych i bezstanowych operacji.
-W przypadku projektu aplikacji serwerowerj, aplikacja kliencka wysyła żądanie HTTP
+W przypadku projektu aplikacji serwerowej, aplikacja kliencka wysyła żądanie HTTP
 wraz z odpowiednimi nagłówkami na odpowiedni adres URI\@.
 
 Protokół HTTP przewiduje wiele metod określających typ żądania, które w mają swoje realne
-odzwierciedlenie w aplikacji serwerowerj przy zastosowaniu architektury REST\@.
+odzwierciedlenie w aplikacji serwerowej przy zastosowaniu architektury REST\@.
 Najważniejsze z metod HTTP to:
 
 \begin{itemize}
@@ -461,7 +461,7 @@ internetowej.
 \label{sec:warstwa_widoku}
 
 Warstwa widoku jest odpowiedzialna za interakcję z użytkownikiem, przesyłaniem jego akcji
-do aplikacji serwerowerj oraz wyświetlanie danych pobranych z serwera w przystępny dla
+do aplikacji serwerowej oraz wyświetlanie danych pobranych z serwera w przystępny dla
 człowieka sposób.
 W skład warstwy widoku wchodzi aplikacja kliencka działająca w przeglądarce wykonana
 z użyciem technologii React.
@@ -532,7 +532,7 @@ wstrzykiwania atrapy obiektów.
 
 System informatyczny dostępny dla wielu użytkowników powinien być zabezpieczony
 przed atakami hakerskimi.
-Najbardziej powszechnym i podstawowym takim zabiezpieczeniem jest mechanizm
+Najbardziej powszechnym i podstawowym takim zabezpieczeniem jest mechanizm
 uwierzytelniania i autoryzacji.
 Istotną rolę pełni również szyfrowanie wrażliwych danych.
 Dane wrażliwe powinny być przesłane w postaci niejawnej oraz w ten sam sposób przechowywane
