@@ -1,0 +1,8 @@
+lukasgol@host:~$ ifconfig en8
+en8: flags=8863<UP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
+	ether 00:50:b6:a9:07:60
+	inet6 fe80::36:d9aa:2f09:998d%en8 prefixlen 64 secured scopeid 0x8
+	inet 10.122.18.86 netmask 0xfffffc00 broadcast 10.122.19.255
+	nd6 options=201<PERFORMNUD,DAD>
+	media: autoselect (1000baseT <full-duplex>)
+	status: active

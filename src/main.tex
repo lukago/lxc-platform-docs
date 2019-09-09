@@ -16,6 +16,7 @@
 \usepackage{url}
 \usepackage[allcolors=blue]{hyperref}
 \usepackage{indentfirst}
+\usepackage{xcolor}
 
 % settings
 \marginsize{3cm}{2.5cm}{2.5cm}{2.5cm}
@@ -27,6 +28,33 @@
 \Urlmuskip=0mu plus 1mu
 \emergencystretch=1em
 \raggedbottom
+
+% listings style
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.97,0.97,0.97}
+
+\lstdefinestyle{lststyle} {
+  backgroundcolor=\color{backcolour},
+  commentstyle=\color{codegreen},
+  keywordstyle=\color{magenta},
+  numberstyle=\tiny\color{codegray},
+  stringstyle=\color{codepurple},
+  basicstyle=\ttfamily\footnotesize,
+  breakatwhitespace=false,
+  breaklines=true,
+  captionpos=b,
+  keepspaces=true,
+  numbers=left,
+  numbersep=5pt,
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  tabsize=2
+}
+
+\lstset{style=lststyle,inputpath=./listings/}
 
 % lists
 \renewcommand{\listfigurename}{Spis rysunków}
@@ -46,8 +74,9 @@
   \input{chapters/1intro.tex}
   \input{chapters/2tech.tex}
   \input{chapters/3project.tex}
-  \input{chapters/4impl.tex}
+  \input{chapters/4imple.tex}
   \input{chapters/5sum.tex}
+
 
   % addons: lists
   \printbibliography[heading=bibintoc, title={Bibliografia}]

@@ -1,14 +1,174 @@
 \chapter{Implementacja}
 \label{ch:implementacja}
 
-W rozdziale tym została opisana implementacja zaprojektowanego systemu.
-Zawiera on opisy oraz diagramy przedstawiające sposób zrealizowania opisanego
-w poprzednim rozdziale projektu.
-Implementacja kluczowych elementów została przedstawiona we fragmentach programu.
+Rozdział ten opisuje implementację opisanego w poprzednim rozdziale projektu.
+Zostaną przedstawione szczegóły dotyczące konfiguracji aplikacji,
+struktury modeli wykorzystanych w projekcie oraz implementację kluczowych
+mechanizmów wraz z fragmentami kodu źródłowego.
+Rozdział zawiera również podręcznik użytkownika, opisujący warstwę widoku
+i najważniejsze przypadki użycia.
 
-\section{Projekt i zależności}
-\label{sec:projdeps}
+\section{Konfiguracja}
+\label{sec:konfiguracja}
 
-Projekt jest fajny.
+Istotną częścią implementacji jest konfiguracja projektu w taki sposób
+aby był on jak najbardziej elastyczny i umożliwiał szybkie zbudowanie aplikacji
+bez instalowania dodatkowych zależności.
+W poniższych podsekcjach opisano konfigurację poszczególnych
+wchodzących w skład modułów projektu pracy inżynierskiej.
+
+\subsection{Aplikacja serwerowa}
+\label{subsec:konfiguracja-serwera}
+
+Aplikacja serwerowa jest uruchamiana za pomocą technologii \textit{Docker}
+wraz z wykorzystaniem narzędzia \textit{docker-compose}.
+Dzięki wykorzystaniu tej technologii możliwe jest szybkie uruchomienie
+aplikacji wraz ze wszystkimi zależnościami.
+Zawartość pliku docker-compose dla aplikacji serwerowej została przedstawiona
+poniżej we fragmencie programu~\ref{lst:dockercomposeserver}.
+
+\lstinputlisting[
+  caption=Zawartość docker-compose.yml dla aplikacji serwerowej,
+  label=lst:dockercomposeserver
+]{docker-compose.server.yml}
+
+Powyższa konfiguracja jest przykładowa i wykorzystywana podczas implementacji
+na lokalnej maszynie.
+Jeśli chcielibyśmy uruchomić aplikację na produkcyjnym serwerze, powyższa
+konfiguracja wymagałaby drobnych zmian, np.\ adresu URL warstwy widoku poprzez
+wartość \textit{WEBUI\_URL}.
+Warto zauważyć że powyższa konfiguracja tworzy również bazę danych
+PostgreSQL\@.
+Trwałość danych pomiędzy wieloma uruchomieniami narzędzia \textit{Docker}
+osiągnięto poprzez zastosowanie wolumenów, określonych w sekcji \textit{volumes}.
+
+Konfiguracja wykorzystuje bazowy obraz \textit{lxc-platform-server:latest}.
+Jest on tworzony za pomocą narzędzia\textit{docker} który tworzy obraz na podstawie
+pliku \textit{Dockerfile}.
+Zawartość pliku Dockerfile została przedstawiona poniżej we
+fragmencie~\ref{lst:dockerserver}.
+
+\lstinputlisting[
+  caption=Dockerfile aplikacji serwerowej,
+  label=lst:dockerserver
+]{dockerfile-server}
+
+Konfiguracja \textit{docker-compose} eksportuje zmienne środowiskowe poprzez słowo
+kluczowe \textit{environment}.
+Są one następnie wykorzystywane w konfiguracji aplikacji szkieletu Spring.
+Fragment konfiguracji szkieletu Spring został przedstawiony poniżej~\ref{lst:springconf}.
+
+\lstinputlisting[
+  firstline=41,
+  lastline=50,
+  caption=Frament konfiguracji szkieletu Spring wykorzystujący zmienne środowiskowe,
+  label=lst:springconf,
+]{application-dev.yml}
+
+Taka konfiguracja umożliwia uniwersalność ponieważ wszystkie wartości związanie
+ze środowiskiem aplikacyjnym są eksportowane przez narzędzie \textit{docker-compose}.
+Tym samym nie ma potrzeby zmiany zawartości tego pliku czy ponownej kompilacji aplikacji
+jeśli zechcemy zainstalować ją w innym środowisku, wystarczy jedynie zmienić wartości
+w pliku \textit{docker-compose.yml}.
+
+\subsection{Aplikacja kliencka}
+\label{subsec:konfiguracja-widoku}
+
+Podobnie jak aplikacja serwerowa, również aplikacja kliencka wykorzystuje narzędzia
+\textit{docker} oraz \textit{docker-compose}.
+Konfiguracja zawarta w pliku \textit{docker-compose.yml} pozwala ustawić takie wartości
+jak adres URL serwera czy używanie lokalizacji do ustawień języka.
+Poniżej przedstawiono zawartość listingi z plikami źródłowymi wykorzystywanymi przez
+te narzędzia.
+
+\lstinputlisting[
+  caption=Zawartość docker-compose.yml dla aplikacji klienckiej,
+  label=lst:dockercomposeclient
+]{docker-compose.client.yml}
+
+\lstinputlisting[
+  caption=Dockerfile aplikacji klienckiej,
+  label=lst:dockerclient
+]{dockerfile-client}
+
+Warto zauważyć, że adres wartość \textit{REACT\_APP\_API\_URL}
+w pliku~\ref{lst:dockercomposeclient}musi być zgodna z wartością \textit{WEBUI\_URL}
+w pliku~\ref{lst:dockerserver}.
+Wykorzystanie konfiguracji opartej na narzędziach Docker, umożliwia większą
+elastyczność w instalowaniu aplikacji klienckiej na różnych środowiskach bez potrzeby
+jej ponownej kompilacji.
+
+\subsection{Serwer LXC}
+\label{subsec:konfiguracja-lxc}
+
+W projekcie jako serwer LXC wykorzystano maszynę wirtualną na podstawie obrazu
+\textit{Ubuntu Server 18.04.3 LTS}.
+Jako hipernadzorcę wirtualizacji wykorzystano oprogramowanie \textit{VirtualBox}.
+Po stworzeniu maszyny wirtualnej wykonano na nim kroki opisane
+w rozdziale~\ref{ch:projekt_systemu} w sekcji~\ref{subsec:kofig}.
+Następnie aby umożliwić prosty dostęp do połączenia się po SSH do maszyny wirtualnej
+z poziomu lokalnej sieci oraz do kontenerów LXC znajdujących się na tej maszynie,
+skonfigurowano adapter sieciowy dla maszyny wirtualnej.
+W tym celu wybrano adapter zmostkowany (ang.\ \textit{bridged}).
+Dzięki temu maszyna wirtualna będzie korzystać z tego samego interfejsu sieciowego
+co maszyna gospodarza.
+Poniżej na rys.~\ref{fig:vboxconf} przedstawiono zrzut z ekranu przedstawiający
+konfigurację w programie \textit{VirtualBox}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.50]{figures/vboxconf.png}
+  \caption{Konfiguracja sieci maszyny wirtualnej w programie VirtualBox}
+  \label{fig:vboxconf}
+\end{figure}
+
+Wynikiem tej operacji powinno być wykorzystanie tego samego interfejsu sieciowego
+gospodarza \textit{en8} co przedstawiono na poniższych listingach.
+
+\lstinputlisting[
+  caption=Konfiguracja interfejsu sieciowego maszyny gospodarza,
+  label=lst:ifconfighost
+]{ifconfighost.txt}
+
+\lstinputlisting[
+  caption=Konfiguracja interfejsu sieciowego maszyny wirtualnej,
+  label=lst:ifconfigvirt
+]{ifconfigvirt.txt}
+
+Na podstawie listingów~\ref{lst:ifconfighost} oraz~\ref{lst:ifconfigvirt}
+widać, że adres IP hosta to 10.122.18.125, maska podsieci 255.255.252.0, co
+oznacza że adres sieci to 10.122.16.0/22.
+Adres IP maszyny wirtualnej to 10.122.18.86, maska podsieci 255.255.252.0,
+co również oznacza że adres sieci to 10.122.16.0/22.
+Maszyna wirtualna i maszyna gospodarza są w tej samej sieci, co potwierdza
+że konfiguracja adaptera mostkowego działa poprawnie.
+
+\section{Relacyjna baza danych}
+\label{sec:relacyjna-baza-danych}
+
+Dane użytkowników i oraz ich powiązania z kontenerami są przechowywane
+w relacyjnej bazie danych zarządzanej przez PostgreSQL\@.
+Dzięki wykorzystaniu biblioteki Hibernate większość operacji,
+struktura bazy danych generowana jest automatycznie, a jej obsługa
+wykonana w aplikacji serwerowej.
+
+\subsection{Schemat relacji}
+\label{subsec:schemat-relacji}
+
+Tabele wygenerowane zostały za pomocą biblioteki Hibernate będącej implementacją
+specyfikacji JPA\@.
+Schemat wygenerowanych tabel został przedstawiony poniżej na rysunku~\ref{fig:dbschema}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.55]{figures/dbschema.png}
+  \caption{Schemat tabel relacyjnej bazy danych}
+  \label{fig:dbschema}
+\end{figure}
+
+\subsection{Transakcje bazodanowe}
+\label{subsec:transakcjeimpl}
+
+Tabele wygenerowane zostały za pomocą biblioteki Hibernate będącej implementacją.
 
 \clearpage
