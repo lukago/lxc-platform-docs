@@ -1,0 +1,5 @@
+@Transactional
+public void delete(String username, Long version) {
+  versionService.validateVersion(getUserInner(username), version);
+  userRepository.deleteByUsername(username);
+}

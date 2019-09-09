@@ -30,7 +30,7 @@ poniżej we fragmencie programu~\ref{lst:dockercomposeserver}.
 \lstinputlisting[
   caption=Zawartość docker-compose.yml dla aplikacji serwerowej,
   label=lst:dockercomposeserver
-]{docker-compose.server.yml}
+]{docker-compose.server.txt}
 
 Powyższa konfiguracja jest przykładowa i wykorzystywana podczas implementacji
 na lokalnej maszynie.
@@ -51,7 +51,7 @@ fragmencie~\ref{lst:dockerserver}.
 \lstinputlisting[
   caption=Dockerfile aplikacji serwerowej,
   label=lst:dockerserver
-]{dockerfile-server}
+]{dockerfile-server.txt}
 
 Konfiguracja \textit{docker-compose} eksportuje zmienne środowiskowe poprzez słowo
 kluczowe \textit{environment}.
@@ -63,7 +63,7 @@ Fragment konfiguracji szkieletu Spring został przedstawiony poniżej~\ref{lst:s
   lastline=50,
   caption=Frament konfiguracji szkieletu Spring wykorzystujący zmienne środowiskowe,
   label=lst:springconf,
-]{application-dev.yml}
+]{application-dev.txt}
 
 Taka konfiguracja umożliwia uniwersalność ponieważ wszystkie wartości związanie
 ze środowiskiem aplikacyjnym są eksportowane przez narzędzie \textit{docker-compose}.
@@ -84,12 +84,12 @@ te narzędzia.
 \lstinputlisting[
   caption=Zawartość docker-compose.yml dla aplikacji klienckiej,
   label=lst:dockercomposeclient
-]{docker-compose.client.yml}
+]{docker-compose.client.txt}
 
 \lstinputlisting[
   caption=Dockerfile aplikacji klienckiej,
   label=lst:dockerclient
-]{dockerfile-client}
+]{dockerfile-client.txt}
 
 Warto zauważyć, że adres wartość \textit{REACT\_APP\_API\_URL}
 w pliku~\ref{lst:dockercomposeclient}musi być zgodna z wartością \textit{WEBUI\_URL}
@@ -169,6 +169,29 @@ Schemat wygenerowanych tabel został przedstawiony poniżej na rysunku~\ref{fig:
 \subsection{Transakcje bazodanowe}
 \label{subsec:transakcjeimpl}
 
-Tabele wygenerowane zostały za pomocą biblioteki Hibernate będącej implementacją.
+Spring Data dostarcza specjalną adnotację dla języka Java \textit{@Transactional}.
+Metody oznaczone tą adnotacją będą wykonywać operacje na relacyjnej bazie danych w sposób
+transakcyjny.
+Adnotacja \textit{@Transactional} jest dozwolona tylko dla obiektów zarządzanych przez
+szkielet Spring.
+Działanie adnotacji powoduje utworzenia aspektu dla oznaczonej tak metody, który
+wywoła odpowiednie metody interfejsu JPA do utworzenia i zakończenia transakcji.
+
+\lstinputlisting[
+  caption=Konfiguracja interfejsu sieciowego maszyny wirtualnej,
+  label=lst:transactions,
+  language=Java,
+]{transactions.txt}
+
+Fragment programu~\ref{lst:transactions} przedstawia metodę usuwania użytkownika.
+Została ona opatrzona adnotacją \textit{@Transactional} bez dodatkowych parametrów, co oznacza,
+że zostanie wykorzystany domyślny poziom izolacji dla używanego RDBMS\@.
+Dla PostgreSQL jest to poziom \textit{read committed}, który jest wystarczający dla tej operacji.
+
+\subsection{ORM}
+\label{subsec:orm}
+
+ORM czyli mapowanie relacyjno-obiektowe zostało zrealizowane za pomocą adnotacji JPA\@.
+
 
 \clearpage

@@ -1,0 +1,26 @@
+@Entity
+@Table(name="table_users")
+public class User extends BaseModel implements Serializable {
+
+  @ElementCollection(fetch = FetchType.EAGER)
+  private List<Role> roles;
+
+  @NotNull
+  @Size(min = 4, max = 255, message = "Minimum username length: 4 characters")
+  @Column(unique = true, nullable = false)
+  private String username;
+
+  @NotNull
+  @Email
+  @Column(unique = true, nullable = false)
+  private String email;
+
+  @NotNull
+  @Size(min = 8, message = "Minimum password length: 8 characters")
+  private String password;
+
+  @OneToMany(mappedBy = "owner")
+  private List<Container> containers;
+
+  @OneToMany(mappedBy = "createdBy")
+  private List<Job> jobs;
