@@ -11,21 +11,21 @@ i najważniejsze przypadki użycia.
 \section{Konfiguracja}
 \label{sec:konfiguracja}
 
-Istotną częścią implementacji jest konfiguracja projektu w taki sposób
+Istotną częścią implementacji jest konfiguracja projektu w taki sposób,
 aby był on jak najbardziej elastyczny i umożliwiał szybkie zbudowanie aplikacji
 bez instalowania dodatkowych zależności.
 W poniższych podsekcjach opisano konfigurację poszczególnych
-wchodzących w skład modułów projektu pracy inżynierskiej.
+modułów wchodzących w skład projektu pracy inżynierskiej.
 
 \subsection{Aplikacja serwerowa}
 \label{subsec:konfiguracja-serwera}
 
 Aplikacja serwerowa jest uruchamiana za pomocą technologii \textit{Docker}
-wraz z wykorzystaniem narzędzia \textit{docker-compose}.
+oraz narzędzia \textit{docker-compose}.
 Dzięki wykorzystaniu tej technologii możliwe jest szybkie uruchomienie
 aplikacji wraz ze wszystkimi zależnościami.
-Zawartość pliku docker-compose dla aplikacji serwerowej została przedstawiona
-poniżej we fragmencie programu~\ref{lst:dockercomposeserver}.
+Zawartość pliku \textit{docker-compose.yml} dla aplikacji serwerowej została
+przedstawiona poniżej we fragmencie programu~\ref{lst:dockercomposeserver}.
 
 \lstinputlisting[
   caption=Zawartość docker-compose.yml dla aplikacji serwerowej,
@@ -56,7 +56,6 @@ fragmencie~\ref{lst:dockerserver}.
 Konfiguracja \textit{docker-compose} eksportuje zmienne środowiskowe poprzez słowo
 kluczowe \textit{environment}.
 Są one następnie wykorzystywane w konfiguracji aplikacji szkieletu Spring.
-Fragment konfiguracji szkieletu Spring został przedstawiony poniżej~\ref{lst:springconf}.
 
 \lstinputlisting[
   firstline=41,
