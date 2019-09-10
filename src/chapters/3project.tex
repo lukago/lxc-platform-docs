@@ -562,12 +562,12 @@ Token JWT składa się z trzech części:
   klucza prywatnego znanego tylko w aplikacji serwerowej.
 \end{itemize}
 
-Każda z tych częsci jest dodatkowo zakodowana algorytmem Base64.
-Ostateczna postać tokenu to konkatenacja zakodowanych 3 częsci, częsci są odseparowanie od siebie
+Każda z tych części jest dodatkowo zakodowana algorytmem Base64.
+Ostateczna postać tokenu to konkatenacja zakodowanych 3 części, części są odseparowanie od siebie
 znakiem pojedynczej kropki:
 
 \begin{equation}
-  jwt = header_{b64} + \textrm{"."} + payload_{b64} + \textrm{"."} + signature_{b64}
+  jwt = header_{b64} + \textrm{,,.''} + payload_{b64} + \textrm{,,.''} + signature_{b64}
 \end{equation}
 
 Użytkownik uwierzytelniając się w systemie wysyła tak naprawdę żądanie o wygenerowanie tokenu.
@@ -640,7 +640,7 @@ Projekt pracy inżynierskiej zakłada jednak, że administrator jest zaufanym u�
 który nie ma na calu działania na jego szkodę oraz posiada dostęp do serwera
 składującego kontenery LXC nie tylko poprzez warstwę widoku projektu.
 Użytkownik bez uprawnień administratora nie ma możliwości wprowadzania danych które są następnie
-bezpośrednio umieszczanie w lini poleceń, także takie zagrożenie ze strony użytkownika nie istnieje.
+bezpośrednio umieszczanie w linii poleceń, także takie zagrożenie ze strony użytkownika nie istnieje.
 
 Należy jednak zdawać sobie sprawę z takiego zagrożenia, projektując dodatkowe funkcjonaliści systemu
 w przyszłości oraz dodając nowych użytkowników z uprawnieniami administratora.

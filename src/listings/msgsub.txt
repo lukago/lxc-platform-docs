@@ -1,0 +1,24 @@
+@Autowired
+public LxcApi(LxcService lxcService,
+    UserService userService,
+    SimpMessagingTemplate template,
+    IProcessor<JobDto> processor) {
+  this.lxcService = lxcService;
+  this.userService = userService;
+  this.template = template;
+  this.processor = processor;
+  this.gson = new Gson();
+
+  this.processor.subscribe(job -> {
+    var jobJson = this.gson.toJson(job);
+    LOG.info("LXC: {}", jobJson);
+
+    if (!job.getCreatedBy().getRoles().contains(Role.ROLE_ADMIN)) {
+      this.template.convertAndSendToUser(job.getCreatedBy().getUsername(), "/sc/topic/jobs", jobJson);
+    }
+
+    userService.getAllAdmins().forEach(admin -> {
+      this.template.convertAndSendToUser(admin.getUsername(), "/sc/topic/jobs", jobJson);
+    });
+  });
+}

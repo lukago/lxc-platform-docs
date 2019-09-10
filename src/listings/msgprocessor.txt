@@ -1,0 +1,15 @@
+@Component
+public class JobMsgService implements IProcessor<JobDto> {
+
+  private final EmitterProcessor<JobDto> processor = EmitterProcessor.create();
+
+  @Override
+  public Disposable subscribe(Consumer<? super JobDto> consumer) {
+    return processor.subscribe(consumer);
+  }
+
+  @Override
+  public void onNext(JobDto job) {
+    processor.onNext(job);
+  }
+}

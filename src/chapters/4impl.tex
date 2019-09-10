@@ -192,6 +192,185 @@ Dla PostgreSQL jest to poziom \textit{read committed}, który jest wystarczając
 \label{subsec:orm}
 
 ORM czyli mapowanie relacyjno-obiektowe zostało zrealizowane za pomocą adnotacji JPA\@.
+Poniżej przedstawiono przykładową reprezentację tabeli poprzez obiekt języka Java i odpowiednie
+adnotacje JPA\@.
 
+\lstinputlisting[
+  caption=Wykorzystanie JPA do mapowania relacyjno obiektowego,
+  label=lst:usersmodel,
+  language=Java,
+]{usersmodel.txt}
+
+Klasa dziedziczy z \textit{BaseModel}.
+Jest to bazowa klasa dla wszystkich encji definiująca klucz główny oraz pole wersji.
+
+\lstinputlisting[
+  caption=Klaza bazowa dla wszystkich encji w systemie,
+  label=lst:basemodel,
+  language=Java,
+]{basemodel.txt}
+
+W załączonych fragmentach programów~\ref{lst:usersmodel} oraz~\ref{lst:basemodel} pojawia się wiele adnotacji.
+Nie wszystkie z nich są związane z JPA\@.
+Znaczenie najważniejszych adnotacji zostało opisane poniżej:
+
+\begin{itemize}
+  \item \textbf{@Entity}.
+  Oznacza, że dana klasa reprezentuje encję w bazie danych.
+  \item \textbf{@Table}.
+  Specyfikuje na jaką tabelę ma być mapowana klasa oznaczona przez \textit{@Entity}.
+  \item \textbf{@Id}.
+  Oznacza, że pole jest kluczem głównym.
+  \item \textbf{@Column}.
+  Umożliwia dodatkowe opcje dla mapowanej kolumny.
+  Jeśli pole nie jest oznaczone tą adnotacją, kolumna będzie miała ustawienia domyślne.
+  \item \textbf{@GeneratedValue}.
+  Strategia generowania kluczy głównych przez RDBMS\@.
+  \item \textbf{@Version}.
+  Oznacza pole wersji encji zarządzanej przez RDBMS\@.
+  \item \textbf{@OneToMany}.
+  Oznacza, mapowanie jeden do wielu.
+  Dzięki temu możemy mapować relacje w bazie danych na powiązania pomiędzy obiektami.
+  \item \textbf{@NotNull, @Size, @Email}.
+  Nie są to adnotacje JPA\@.
+  Są to adnotacje do walidacji wchodzące skład \textit{Bean Validation API}.
+\end{itemize}
+
+\section{Integracja z serwerem LXC}
+\label{sec:komunikacja-z-serwerem-lxc}
+
+Kluczowym elementem systemu było zrealizowanie komunikacji z serwerem składującym
+kontenery LXC\@.
+Całość logiki tej komunikacji zrealizowana jest w aplikacji serwerowej.
+Obejmuje ona wiele aspektów, takich jak konfiguracja szablonów komend, asynchroniczne
+wykonanie oraz wykonanie poleceń powłoki poprzez SSH\@.
+
+\subsection{Szablony komend}
+\label{subsec:szablony-komend}
+
+Pierwszą częścią implementacji jest zdefiniowanie poleceń powłoki które będą uruchamiane
+na serwerze LXC\@.
+Zostały one zdefiniowane w konfiguracji aplikacji.
+
+\lstinputlisting[
+  caption=Frament pliku konfiguracyjnego \textit{appliaction.yml} z szablonami poleceń,
+  label=lst:lxccmds,
+]{lxccmds.txt}
+
+Fragment programu~\ref{lst:lxccmds} przedstawia zdefiniowane szablony poleceń uruchamiane
+przez program LXD\@.
+Komendy zawierają fragmenty \textit{\%s}, które podczas działania programu są zamieniane
+na określone wartości, np.\ nazwę kontenera czy numer portu.
+Znaczenie poszczególnych wartości konfiguracji:
+
+\begin{itemize}
+  \item \textbf{copy}.
+  Określa polecenie do klonowania kontenerów.
+  Parametry \textit{\%s} są zamieniane odpowiednio na nazwę kontenera do
+  sklonowania i nazwę nowego kontenera.
+  \item \textbf{start}.
+  Określa polecenie do uruchamiania kontenerów.
+  Parametr \textit{\%s} jest zamieniany na nazwę kontenera do uruchomienia.
+  \item \textbf{stop}.
+  Określa polecenie do wyłączania kontenerów.
+  Parametr \textit{\%s} jest zamieniany na nazwę kontenera do wyłączenia.
+  \item \textbf{routing}.
+  Określa polecenie do tworzenia wirtualnego urządzenia za pomocą którego zrealizowane
+  zostanie mapowanie portów kontenera na porty maszyny gospodarza.
+  Pierwsze dwa parametry \textit{\%s} są zamieniane na nazwę kontenera dla którego
+  dodawane jest urządzenie.
+  Dwa następne są zamieniane na wartości portów.
+  Dla \textit{listen} wstawiana jest wartość portu gospodarza, dla \textit{connect}
+  wartość portu kontenera.
+  Po wykonaniu takiej komendy, port gospodarza połączony z portem kontenera.
+  Umożliwia to połączenia się poprzez SSH bezpośrednio do wybranego kontenera
+  wykorzystując adres IP serwera oraz tak skonfigurowany port.
+  \item \textbf{cmdRunner}.
+  W systemie istnieje możliwość wielu implementacji interfejsu do uruchamiania
+  komend na serwerze LXC\@.
+  Opcja \textit{sshpwd} oznacza implementację interfejsu która łączy się do serwera poprzez
+  SSH z wykorzystaniem hasła.
+  Istnieje również np.\ opcja \textit{mock}, która udaje wykonywanie komend na zdalnym
+  serwerze, jest to przydatne podczas testów aplikacji, gdy nie mamy dostępu do zdalnego
+  serwera.
+\end{itemize}
+
+\subsection{Asynchroniczne wykonanie}
+\label{subsec:asynchroniczne-wykonanie}
+
+Wszystkie metody w serwisach które wykonują operacje na kontenerach LXC,
+są wykonywane asynchronicznie.
+Do asynchronicznego wykonania wykorzystano szkielet Spring.
+Metody asynchronicznie są oznaczone adnotacja \textit{@Async}.
+Spring uruchomi takie metody na osobnym wątku ze skonfigurowanej puli wątków.
+
+Pula wątków tworzy trwałe wątki które nie są zabijane przez system operacyjny
+po ukończeniu jednej operacji.
+Takie wątki istnieją przez cały czas podczas działania aplikacji.
+Wykorzystanie puli wątków jest metodą optymalizacji aplikacji ponieważ
+tworzenie nowego wątku za każdym razem jest bardzo kosztowne.
+Jeśli ilość wątków w puli będzie zbyt mała, część zadań zostanie automatycznie
+skolejkowana.
+
+\lstinputlisting[
+  caption=Metoda asynchroniczna pobierająca status kontenera,
+  label=lst:lxcasync,
+  language=Java,
+]{lxcasync.txt}
+
+\lstinputlisting[
+  caption=Konfiguracja puli wątków,
+  label=lst:threadpool,
+  language=Java,
+]{threadpool.txt}
+
+We fragmencie programu~\ref{lst:lxcasync} widać, że metoda pobierająca status
+jest typu \textit{void}.
+Dzieje się tak ponieważ odpowiedź o statusie przetwarzana jest przez \textit{message processor},
+przekazany jako obiekt o nazwie \textit{processor} do obiektu \textit{LxcGenericTask}.
+
+\lstinputlisting[
+  caption=Klasa reprezentująca \textit{message processor},
+  label=lst:msgprocessor,
+  language=Java,
+]{msgprocessor.txt}
+
+We fragmencie programu~\ref{lst:msgprocessor} widać, że mechanizm jest zaimplementowany
+za pomocą klasy \textit{EmitterProcessor}.
+Jest to klasa z biblioteki wspierającej paradygmat programowania reaktywnego - \textit{Project Reactor}.
+Zastosowanie interfejsu \textit{IProcessor} pozwoliło brak zależności metod serwisowych od biblioteki
+\textit{Project Reactor}.
+Adnotacja \textit{@Component} zapewnia, że jest to obiekt zarządzany przez szkielet spring.
+Podczas jego wstrzykiwania w różnych klas, będzie dostarczana ta sama instancja tego obiektu.
+Rolą jaką pełni \textit{IProcessor} jest otrzymywanie wiadomości o statusie zadania
+i przekazywanie tych wiadomości w reaktywny sposób do obiektów które się do niego zasubskrybują.
+
+\lstinputlisting[
+  caption=Wysyłanie wiadomości przez \textit{message processor},
+  label=lst:msgsend,
+  language=Java,
+]{msgsend.txt}
+
+Fragment programu~\ref{lst:msgsend} zawiera fragment klasy \textit{LxcGenericTask}, która
+wysyła wiadomość do procesora aktualnym stanie wykonywanego zadania, za pomocą obiektu
+\textit{processor}, który implementuje interfejs \textit{IProcessor}.
+Natomiast logika przetwarzania wiadomości jest umieszczona w osobnej klasie w kontrolerach.
+
+\lstinputlisting[
+  caption=Subskrypcja do wiadomości wysłanych przez \textit{message processor},
+  label=lst:msgsub,
+  language=Java,
+]{msgsub.txt}
+
+Subskrypcja wykonywana jest tylko raz, w konstruktorze kontrolera.
+Dostarczana jest tam metoda która konsumuje nowe wiadomości i wysyła je do gniazda sieciowego.
+Warto zauważyć, że istnieje separacja pomiędzy wysyłaniem powiadomień dla
+użytkownika i administratora.
+Do użytkownika wysyłana są tylko powiadomienia o rozpoczętych przez niego akcji, natomiast
+do administratora wysyłane są powiadomienia o wszystkich akcjach.
+
+Adnotacja \textit{@Autowired} zapewnia wstrzyknięcie odpowiedniej instancji obiektów, w tym
+instancji obiektu implementującego interfejs \textit{IProcessor}, jest to ta sama
+instancja która była wykorzystana w klasie \textit{LxcGenericTask}
 
 \clearpage

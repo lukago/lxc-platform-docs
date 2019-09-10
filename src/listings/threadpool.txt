@@ -1,0 +1,6 @@
+@Bean
+public ThreadPoolTaskExecutor taskExecutor(@Value("${init.threadPoolSize}") int threadPoolSize) {
+  ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+  executor.setCorePoolSize(threadPoolSize);
+  return executor;
+}

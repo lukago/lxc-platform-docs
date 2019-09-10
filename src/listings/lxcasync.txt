@@ -1,0 +1,23 @@
+@Async
+@Transactional
+public void getLxcStatus(User user, String lxcName) {
+  Container container = containerRepository
+      .findByNameAndOwner(lxcName, user)
+      .orElseThrow(() -> new HttpException("Container for name and user not found", HttpStatus.NOT_FOUND));
+
+  Supplier<LxcStatus> task = () -> {
+    var cmd = String.format(cmdConfig.getInfoCmd(), container.getName());
+    var statusRes = CmdRunnerFactory.create(cmdConfig).run(cmd);
+    var status = new LxcStatus();
+    status.setStatusResult(statusRes);
+    status.setOwner(container.getOwner());
+    status.setName(container.getName());
+    status.setPort(container.getPort());
+    return status;
+  };
+
+  new LxcGenericTask<>(
+      processor, jobRepository, lxcStatusRepository, modelMapper,
+      "getLxcStatus", JobCode.FETCH, user, task)
+      .run();
+}

@@ -1,0 +1,14 @@
+@Override
+public T run() {
+  Job job = new Job();
+  job.setStartDate(new Date());
+  job.setKey(jobKey);
+  job.setJobCode(jobCode);
+  job.setJobStatus(JobStatus.STARTED);
+  job.setDescription(description);
+  job.setCreatedBy(createdBy);
+  Job startedJob = jobRepository.save(job);
+  processor.onNext(modelMapper.map(startedJob, JobDto.class));
+
+  try {
+    T result = supplier.get();

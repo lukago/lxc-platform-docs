@@ -1,0 +1,7 @@
+lxc:
+  copy: lxc copy %s %s
+  start: lxc start %s
+  stop: lxc stop %s
+  info: lxc info %s
+  routing: lxc config device add %s %s_ssh proxy listen=tcp:0.0.0.0:%s connect=tcp:localhost:%s
+  cmdRunner: sshpwd
