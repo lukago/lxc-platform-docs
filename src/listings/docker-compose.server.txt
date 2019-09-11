@@ -48,8 +48,8 @@ services:
       SSH_SERVER_PORT: 22
       SSH_SERVER_KEY: admin.key
       SSH_SERVER_USERNAME: prince
-      SSH_SERVER_PASSWORD: 1324111a
-      SSH_SERVER_LXC_PARENT: climbing-stinkbug
+      SSH_SERVER_PASSWORD: password1234
+      SSH_SERVER_LXC_PARENT: lxcparent
       SSH_LXC_PORT: 22
     ports:
       - "8443:8443"

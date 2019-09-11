@@ -111,6 +111,7 @@ Pierwszy z nich to serwer odpowiedzialny za składowanie kontenerów LXC\@.
 Kontenery LXC stanowią część systemu operacyjnego.
 Z tego powodu nie mogą być w prosty sposób przechowywane w bazach danych, które specjalizują
 się w przechowywaniu innych typów danych.
+
 Aby rozwiązać ten problem w projekcie pracy inżynierskiej, podjęto decyzje o wykorzystaniu
 osobnego serwera, którego zadaniem byłoby składowanie kontenerów.
 W poniższych podsekcjach opisano technologię kontenerów Linux oraz wymaganą konfigurację serwera,
@@ -299,6 +300,7 @@ użytkowników może jednocześnie modyfikować te same dane.
 Z tego powodu jeden z użytkowników może pracować na nieaktualnych danych, bez wiedzy,
 że zostały one zmienione przez innego użytkownika.
 Taka sytuacja może naruszyć integralność danych.
+
 Aby rozwiązać ten problem zastosowano mechanizm blokad optymistycznych.
 Każda krotka w bazie danych ma pole wersji, która jest inkrementowana wraz
 z każdą transakcją, która ją modyfikuje.
@@ -588,6 +590,7 @@ Jest to szyfrowana wersja protokołu HTTP\@.
 Główną różnicą między protokołem HTTP i HTTPS jest to, że HTTP bazuje
 na protokole TCP, natomiast HTTPS bazuje na protokole TLS, który działa na bazie protokołu TCP\@.
 TLS zapewnia poufność danych poprzez ich odpowiednie szyfrowanie.
+
 W modelu TCP/IP protokół TLS działa tuż nad warstwą transportową, dzięki czemu nie jest zależny
 od sprzętu czy systemu operacyjnego.
 Proces nawiązania połączenia TLS między klientem i serwerem wygląda następująco:
@@ -612,13 +615,14 @@ Proces nawiązania połączenia TLS między klientem i serwerem wygląda następ
 \label{subsec:szyfrowanie}
 
 Poza zapewnieniem bezpiecznej komunikacji między aplikacją kliencką i serwerową,
-dane poufne które są przetwarzane i przechowywane przez system informatyczny powinny być
+dane poufne, które są przetwarzane i przechowywane przez system informatyczny powinny być
 przetwarzane w bezpieczny sposób.
 W przypadku realizowanego projektu danymi poufnymi są hasła do kont użytkowników.
 Powinny być one znane tylko dla właścicieli tych kont.
-Jeśli tak nie jest, podczas włamania do systemu atakujący może uzyskać hasła i loginy użytkowników
-i logować się na ich konta bez ich wiedzy, dodatkowo może również włamać się do innych systemów
-jeśli użytkownik użył tam tego samego hasła.
+
+Brak zabezpieczeń danych poufnych sprawia, że podczas włamania do systemu atakujący może uzyskać
+hasła i loginy użytkowników i logować się na ich konta bez ich wiedzy.
+Dodatkowo może również włamać się do innych systemów jeśli użytkownik użył tam tego samego hasła.
 Dlatego administrator systemu również nie powinien znać tych haseł i powinny być one składowane
 w postaci niejawnej.
 Aby rozwiązać ten problem, podczas tworzeniu konta do bazy danych zapisywany jest tylko skrót hasła
@@ -659,11 +663,13 @@ pozostałe automatycznie załączone informacje o sesji zalogowanego użytkownik
 Z tego powodu aplikacja serwerowa będzie traktowała takie żądania jako prawdziwe.
 Poprzez atak CSRF ofiara ataku może nieumyślnie wykonać jakąś akcje, np.\ zmodyfikować dane swojego
 konta lub wykonać przelew pieniędzy.
+
 W przypadku realizowanego projektu, sesja użytkownika nie jest oparta o ciasteczka sesyjne i
 inne automatyczne funkcje zaimplementowane w przeglądarkach.
 Zamiast tego przy każdym żądaniu do serwera należy dodać nagłówek autoryzacyjny z tokenem JWT oraz
 w niektórych przypadkach dodatkowy nagłówek z wersją danych, wykorzystywanego do mechanizmu blokad
 optymistycznych.
+
 Brak wykorzystania automatyzmów sesyjnych zaimplementowanych w przeglądarce, pozwala
 w podstawowy sposób zabezpieczyć się przed tego typu atakami.
 Jednak aby całkowicie zabezpieczyć się przed CSRF, potrzebna jest też ochrona przed atakami XSS,
@@ -676,6 +682,7 @@ Atak XSS podobnie jak CSRF jest to atak na klienta, a nie na część serwerową
 Atak polega na wstrzyknięciu do przeglądarki ofiary fragmentu kodu języka skryptowego który
 może być wykonany przez przeglądarkę, najczęściej jest to kod JavaScript, powszechnie używany
 we wszystkich przeglądarkach.
+
 Podatność na XSS tworzy szereg zagrożeń dla użytkownika.
 Atakujący może wykraść sesje użytkownika, podmienić zawartość strony czy
 logować wszystkie dane wprowadzane przez użytkownika, w tym hasła.
@@ -683,8 +690,9 @@ Dodatkowo podatność na XSS tworzy jednocześnie podatność na CSRF, ponieważ
 skryptowego atakujący może dodać wymagane nagłówki autoryzacyjne, które nie są automatycznie
 dodawane przez przeglądarkę.
 
-Istnieje wiele metod zabezpieczanie przed XSS\@.
-Najpopularniejsze to:
+Istnieje wiele metod zabezpieczanie przed XSS\@, nie wszystkie gwarantują całkowitą ochronę
+przed tym atakiem, ale znacząco utrudniają jego przeprowadzenie.
+Najpopularniejsze z tych metod to:
 
 \begin{itemize}
   \item Filtracja danych przesłanych przez użytkownika.

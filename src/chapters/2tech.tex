@@ -72,7 +72,7 @@ W projekcie pracy inżynierskiej aplikacja serwerowa nie przechowuje stanu o ses
 Z tego powodu do autoryzacji i uwierzytelniania użytkowników wykorzystano JWT, a biblioteka JJWT
 ułatwiła implementację tych mechanizmów.
 
-\section{LXD i kontenery Linux}
+\section{LXD}
 \label{sec:lxd}
 
 LXD to aplikacja do zarządzania LXC czyli kontenerami Linux.
@@ -80,12 +80,12 @@ Aplikacja LXD jest zaimplementowana w języku Go, jednak dostarcza interfejs kon
 interfejs sieciowy, za którego pomocą możliwa jest integracja z programem z poziomu innych języków.
 LXD bazuje na obrazach, dostarczając wiele wcześniej przygotowanych obrazów dla szerokiej rangi
 dystrybucji systemów operacyjnych GNU/Linux.
+
 Aplikacja LXD tworzy REST API przez które wykonywane są wszystkie operacje na kontenerach,
 nawet używając aplikację za pomocą linii komend, każda komenda wywołuje w swojej implementacji
 zapytanie na ww.\ interfejs REST\@.
 LXD nie jest alternatywą dla LXC, jest to aplikacja wykorzystująca LXC i dostarczająca dodatkowe
 funkcjonalności~\cite{lxdpractical}.
-
 Najważniejsze z dodatkowych funkcjonalności LXD to:
 
 \begin{itemize}
@@ -120,12 +120,14 @@ i interpretowany przez przeglądarki internetowe.
 Node.js to środowisko uruchomieniowe dla języka JavaScript, stworzone na bazie silnika Chrome V8.
 Umożliwiło to używanie języka nie tylko na stronach WWW, ale również w pełnoprawnych aplikacjach,
 nieprzeznaczonych do interpretacji przez przeglądarkę.
+
 Npm (ang.\ \textit{Node Package Manager}) został utworzony w technologii Node.js.
 Jest to narzędzie, którym w prosty sposób można zarządzać zależnościami programów napisanych
 napisanych w języku JavaScript.
 Dodatkowo Npm udostępnia szereg innych funkcjonalności do zarządzania projektami, np.\ definiowanie
 skryptów budujących i startujących tworzoną aplikację, czy zarządzanie wieloma wersjami
 projektów~\cite{nodejsinaction}.
+
 Narzędzia Node.js i Npm zostały wykorzystane przy implementacji warstwy widoku projektu pracy
 inżynierskiej.
 Dostarczyły one możliwość zbudowania i transformacji kodu źródłowego aplikacji klienckiej
@@ -138,6 +140,7 @@ OpenJDK to zestaw narzędzi deweloperskich dla języka Java (ang.\ \textit{Java 
 Najważniejsze narzędzia wchodzące w skład OpenJDK to maszyna wirtualna
 Javy (w skrócie JVM, ang.\ \textit{Java Virtual Machine}), biblioteka standardowa,
 oraz kompilator \textit{javac}.
+
 Język Java jest wysokopoziomowym językiem programowania wspierającym wiele paradygmatów
 programowania, przede wszystkim paradygmat programowania obiektowego, ale również np.\ funkcyjnego.
 Jest to język silnie i statycznie typowany, kompilowany do kodu bajtowego (ang. \textit{bytecode}).
@@ -145,11 +148,13 @@ Kod bajtowy jest uruchamiany przez maszynę wirtualną Javy i tłumaczony na kod
 odpowiadający architekturze danego systemu, na którym maszyna wirtualna Javy jest zainstalowana.
 Dzięki temu zastosowanie maszyny wirtualnej umożliwiło programom napisanym w języku Java
 na uniezależnienie się od architektury.
+
 Dodatkowo maszyna wirtualna Javy optymalizuje czas wykonania programu dzięki zastosowania techniki
 JIT (ang.\ \textit{Just-In-Time compilation}), czyli kompilacji fragmentu kodu bajtowego do
 kodu maszynowego bezpośrednio przez wykonaniem danego fragmentu kodu.
 Kolejną zaletą języka Java jest obszerna biblioteka standardowa, dodająca szereg klas wpierających
 np.\ programowanie współbieżne i sieciowe czy operacje wejścia-wyjścia~\cite{openjdkcookbook}.
+
 Dzięki ww.\ aspektom język Java dobrze nadaje się do pisania złożonych aplikacji internetowych.
 Z tego powodu został wybrany jako język implementacji części serwerowej projektu pracy
 inżynierskiej.
