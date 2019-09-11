@@ -1,0 +1,7 @@
+public class LxcCreateDto {
+
+  @Pattern(regexp = "^[A-Za-z0-9]+$")
+  private String name;
+
+  @Pattern(regexp = "^[0-9]+$")
+  private String port;

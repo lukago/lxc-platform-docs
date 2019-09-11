@@ -1,0 +1,13 @@
+@PostMapping
+@PreAuthorize("hasRole('ROLE_ADMIN')")
+public ResponseEntity<Void> createLxc(
+    HttpServletRequest req,
+    @ApiParam("lxcCreateDto") @RequestBody @Valid LxcCreateDto lxcCreateDto) {
+  lxcService.create(
+      userService.whoamiInner(req),
+      lxcCreateDto.getName(),
+      Integer.valueOf(lxcCreateDto.getPort())
+  );
+
+  return new ResponseEntity<>(HttpStatus.ACCEPTED);
+}

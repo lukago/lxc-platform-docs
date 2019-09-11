@@ -1,0 +1,11 @@
+@ExceptionHandler(HttpException.class)
+public void handleCustomException(HttpServletResponse res, HttpException ex) throws IOException {
+  LOG.info("Sending error HttpException caucht: {}", ex);
+  res.sendError(ex.getHttpStatus().value(), ex.getMessage());
+}
+
+@ExceptionHandler(AccessDeniedException.class)
+public void handleAccessDeniedException(HttpServletResponse res) throws IOException {
+  LOG.info("Sending error AccessDeniedException caucht");
+  res.sendError(HttpStatus.FORBIDDEN.value(), "Access denied");
+}
