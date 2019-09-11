@@ -201,7 +201,7 @@ Najważniejsze z tych funkcjonaliści to:
 \end{itemize}
 
 \subsection{Konfiguracja}
-\label{subsec:kofig}
+\label{subsec:konfiguracja}
 
 Serwer LXC odpowiedzialny za składowanie kontenerów powinien spełniać założenia, które
 umożliwią integrację z nim poprzez warstwę aplikacji.
@@ -548,7 +548,7 @@ w następnych podsekcjach.
 Aplikacja serwerowa jest aplikacją bezstanową.
 Bezstanowość aplikacji umożliwia jej łatwiejszą skalowalność, ponieważ kilka różnych instancji
 aplikacji może równoważnie obsługiwać żądania od tego samego użytkownika.
-Aby to osiągnąć to autoryzacji użytkowników wykorzystano tokeny JWT\@.
+Aby to osiągnąć do autoryzacji użytkowników wykorzystano tokeny JWT\@.
 Token JWT składa się z trzech części:
 
 \begin{itemize}
@@ -563,7 +563,7 @@ Token JWT składa się z trzech części:
 \end{itemize}
 
 Każda z tych części jest dodatkowo zakodowana algorytmem Base64.
-Ostateczna postać tokenu to konkatenacja zakodowanych 3 części, części są odseparowanie od siebie
+Ostateczna postać tokenu to konkatenacja zakodowanych trzech części, części są odseparowanie od siebie
 znakiem pojedynczej kropki:
 
 \begin{equation}
@@ -586,7 +586,7 @@ jawnej nim nie trafi do serwera i zostanie przez niego zaszyfrowanie.
 Rozwiązaniem tego problemu jest zastosowanie protokołu HTTPS\@.
 Jest to szyfrowana wersja protokołu HTTP\@.
 Główną różnicą między protokołem HTTP i HTTPS jest to, że HTTP bazuje
-na protokole TCP, natomiast HTTPS bazuje na protokole TLS który działa na bazie protokołu TCP\@.
+na protokole TCP, natomiast HTTPS bazuje na protokole TLS, który działa na bazie protokołu TCP\@.
 TLS zapewnia poufność danych poprzez ich odpowiednie szyfrowanie.
 W modelu TCP/IP protokół TLS działa tuż nad warstwą transportową, dzięki czemu nie jest zależny
 od sprzętu czy systemu operacyjnego.
@@ -595,16 +595,16 @@ Proces nawiązania połączenia TLS między klientem i serwerem wygląda następ
 \begin{itemize}
   \item Klient wysyła żądanie nawiązania połączenia TLS do serwera i prezentuje swoją listę
   wspieranych algorytmów szyfrujących.
-  \item Serwer wybiera algorytm z otrzymanej listy który jest również wspierany przez niego i
+  \item Serwer wybiera algorytm z otrzymanej listy, który jest również wspierany przez niego i
   powiadamia o tym klienta.
   \item Serwer wysyła również do klienta swój certyfikat cyfrowy,
-  zawierający klucz publiczny serwera, jego nazwę i urząd certyfikacji który potwierdza własność
+  zawierający klucz publiczny serwera, jego nazwę i urząd certyfikacji, który potwierdza własność
   klucza publicznego dla tego serwera
   \item Klient potwierdza poprawność certyfikatu.
   \item Następnie klient generuje klucze sesyjne.
-  Może to sie stać poprzez wylosowanie liczy, zaszyfrowanie jej kluczem publicznym serwera i
+  Może to się stać poprzez wylosowanie liczby, zaszyfrowanie jej kluczem publicznym serwera i
   wysłanie do serwera.
-  Następnie na podstawie tej liczny klient i serwer generują klucz symetryczny,
+  Następnie na podstawie tej liczby klient i serwer generują klucz symetryczny,
   który jest wykorzystany do dalszego szyfrowania i deszyfrowania komunikatów w trakcie sesji TLS\@.
 \end{itemize}
 
@@ -614,18 +614,18 @@ Proces nawiązania połączenia TLS między klientem i serwerem wygląda następ
 Poza zapewnieniem bezpiecznej komunikacji między aplikacją kliencką i serwerową,
 dane poufne które są przetwarzane i przechowywane przez system informatyczny powinny być
 przetwarzane w bezpieczny sposób.
-W przypadku projektu pracy inżynierskiej danymi poufnymi są hasła do kont użytkowników.
+W przypadku realizowanego projektu danymi poufnymi są hasła do kont użytkowników.
 Powinny być one znane tylko dla właścicieli tych kont.
 Jeśli tak nie jest, podczas włamania do systemu atakujący może uzyskać hasła i loginy użytkowników
 i logować się na ich konta bez ich wiedzy, dodatkowo może również włamać się do innych systemów
 jeśli użytkownik użył tam tego samego hasła.
 Dlatego administrator systemu również nie powinien znać tych haseł i powinny być one składowane
 w postaci niejawnej.
-Aby rozwiązać ten problem, podczas tworzeniu konta, do bazy danych zapisywany jest tylko skrót hasła
+Aby rozwiązać ten problem, podczas tworzeniu konta do bazy danych zapisywany jest tylko skrót hasła
 utworzony za pomocą algorytmu kryptograficznego \textit{bcrypt}.
 
 \subsection{Atak wstrzykiwania kodu}
-\label{subsec:ataki}
+\label{subsec:atakdi}
 
 W warstwie widoku administrator systemu ma uprawnienia do tworzenia nowych kontenerów.
 Podczas tworzenia tych kontenerów podaje jego parametry jak nazwę czy porty.
@@ -635,17 +635,16 @@ sekcji~\ref{subsec:intlxc}.
 
 Tworzy to zagrożenie gdy nie ma walidacji przekazanych parametrów.
 Administrator może przekazywane parametry spreparować w taki sposób, że na serwerze zamiast
-komendy utworzenia kontenera zostanie wykonana inna, na przykład taka która usunie wszystkie dane.
-Projekt pracy inżynierskiej zakłada jednak, że administrator jest zaufanym użytkownikiem systemu
-który nie ma na calu działania na jego szkodę oraz posiada dostęp do serwera
-składującego kontenery LXC nie tylko poprzez warstwę widoku projektu.
-Użytkownik bez uprawnień administratora nie ma możliwości wprowadzania danych które są następnie
+komendy utworzenia kontenera zostanie wykonana inna, na przykład taka, która usunie wszystkie dane.
+Jednak projekt pracy inżynierskiej zakłada, że administrator jest zaufanym użytkownikiem systemu,
+który nie ma na celu działania na jego szkodę.
+Użytkownik bez uprawnień administratora nie ma możliwości wprowadzania danych, które są następnie
 bezpośrednio umieszczanie w linii poleceń, także takie zagrożenie ze strony użytkownika nie istnieje.
 
 Należy jednak zdawać sobie sprawę z takiego zagrożenia, projektując dodatkowe funkcjonaliści systemu
 w przyszłości oraz dodając nowych użytkowników z uprawnieniami administratora.
 
-Rozwiązaniem tego problemu w projekcie pracy inżynierskiej jest walidacja przekazanych parametrów
+Rozwiązaniem tego problemu w projekcie pracy inżynierskiej jest walidacja przekazanych parametrów,
 poprzez wymuszenie jedynie znaków alfanumerycznych w nazwie kontenera oraz znaków numerycznych w
 przekazanym porcie.
 
@@ -657,17 +656,17 @@ Nie jest to atak na część serwerową aplikacji internetowej.
 Polega na zmuszeniu przeglądarki ofiary do wykonania żądania HTTP w sposób nieautoryzowany.
 Ofiara ataku jest zalogowana w przeglądarce, a wymuszone żądanie posiada ciasteczko sesji oraz
 pozostałe automatycznie załączone informacje o sesji zalogowanego użytkownika.
-Aplikacja serwerowa z tego powodu będzie traktowała takie żądania jako prawdziwe.
-Poprzez atak CSRF ofiara ataku może nieumyślnie wykonać jaką akcje, np.\ zmodyfikować dane swojego
-konta lub wykonać niechciany przelew pieniędzy.
-W przypadku projektu pracy inżynierskiej sesja użytkownika nie jest oparta o ciasteczka sesyjne i
+Z tego powodu aplikacja serwerowa będzie traktowała takie żądania jako prawdziwe.
+Poprzez atak CSRF ofiara ataku może nieumyślnie wykonać jakąś akcje, np.\ zmodyfikować dane swojego
+konta lub wykonać przelew pieniędzy.
+W przypadku realizowanego projektu, sesja użytkownika nie jest oparta o ciasteczka sesyjne i
 inne automatyczne funkcje zaimplementowane w przeglądarkach.
 Zamiast tego przy każdym żądaniu do serwera należy dodać nagłówek autoryzacyjny z tokenem JWT oraz
 w niektórych przypadkach dodatkowy nagłówek z wersją danych, wykorzystywanego do mechanizmu blokad
 optymistycznych.
-Brak wykorzystania automatyzmów sesyjnych zaimplementowanych w przeglądarce pozwala
+Brak wykorzystania automatyzmów sesyjnych zaimplementowanych w przeglądarce, pozwala
 w podstawowy sposób zabezpieczyć się przed tego typu atakami.
-Jednak aby całkowicie zabezpieczyć się przed CSRF potrzebna jest też ochrona przed atakami XSS,
+Jednak aby całkowicie zabezpieczyć się przed CSRF, potrzebna jest też ochrona przed atakami XSS,
 które zostaną opisane w następnej podsekcji.
 
 \subsection{XSS}
@@ -680,8 +679,8 @@ we wszystkich przeglądarkach.
 Podatność na XSS tworzy szereg zagrożeń dla użytkownika.
 Atakujący może wykraść sesje użytkownika, podmienić zawartość strony czy
 logować wszystkie dane wprowadzane przez użytkownika, w tym hasła.
-Dodatkowo podatność na XSS tworzy jednocześnie podatność na CSRF ponieważ za pomocą języka
-skryptowego atakujący może dodać wymagane nagłówki autoryzacyjne które nie są automatycznie
+Dodatkowo podatność na XSS tworzy jednocześnie podatność na CSRF, ponieważ za pomocą języka
+skryptowego atakujący może dodać wymagane nagłówki autoryzacyjne, które nie są automatycznie
 dodawane przez przeglądarkę.
 
 Istnieje wiele metod zabezpieczanie przed XSS\@.
@@ -695,11 +694,11 @@ Najpopularniejsze to:
   Takie ciastka są niedostępne do odczytu z poziomu kodu JavaScript.
 \end{itemize}
 
-W przypadku projektu pracy inżynierskiej nie wykorzystywano ciastek sesyjnych z tagiem HttpOnly
+W przypadku projektu pracy inżynierskiej nie wykorzystywano ciastek sesyjnych z tagiem HttpOnly,
 przez co token JWT jest dostępny z poziomu kodu JavaScript.
-Podstawowe zabezpieczenie przed atakami XSS umożliwia jednak zastosowanie biblioteki React.
+Podstawowe zabezpieczenie przed atakami XSS umożliwia zastosowanie biblioteki React.
 React do tworzenia kodu HTML wykorzystuje składnie JSX\@.
-Wszystkie wartości zawarte w kodzie JSX są zamieniane na łańcuchy znaków co pozwala
-zabezpieczyć się przed umieszczeniem tam kodu wykonywalnego.
+Wszystkie wartości zawarte w kodzie JSX są zamieniane na łańcuchy znaków, co pozwala
+w podstawowy sposób zabezpieczyć się przed umieszczeniem tam kodu wykonywalnego.
 
 \clearpage

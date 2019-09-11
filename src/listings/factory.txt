@@ -1,0 +1,11 @@
+public class CmdRunnerFactory {
+
+  public static ICmdRunner create(ICmdConfig cmdData) {
+    var qualifier = cmdData.getCmdRunnerQualifier();
+    switch (qualifier) {
+      case "sshpwd": return new SshPwdCmdRunner(cmdData);
+      case "mock": return (cmd) -> "done";
+      default: throw new IllegalArgumentException(qualifier);
+    }
+  }
+}

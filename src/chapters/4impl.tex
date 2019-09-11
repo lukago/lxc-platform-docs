@@ -3,10 +3,9 @@
 
 Rozdział ten opisuje implementację opisanego w poprzednim rozdziale projektu.
 Zostaną przedstawione szczegóły dotyczące konfiguracji aplikacji,
-struktury modeli wykorzystanych w projekcie oraz implementację kluczowych
+struktury modeli wykorzystanych w projekcie oraz implementacja kluczowych
 mechanizmów wraz z fragmentami kodu źródłowego.
-Rozdział zawiera również podręcznik użytkownika, opisujący warstwę widoku
-i najważniejsze przypadki użycia.
+Rozdział zawiera również opis warstwy widoku z przykładowymi przypadki użycia.
 
 \section{Konfiguracja}
 \label{sec:konfiguracja}
@@ -14,21 +13,23 @@ i najważniejsze przypadki użycia.
 Istotną częścią implementacji jest konfiguracja projektu w taki sposób,
 aby był on jak najbardziej elastyczny i umożliwiał szybkie zbudowanie aplikacji
 bez instalowania dodatkowych zależności.
-W poniższych podsekcjach opisano konfigurację poszczególnych
-modułów wchodzących w skład projektu pracy inżynierskiej.
+W poniższych podsekcjach opisano konfigurację poszczególnych modułów wchodzących
+w skład projektu pracy inżynierskiej.
 
 \subsection{Aplikacja serwerowa}
 \label{subsec:konfiguracja-serwera}
 
-Aplikacja serwerowa jest uruchamiana za pomocą technologii \textit{Docker}
+Aplikacja serwerowa jest uruchamiana za pomocą technologii Docker
 oraz narzędzia \textit{docker-compose}.
 Dzięki wykorzystaniu tej technologii możliwe jest szybkie uruchomienie
 aplikacji wraz ze wszystkimi zależnościami.
-Zawartość pliku \textit{docker-compose.yml} dla aplikacji serwerowej została
-przedstawiona poniżej we fragmencie programu~\ref{lst:dockercomposeserver}.
+Zawartość pliku \textit{docker-compose.yml}, definiuje konfigurację aplikacji
+dla narzędzia \textit{docker-compose}.
+Zawartość tego pliku dla aplikacji serwerowej została przedstawiona poniżej
+we fragmencie programu~\ref{lst:dockercomposeserver}.
 
 \lstinputlisting[
-  caption=Zawartość docker-compose.yml dla aplikacji serwerowej,
+  caption=Zawartość \textit{docker-compose.yml} dla aplikacji serwerowej,
   label=lst:dockercomposeserver
 ]{docker-compose.server.txt}
 
@@ -39,17 +40,16 @@ konfiguracja wymagałaby drobnych zmian, np.\ adresu URL warstwy widoku poprzez
 wartość \textit{WEBUI\_URL}.
 Warto zauważyć że powyższa konfiguracja tworzy również bazę danych
 PostgreSQL\@.
-Trwałość danych pomiędzy wieloma uruchomieniami narzędzia \textit{Docker}
-osiągnięto poprzez zastosowanie wolumenów, określonych w sekcji \textit{volumes}.
+Trwałość danych pomiędzy wieloma uruchomieniami narzędzia Docker osiągnięto
+poprzez zastosowanie wolumenów, określonych w sekcji \textit{volumes}.
 
 Konfiguracja wykorzystuje bazowy obraz \textit{lxc-platform-server:latest}.
-Jest on tworzony za pomocą narzędzia\textit{docker} który tworzy obraz na podstawie
+Jest on tworzony za pomocą narzędzia Docker który tworzy obraz na podstawie
 pliku \textit{Dockerfile}.
-Zawartość pliku Dockerfile została przedstawiona poniżej we
-fragmencie~\ref{lst:dockerserver}.
+Zawartość pliku \textit{Dockerfile} została przedstawiona poniżej.
 
 \lstinputlisting[
-  caption=Dockerfile aplikacji serwerowej,
+  caption=Zawartość \textit{Dockerfile} dla aplikacji serwerowej,
   label=lst:dockerserver
 ]{dockerfile-server.txt}
 
@@ -64,34 +64,32 @@ Są one następnie wykorzystywane w konfiguracji aplikacji szkieletu Spring.
   label=lst:springconf,
 ]{application-dev.txt}
 
-Taka konfiguracja umożliwia uniwersalność ponieważ wszystkie wartości związanie
-ze środowiskiem aplikacyjnym są eksportowane przez narzędzie \textit{docker-compose}.
-Tym samym nie ma potrzeby zmiany zawartości tego pliku czy ponownej kompilacji aplikacji
+Taka konfiguracja umożliwia uniwersalność, ponieważ wszystkie wartości związanie
+ze środowiskiem aplikacyjnym są eksportowane przez \textit{docker-compose}.
+Tym samym nie ma potrzeby zmiany zawartości tego pliku czy ponownej kompilacji aplikacji,
 jeśli zechcemy zainstalować ją w innym środowisku, wystarczy jedynie zmienić wartości
 w pliku \textit{docker-compose.yml}.
 
 \subsection{Aplikacja kliencka}
 \label{subsec:konfiguracja-widoku}
 
-Podobnie jak aplikacja serwerowa, również aplikacja kliencka wykorzystuje narzędzia
-\textit{docker} oraz \textit{docker-compose}.
+Podobnie jak aplikacja serwerowa, również aplikacja kliencka wykorzystuje narzędzie Docker.
 Konfiguracja zawarta w pliku \textit{docker-compose.yml} pozwala ustawić takie wartości
 jak adres URL serwera czy używanie lokalizacji do ustawień języka.
-Poniżej przedstawiono zawartość listingi z plikami źródłowymi wykorzystywanymi przez
-te narzędzia.
+Poniżej przedstawiono listingi z plikami konfiguracyjnymi dla narzędzia Docker.
 
 \lstinputlisting[
-  caption=Zawartość docker-compose.yml dla aplikacji klienckiej,
+  caption=Zawartość \textit{docker-compose.yml} dla aplikacji klienckiej,
   label=lst:dockercomposeclient
 ]{docker-compose.client.txt}
 
 \lstinputlisting[
-  caption=Dockerfile aplikacji klienckiej,
+  caption=Zawartość \textit{Dockerfile} dla aplikacji klienckiej,
   label=lst:dockerclient
 ]{dockerfile-client.txt}
 
 Warto zauważyć, że adres wartość \textit{REACT\_APP\_API\_URL}
-w pliku~\ref{lst:dockercomposeclient}musi być zgodna z wartością \textit{WEBUI\_URL}
+w pliku~\ref{lst:dockercomposeclient} musi być zgodna z wartością \textit{WEBUI\_URL}
 w pliku~\ref{lst:dockerserver}.
 Wykorzystanie konfiguracji opartej na narzędziach Docker, umożliwia większą
 elastyczność w instalowaniu aplikacji klienckiej na różnych środowiskach bez potrzeby
@@ -101,18 +99,18 @@ jej ponownej kompilacji.
 \label{subsec:konfiguracja-lxc}
 
 W projekcie jako serwer LXC wykorzystano maszynę wirtualną na podstawie obrazu
-\textit{Ubuntu Server 18.04.3 LTS}.
-Jako hipernadzorcę wirtualizacji wykorzystano oprogramowanie \textit{VirtualBox}.
+Ubuntu Server 18.04.3 LTS\@.
+Jako hipernadzorcę wirtualizacji wykorzystano oprogramowanie VirtualBox.
 Po stworzeniu maszyny wirtualnej wykonano na nim kroki opisane
-w rozdziale~\ref{ch:projekt_systemu} w sekcji~\ref{subsec:kofig}.
-Następnie aby umożliwić prosty dostęp do połączenia się po SSH do maszyny wirtualnej
+w sekcji~\ref{subsec:konfiguracja}.
+Następnie aby umożliwić prosty dostęp do połączenia się przez SSH do maszyny wirtualnej
 z poziomu lokalnej sieci oraz do kontenerów LXC znajdujących się na tej maszynie,
 skonfigurowano adapter sieciowy dla maszyny wirtualnej.
 W tym celu wybrano adapter zmostkowany (ang.\ \textit{bridged}).
 Dzięki temu maszyna wirtualna będzie korzystać z tego samego interfejsu sieciowego
 co maszyna gospodarza.
 Poniżej na rys.~\ref{fig:vboxconf} przedstawiono zrzut z ekranu przedstawiający
-konfigurację w programie \textit{VirtualBox}.
+konfigurację w programie VirtualBox.
 
 \begin{figure}[H]
   \centering
@@ -122,7 +120,8 @@ konfigurację w programie \textit{VirtualBox}.
 \end{figure}
 
 Wynikiem tej operacji powinno być wykorzystanie tego samego interfejsu sieciowego
-gospodarza \textit{en8} co przedstawiono na poniższych listingach.
+gospodarza \textit{en8}.
+Zostało to przedstawione na poniższych listingach.
 
 \lstinputlisting[
   caption=Konfiguracja interfejsu sieciowego maszyny gospodarza,
@@ -135,27 +134,26 @@ gospodarza \textit{en8} co przedstawiono na poniższych listingach.
 ]{ifconfigvirt.txt}
 
 Na podstawie listingów~\ref{lst:ifconfighost} oraz~\ref{lst:ifconfigvirt}
-widać, że adres IP hosta to 10.122.18.125, maska podsieci 255.255.252.0, co
-oznacza że adres sieci to 10.122.16.0/22.
-Adres IP maszyny wirtualnej to 10.122.18.86, maska podsieci 255.255.252.0,
-co również oznacza że adres sieci to 10.122.16.0/22.
-Maszyna wirtualna i maszyna gospodarza są w tej samej sieci, co potwierdza
+widać, że adres IP hosta to 10.122.18.125 z maską podsieci 255.255.252.0, co
+oznacza, że adres sieci to 10.122.16.0/22.
+Adres IP maszyny wirtualnej to 10.122.18.86 z maską podsieci 255.255.252.0,
+co również oznacza, że adres sieci to 10.122.16.0/22.
+Maszyna wirtualna i maszyna gospodarza są w tej samej sieci, co potwierdza,
 że konfiguracja adaptera mostkowego działa poprawnie.
 
 \section{Relacyjna baza danych}
 \label{sec:relacyjna-baza-danych}
 
-Dane użytkowników i oraz ich powiązania z kontenerami są przechowywane
+Dane użytkowników oraz ich powiązania z kontenerami są przechowywane
 w relacyjnej bazie danych zarządzanej przez PostgreSQL\@.
-Dzięki wykorzystaniu biblioteki Hibernate większość operacji,
-struktura bazy danych generowana jest automatycznie, a jej obsługa
-wykonana w aplikacji serwerowej.
+Dzięki wykorzystaniu biblioteki Hibernate struktura bazy danych generowana
+jest automatycznie, a jej obsługa wykonana jest w aplikacji serwerowej.
 
 \subsection{Schemat relacji}
 \label{subsec:schemat-relacji}
 
-Tabele wygenerowane zostały za pomocą biblioteki Hibernate będącej implementacją
-specyfikacji JPA\@.
+Tabele w bazie danych zostały wygenerowane za pomocą biblioteki Hibernate,
+która jest implementacją specyfikacji JPA\@.
 Schemat wygenerowanych tabel został przedstawiony poniżej na rysunku~\ref{fig:dbschema}.
 
 \begin{figure}[H]
@@ -168,16 +166,16 @@ Schemat wygenerowanych tabel został przedstawiony poniżej na rysunku~\ref{fig:
 \subsection{Transakcje bazodanowe}
 \label{subsec:transakcjeimpl}
 
-Spring Data dostarcza specjalną adnotację dla języka Java \textit{@Transactional}.
+Spring Data dostarcza specjalną adnotację dla języka Java - \textit{@Transactional}.
 Metody oznaczone tą adnotacją będą wykonywać operacje na relacyjnej bazie danych w sposób
 transakcyjny.
 Adnotacja \textit{@Transactional} jest dozwolona tylko dla obiektów zarządzanych przez
 szkielet Spring.
 Działanie adnotacji powoduje utworzenia aspektu dla oznaczonej tak metody, który
-wywoła odpowiednie metody interfejsu JPA do utworzenia i zakończenia transakcji.
+wywoła odpowiednie metody interfejsu JPA do utworzenia i zakończenia transakcji bazodanowej.
 
 \lstinputlisting[
-  caption=Konfiguracja interfejsu sieciowego maszyny wirtualnej,
+  caption=Transakcjie bazodanowe w aplikacji serwerowej,
   label=lst:transactions,
   language=Java,
 ]{transactions.txt}
@@ -191,7 +189,7 @@ Dla PostgreSQL jest to poziom \textit{read committed}, który jest wystarczając
 \label{subsec:orm}
 
 ORM czyli mapowanie relacyjno-obiektowe zostało zrealizowane za pomocą adnotacji JPA\@.
-Poniżej przedstawiono przykładową reprezentację tabeli poprzez obiekt języka Java i odpowiednie
+Poniżej przedstawiono przykładową reprezentację tabeli poprzez klasę w języka Java i odpowiednie
 adnotacje JPA\@.
 
 \lstinputlisting[
@@ -201,7 +199,7 @@ adnotacje JPA\@.
 ]{usersmodel.txt}
 
 Klasa dziedziczy z \textit{BaseModel}.
-Jest to bazowa klasa dla wszystkich encji definiująca klucz główny oraz pole wersji.
+Jest to bazowa klasa dla wszystkich encji, definiująca klucz główny oraz pole wersji.
 
 \lstinputlisting[
   caption=Klaza bazowa dla wszystkich encji w systemie,
@@ -209,7 +207,8 @@ Jest to bazowa klasa dla wszystkich encji definiująca klucz główny oraz pole 
   language=Java,
 ]{basemodel.txt}
 
-W załączonych fragmentach programów~\ref{lst:usersmodel} oraz~\ref{lst:basemodel} pojawia się wiele adnotacji.
+W załączonych fragmentach programów~\ref{lst:usersmodel} oraz~\ref{lst:basemodel} pojawia
+się wiele adnotacji.
 Nie wszystkie z nich są związane z JPA\@.
 Znaczenie najważniejszych adnotacji zostało opisane poniżej:
 
@@ -232,7 +231,7 @@ Znaczenie najważniejszych adnotacji zostało opisane poniżej:
   Dzięki temu możemy mapować relacje w bazie danych na powiązania pomiędzy obiektami.
   \item \textbf{@NotNull, @Size, @Email}.
   Nie są to adnotacje JPA\@.
-  Są to adnotacje do walidacji wchodzące skład \textit{Bean Validation API}.
+  Są to adnotacje do walidacji wchodzące skład \textit{Java Bean Validation}.
 \end{itemize}
 
 \section{Integracja z serwerem LXC}
@@ -247,7 +246,7 @@ wykonanie oraz wykonanie poleceń powłoki poprzez SSH\@.
 \subsection{Szablony komend}
 \label{subsec:szablony-komend}
 
-Pierwszą częścią implementacji jest zdefiniowanie poleceń powłoki które będą uruchamiane
+Pierwszą częścią implementacji jest zdefiniowanie poleceń powłoki, które będą uruchamiane
 na serwerze LXC\@.
 Zostały one zdefiniowane w konfiguracji aplikacji.
 
@@ -276,38 +275,38 @@ Znaczenie poszczególnych wartości konfiguracji:
   \item \textbf{routing}.
   Określa polecenie do tworzenia wirtualnego urządzenia za pomocą którego zrealizowane
   zostanie mapowanie portów kontenera na porty maszyny gospodarza.
-  Pierwsze dwa parametry \textit{\%s} są zamieniane na nazwę kontenera dla którego
+  Pierwsze dwa parametry \textit{\%s} są zamieniane na nazwę kontenera, dla którego
   dodawane jest urządzenie.
   Dwa następne są zamieniane na wartości portów.
   Dla \textit{listen} wstawiana jest wartość portu gospodarza, dla \textit{connect}
   wartość portu kontenera.
-  Po wykonaniu takiej komendy, port gospodarza połączony z portem kontenera.
-  Umożliwia to połączenia się poprzez SSH bezpośrednio do wybranego kontenera
+  Po wykonaniu takiej komendy, port gospodarza jest połączony z portem kontenera.
+  Umożliwia to połączenia się poprzez SSH bezpośrednio do wybranego kontenera,
   wykorzystując adres IP serwera oraz tak skonfigurowany port.
   \item \textbf{cmdRunner}.
   W systemie istnieje możliwość wielu implementacji interfejsu do uruchamiania
   komend na serwerze LXC\@.
-  Opcja \textit{sshpwd} oznacza implementację interfejsu która łączy się do serwera poprzez
+  Opcja \textit{sshpwd} oznacza implementację interfejsu, która łączy się do serwera poprzez
   SSH z wykorzystaniem hasła.
   Istnieje również np.\ opcja \textit{mock}, która udaje wykonywanie komend na zdalnym
-  serwerze, jest to przydatne podczas testów aplikacji, gdy nie mamy dostępu do zdalnego
-  serwera.
+  serwerze.
+  Jest to przydatne podczas testów aplikacji, gdy nie mamy dostępu do zdalnego serwera.
 \end{itemize}
 
 \subsection{Asynchroniczne wykonanie}
 \label{subsec:asynchroniczne-wykonanie}
 
-Wszystkie metody w serwisach które wykonują operacje na kontenerach LXC,
+Wszystkie metody w serwisach, które wykonują operacje na kontenerach LXC,
 są wykonywane asynchronicznie.
 Do asynchronicznego wykonania wykorzystano szkielet Spring.
-Metody asynchronicznie są oznaczone adnotacja \textit{@Async}.
-Spring uruchomi takie metody na osobnym wątku ze skonfigurowanej puli wątków.
+Metody asynchronicznie są oznaczone adnotacją \textit{@Async}.
+Spring uruchomi takie metody na osobnym wątku ze skonfigurowanej wcześniej puli wątków.
 
 Pula wątków tworzy trwałe wątki które nie są zabijane przez system operacyjny
 po ukończeniu jednej operacji.
 Takie wątki istnieją przez cały czas podczas działania aplikacji.
-Wykorzystanie puli wątków jest metodą optymalizacji aplikacji ponieważ
-tworzenie nowego wątku za każdym razem jest bardzo kosztowne.
+Wykorzystanie puli wątków jest metodą optymalizacji aplikacji, ponieważ
+tworzenie nowego wątku jest bardzo kosztowne.
 Jeśli ilość wątków w puli będzie zbyt mała, część zadań zostanie automatycznie
 skolejkowana.
 
@@ -325,44 +324,44 @@ skolejkowana.
 
 We fragmencie programu~\ref{lst:lxcasync} widać, że metoda pobierająca status
 jest typu \textit{void}.
-Dzieje się tak ponieważ odpowiedź o statusie przetwarzana jest przez \textit{message processor},
+Dzieje się tak ponieważ odpowiedź o statusie przetwarzana jest przez \textit{IProcessor},
 przekazany jako obiekt o nazwie \textit{processor} do obiektu \textit{LxcGenericTask}.
 
 \lstinputlisting[
-  caption=Klasa reprezentująca \textit{message processor},
+  caption=Klasa reprezentująca \textit{IProcessor},
   label=lst:msgprocessor,
   language=Java,
 ]{msgprocessor.txt}
 
 We fragmencie programu~\ref{lst:msgprocessor} widać, że mechanizm jest zaimplementowany
 za pomocą klasy \textit{EmitterProcessor}.
-Jest to klasa z biblioteki wspierającej paradygmat programowania reaktywnego - \textit{Project Reactor}.
-Zastosowanie interfejsu \textit{IProcessor} pozwoliło brak zależności metod serwisowych od biblioteki
-\textit{Project Reactor}.
-Adnotacja \textit{@Component} zapewnia, że jest to obiekt zarządzany przez szkielet spring.
-Podczas jego wstrzykiwania w różnych klas, będzie dostarczana ta sama instancja tego obiektu.
+Jest to klasa z biblioteki wspierającej paradygmat programowania reaktywnego - Project Reactor.
+Zastosowanie interfejsu \textit{IProcessor} umożliwiło brak zależności metod serwisowych od biblioteki
+Project Reactor.
+Adnotacja \textit{@Component} zapewnia, że jest to obiekt zarządzany przez szkielet Spring.
+Podczas jego wstrzykiwania do różnych klas, będzie dostarczana ta sama instancja tego obiektu.
 Rolą jaką pełni \textit{IProcessor} jest otrzymywanie wiadomości o statusie zadania
-i przekazywanie tych wiadomości w reaktywny sposób do obiektów które się do niego zasubskrybują.
+i przekazywanie tych wiadomości w reaktywny sposób do obiektów, które się do niego zasubskrybują.
 
 \lstinputlisting[
-  caption=Wysyłanie wiadomości przez \textit{message processor},
+  caption=Wysyłanie wiadomości przez \textit{IProcessor},
   label=lst:msgsend,
   language=Java,
 ]{msgsend.txt}
 
 Fragment programu~\ref{lst:msgsend} zawiera fragment klasy \textit{LxcGenericTask}, która
-wysyła wiadomość do procesora aktualnym stanie wykonywanego zadania, za pomocą obiektu
+wysyła wiadomość do procesora o aktualnym stanie wykonywanego zadania, za pomocą obiektu
 \textit{processor}, który implementuje interfejs \textit{IProcessor}.
-Natomiast logika przetwarzania wiadomości jest umieszczona w osobnej klasie w kontrolerach.
+Logikę przetwarzania wiadomości umieszczono w osobnej klasie w module kontrolerów.
 
 \lstinputlisting[
-  caption=Subskrypcja do wiadomości wysłanych przez \textit{message processor},
+  caption=Subskrypcja do wiadomości wysłanych przez \textit{IProcessor},
   label=lst:msgsub,
   language=Java,
 ]{msgsub.txt}
 
 Subskrypcja wykonywana jest tylko raz, w konstruktorze kontrolera.
-Dostarczana jest tam metoda która konsumuje nowe wiadomości i wysyła je do gniazda sieciowego.
+Dostarczana jest tam metoda, która konsumuje nowe wiadomości i wysyła je do gniazda sieciowego.
 Warto zauważyć, że istnieje separacja pomiędzy wysyłaniem powiadomień dla
 użytkownika i administratora.
 Do użytkownika wysyłana są tylko powiadomienia o rozpoczętych przez niego akcji, natomiast
@@ -372,4 +371,112 @@ Adnotacja \textit{@Autowired} zapewnia wstrzyknięcie odpowiedniej instancji obi
 instancji obiektu implementującego interfejs \textit{IProcessor}, jest to ta sama
 instancja która była wykorzystana w klasie \textit{LxcGenericTask}
 
+\subsection{Wykonywanie poleceń powłoki}
+\label{subsec:wykonywanie-polecen-powloki}
+
+Zgodnie z opisem znajdującym się w sekcji~\ref{sec:serwer_lxc},
+polecenia do zarządzania kontenerami poprzez narzędzie LXD są uruchamiane
+na osobnym serwerze.
+Z tego powodu wykorzystano protokół SSH\@.
+Podczas implementacji połączenia SSH aplikacji serwerowej z serwerem składującym kontenery LXC
+wykorzystani bibliotekę SSHJ\@.
+
+\lstinputlisting[
+  caption=Uruchamianie poleceń powłoki przez SSH,
+  label=lst:ssh,
+  language=Java,
+]{ssh.txt}
+
+Na listingu~\ref{lst:ssh} przedstawiono implementację nawiązania połączenia SSH
+z serwerem LXC wraz z uwierzytelnieniem za pomocą loginu i hasła.
+Po nawiązaniu takiego połączenia tworzona jest sesja SSH w ramach której wykonywane
+są polecenia powłoki na serwerze LXC\@.
+Przedstawiony listing jest metodą, która implementuje interfejs \textit{ICmdRunner},
+przedstawiony poniżej.
+
+\lstinputlisting[
+  caption=Interfejsc \textit{ICmdRunner},
+  label=lst:cmdrunner,
+  language=Java,
+]{cmdrunner.txt}
+
+Utworzenie takiego interfejsu umożliwiło konfigurację sposobu komunikacji
+z serwerem składującym kontenery LXC\@.
+Jeśli zaistniałaby potrzeba np.\ połączenia innym protokołem lub uruchamiania
+komend na lokalnym serwerze, wystarczyłoby dodać odpowiednią implementację tego
+interfejsu.
+Implementacja wybierania jest na podstawie wartości \textit{cmdRunner}
+opisanej w sekcji~\ref{subsec:szablony-komend}.
+Wybieranie implementacji poprzez wartość z konfiguracji jest zaimplementowana
+w klasie \textit{CmdRunnerFactory}.
+
+\lstinputlisting[
+  caption=Klasa \textit{CmdRunnerFactory},
+  label=lst:factory,
+  language=Java,
+]{factory.txt}
+
+Wykorzystanie tej klasy widać na listingu~\ref{lst:lxcasync}, gdzie podczas
+tworzenia obiektu klasy \textit{LxcGenericTask} wywoływana jest statyczna metoda
+\textit{create}.
+
+\section{Interfejs REST}
+\label{sec:rest-api}
+
+Aplikacja serwerowa wystawia interfejsy dostępne za pomocą protokołu HTTP\@.
+Zostały one opisane w sekcji~\ref{subsec:intrest}.
+Implementacja interfejsów została wykonana w module kontrolerów aplikacji serwerowej,
+za pomocą adnotacji szkieletu Spring.
+
+\lstinputlisting[
+  caption=Pojedyńcze metoda stanowiąca punkt dostępowy interfejsu REST,
+  label=lst:api,
+  language=Java,
+]{api.txt}
+
+Na listingu~\ref{lst:api} przedstawiono metodę do tworzenia kontenera.
+Warto zauważyć, że metoda wywołuje asynchroniczną metodę \textit{create},
+nie oczekuje na jej wynik, zamiast tego zwraca odpowiedź HTTP 202 ACCEPTED\@.
+
+Dodatkowo na obiektach DTO przekazywanych w punktach dostępowych wykorzystano
+mechanizm walidacji danych przesłanych od użytkownika za pomocą \textit{Java Bean Validation}.
+Parametr oznaczony adnotacją \textit{@Valid} będzie automatycznie walidowany.
+Taki parametr musi spełnić warunki określone za pomocą adnotacji pochodzących
+Bean Validation.
+
+\lstinputlisting[
+  caption=Klasa DTO wraz z adnotacjami \textit{Java Bean Validation},
+  label=lst:bva,
+  language=Java,
+]{bva.txt}
+
+Na listingu~\ref{lst:bva} znajduje się klasa DTO wykorzystywana podczas tworzenia
+kontenera.
+Adnotacje \textit{@Pattern} wymagają, aby określone pola klasy miały wartość alfanumeryczną
+albo numeryczną.
+Walidacja w przypadku tej klasy pomaga zabezpieczyć się przed atakiem wstrzyknięcia kodu,
+opisanego w sekcji~\ref{subsec:atakdi}.
+
+\section{Obsługa błędów}
+\label{sec:obsluga-bledow}
+
+Do obsługi błędów wykorzystano mechanizm wyjątków stanowiący część języka Java.
+Takie wyjątki były następnie przechwytywane przez odpowiednie metody, które mapowały
+je na odpowiedzi HTTP\@.
+
+\lstinputlisting[
+  caption=Implementacja obsługi błędów,
+  label=lst:ex,
+  language=Java,
+]{ex.txt}
+
+Na listingu~\ref{lst:ex} są zamieszczone dwie przykładowe metody obsługujące błędy
+w aplikacji serwerowej.
+Każda metoda obsługuje specyficzny typ wyjątku, który jest mapowany na właściwy
+kod statusu HTTP oraz dodatkową treść wiadomości informującą o przyczynach wystąpienia błędu.
+Do ich implementacji wykorzystano adnotację szkieletu Spring \textit{@ExceptionHandler},
+dzięki czemu taka metoda zostanie dołączona automatycznie do metod przetwarzających
+żądania HTTP\@.
+
 \clearpage
+

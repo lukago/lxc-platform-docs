@@ -1,0 +1,29 @@
+@Override
+public String run(String cmdToRun) {
+  try {
+    SSHClient ssh = new SSHClient();
+    ssh.addHostKeyVerifier(new PromiscuousVerifier());
+    ssh.connect(cmdConfig.getServerIp(), Integer.valueOf(cmdConfig.getServerPort()));
+    ssh.authPassword(cmdConfig.getUsername(), cmdConfig.getPassword());
+
+    Session session = ssh.startSession();
+    Command cmd = session.exec(cmdToRun);
+    String logs = readAndLogProcess(cmd.getInputStream(), cmdToRun);
+
+    cmd.join(5, TimeUnit.MINUTES);
+    LOG.info("Command {} finished with exit status {}", cmd.getExitStatus());
+
+    if (cmd.getExitStatus() != 0) {
+      throw new IllegalStateException(
+          String.format("Exit status is not 0: %s", cmd.getExitErrorMessage()));
+    }
+
+    session.close();
+    ssh.close();
+
+    return logs;
+  } catch (Exception e) {
+    LOG.error("Exception running command {}", cmdToRun);
+    throw new IllegalStateException(e.getMessage());
+  }
+}
