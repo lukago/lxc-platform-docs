@@ -24,16 +24,19 @@ na rysunku~\ref{fig:arch}.
 W zaprojektowanym systemie istnieje kilka poziomów dostępów dla użytkownika.
 Poszczególne poziomy dostępów to:
 \begin{itemize}
-  \item Poziom Gościa, jest przypisywany dla niezalogowanych użytkowników.
-  \item Poziom Klienta, jest przypisywany do zalogowanych użytkowników, których konto ma przypisany
+  \item \textbf{Poziom Gościa}.
+  Poziom dostępu przypisywany dla niezalogowanych użytkowników.
+  \item \textbf{Poziom Klienta}.
+  Jest przypisywany do zalogowanych użytkowników, których konto ma przypisany
   poziom dostępu klienta.
   Umożliwia dostęp do danych związanych z danym kontem i ich ograniczoną modyfikację.
-  \item Poziom Administratora, jest przypisywany do zalogowanych użytkowników, których konto ma
+  \item \textbf{Poziom Administratora}.
+  Jest przypisywany do zalogowanych użytkowników, których konto ma
   przypisany poziom dostępu administratora.
   Umożliwia dostęp do danych o użytkownikach i kontenerach oraz modyfikację tych danych.
 \end{itemize}
 
-Wszystkie przypadki użycie dla poszczególnych poziomów dostępów przedstawia
+Wszystkie przypadki użycia dla poszczególnych poziomów dostępów przedstawia
 tabela~\ref{tab:przypadki_uzycia}.
 Litery G, K, A oznaczają odpowiednio poziomy dostępów Gościa, Klienta i Administratora.
 
@@ -120,7 +123,7 @@ która umożliwia jego integrację z pozostałymi modułami projektu.
 \label{subsec:kontenery_linux}
 
 Konteneryzacja jest kolejnym logicznym krokiem w rozwoju technologii wirtualizacji.
-Kontenery dostarczają mechanizm wirtualizacji na poziomie systemu operacyjnego jak również
+Kontenery dostarczają mechanizm wirtualizacji na poziomie systemu operacyjnego, jak również
 na poziomie aplikacji.
 Projekt pracy inżynierskiej wykorzystuje technologię konteneryzacji na poziomie systemu
 operacyjnego opartego o jądro Linux.
@@ -196,8 +199,9 @@ Najważniejsze z tych funkcjonaliści to:
   dla procesów wewnątrz tej samej przestrzeni nazw jako izolowania instancja globalnego
   zasobu.
   \item \textbf{System plików lub \textit{rootfs}}.
-  Obraz kontenera posiada własny system plików o własnym rdzeniu o podobnej strukturze do
-  systemu plików zamontowanego na każdej maszynie z systemem operacyjnym GNU/Linux.
+  Obraz kontenera posiada własny system plików o własnym rdzeniu (ang.\ \textit{root})
+  i strukturze podobnej do systemu plików zamontowanego na każdej maszynie z systemem
+  operacyjnym GNU/Linux.
 \end{itemize}
 
 \subsection{Konfiguracja}
@@ -212,16 +216,17 @@ Projekt systemu zakłada, że serwer ten spełnia następujące wymogi:
   \item Wersja jądra Linux to przynajmniej wersja 3.8.
   Jest to wymagane do najważniejszych funkcjonalności kontenerów LXC\@.
   \item Serwer jest podłączony do sieci dostępnej dla aplikacji serwerowej.
-  \item Serwer ma otwarty port przez który można połączyć się do niego protokołem SSH.\
+  \item Serwer ma otwarty port, przez który można połączyć się do niego protokołem SSH.\
   \item Serwer przy próbie połączenia przez SSH wymaga uwierzytelnienia loginem i hasłem.
-  \item Serwer ma stworzone dodatkowe konto nie będące kontem typu \textit{root} i na to konto
-  realizowanie będą połączenia SSH z aplikacji serwerowej.
+  \item Serwer ma stworzone dodatkowe konto, które nie jest kontem typu \textit{root}.
+  Na to konto realizowanie będą połączenia SSH z aplikacji serwerowej.
   \item Uwierzytelnienie się bezpośrednio na konto typu \textit{root} przez protokół
   SSH jest zablokowane.
   \item Serwer ma zainstalowany program LXD\@.
-  \item Serwer ma stworzony bazowy kontener na podstawie którego będą tworzone
+  Jest on dostępny z poziomu powłoki bash.
+  \item Serwer ma stworzony bazowy kontener, na podstawie którego będą tworzone
   inne kontenery.
-  \item Bazowy kontener ma stworzonego użytkownika który nie jest kontem typu \textit{root}.
+  \item Bazowy kontener ma stworzonego użytkownika, który nie jest kontem typu \textit{root}.
   Można się do niego połączyć przez SSH podając login i hasło, uwierzytelnianie bezpośrednio na
   konto typu \textit{root} jest zablokowane.
   \item Adres IP serwera, port serwera, dane wymagane do uwierzytelnienia przez SSH do serwera oraz
@@ -231,9 +236,9 @@ Projekt systemu zakłada, że serwer ten spełnia następujące wymogi:
 \section{RDBMS}
 \label{sec:rdbms}
 
-Poza kontenerami, projekt pracy inżynierskiej przechowuje również informacje o kontach użytkowników,
+Poza kontenerami projekt pracy inżynierskiej przechowuje również informacje o kontach użytkowników,
 do jakich kontenerów posiadają one dostęp oraz podstawowe dane o tych kontenerach
-jak np.\ adres IP\@.
+jak np.\ numery portów\@.
 Poniżej na rysunku~\ref{fig:datarel} przedstawiono relacje pomiędzy tymi danymi.
 
 \begin{figure}[H]
@@ -258,13 +263,13 @@ bardziej szczegółowo w następnych podsekcjach.
 Transakcje bazodanowe to zbiór operacji, które muszą być wykonane jako całość albo wcale.
 Celem transakcji jest zapewnienie integralności danych.
 Jeśli podczas wykonywania transakcji wystąpi błąd, wszystkie zmiany są wycofywane.
-Dopiero podczas zakończenia transakcji po weryfikacji poprawności wykonania wszystkich
-operacji zmiany są trwale zapisywane w pamięci.
+Dopiero podczas zakończenia transakcji, po weryfikacji poprawności wykonania wszystkich
+operacji, zmiany są trwale zapisywane w pamięci.
 
-Aby transakcje uznać za bezpieczne powinny spełniać one zasady ACID\@, które określone
+Aby transakcje można było uznać za bezpieczne, powinny spełniać one zasady ACID\@, które określone
 są następująco:
 
-\begin{itemize}
+\begin{enumerate}
   \item \textbf{Niepodzielność (ang.\ \textit{atomicity})}.
   Transakcja ma wykonać się w całości albo wcale.
   \item \textbf{Spójność (ang.\ \textit{consistency})}.
@@ -273,7 +278,7 @@ są następująco:
   \item \textbf{Izolacja (ang.\ \textit{isolation})}.
   Izolacja określa w jaki sposób transakcje wykonywane współbieżnie oddziałują na siebie.
   Standard SQL definiuje następujące poziomy izolacji:
-  \begin{enumerate}
+  \begin{itemize}
     \item Read uncommitted.
     Transakcja może odczytywać dane zmienione przez inne transakcje, które jeszcze się
     nie zakończyły.
@@ -285,11 +290,11 @@ są następująco:
     \item Serializable.
     Transakcje wykonane współbieżnie będą miały ten sam rezultat to transakcje
     wykonywane szeregowo.
-  \end{enumerate}
+  \end{itemize}
   \item \textbf{Trwałość (ang.\ \textit{durability})}.
-  Po zakończeniu transakcji jej rezultat zostanie trwale zapisany w bazie danych, np.\
-  w przypadku awarii systemu lub braku zasilania.
-\end{itemize}
+  Po zakończeniu transakcji jej rezultat zostanie trwale zapisany w bazie danych.
+  Przypadki awarii systemu lub braku zasilania muszą być obsługiwane.
+\end{enumerate}
 
 \subsection{Blokady optymistyczne}
 \label{subsec:optimisticlock}
@@ -299,13 +304,14 @@ użytkowników może jednocześnie modyfikować te same dane.
 Z tego powodu jeden z użytkowników może pracować na nieaktualnych danych, bez wiedzy,
 że zostały one zmienione przez innego użytkownika.
 Taka sytuacja może naruszyć integralność danych.
+
 Aby rozwiązać ten problem zastosowano mechanizm blokad optymistycznych.
-Każda krotka w bazie danych ma pole wersji, która jest inkrementowana wraz
+Każda krotka w bazie danych ma pole wersji, które jest inkrementowane wraz
 z każdą transakcją, która ją modyfikuje.
 Jednocześnie do użytkownika przesyłane są numery wersji dla poszczególnych
 danych, odpowiadające numerom wersji krotek w bazie danych w momencie ich odczytu.
-Użytkownik po wykonaniu zmian, przekazuje ten sam numer wersji.
-Jeśli dane ulegną zmianie w trakcie wykonywania zmian, przesłany numer wersji nie
+Użytkownik po wykonaniu zmian przekazuje ten sam numer wersji.
+Jeśli dane ulegną zmianie w trakcie wykonywania jego zmian, przesłany numer wersji nie
 będzie zgodny z wersją w bazie danych.
 Transakcja nie zakończy się, a użytkownik zostanie poinformowany o tym błędzie i
 będzie mógł pobrać dane jeszcze raz w celu aktualizacji danych.
@@ -316,7 +322,6 @@ będzie mógł pobrać dane jeszcze raz w celu aktualizacji danych.
 W skład warstwy aplikacji wchodzi aplikacja serwerowa.
 Warstwa aplikacji jest odpowiedzialna za integrację z warstwą prezentacji oraz z warstwą danych.
 W projekcie pracy inżynierskiej aplikacja serwerowa składa się kilku różnych następujących modułów.
-
 Najważniejsze z modułów aplikacji serwerowej to:
 
 \begin{itemize}
@@ -355,33 +360,34 @@ W następnych podsekcjach opisano dodatkowe szczegóły dotyczące projektu apli
 
 Istotnym elementem projektu aplikacji serwerowej było zdefiniowanie komunikacji z serwerem
 odpowiedzialnym za składowanie kontenerów Linux.
-Serwer ten zarządza kontenerami za pomocą wcześniej opisanego narzędzia LXD które dostarcza
+Serwer ten zarządza kontenerami za pomocą wcześniej opisanego narzędzia LXD, które dostarcza
 interfejs dostępny z poziomu linii poleceń.
 
 Z tego powodu aplikacja serwerowa nawiązuje połączenie SSH z serwerem LXC\@.
 SSH (ang.\ \textit{Secure Shell}) to protokół umożliwiający wykonywanie zdalnych poleceń powłoki
 w bezpieczny, szyfrowany sposób.
-Następnie w trakcie trwania sesji połączenia SSH, aplikacja serwerowa określone polecenia
-do zarządzania kontenerami na zdalnym serwerze.
+Następnie w trakcie trwania sesji połączenia SSH, aplikacja serwerowa wysyła określone polecenia
+do zarządzania kontenerami na zdalny serwer.
 
 Polecenia wykonywane na serwerze LXC są zdefiniowane w konfiguracji aplikacji serwerowej
 jako ściśle określone szablony.
 Szablony tych poleceń mają postać zwykłego łańcucha znaków, który jest odpowiednio formatowany
-do potrzeb aktualnie przetwarzanego żądania, poprzez zamianę tzw.\ specyfikatorów formatu
+do potrzeb aktualnie przetwarzanego żądania.
+Dzieje się to poprzez zamianę tzw.\ specyfikatorów formatu
 (ang.\ \textit{format specifiers}) na odpowiednie wartości, np.\ nazwę kontenera.
 
 \subsection{Integracja z bazą danych}
 \label{subsec:intdb}
 
 W warstwie aplikacyjnej wykonywane są operacje na encjach relacyjnej bazy danych.
-Aby ułatwić oprogramowanie takich operacji wykorzystano mechanizm mapowania relacyjno
+Aby ułatwić oprogramowanie takich operacji, wykorzystano mechanizm mapowania relacyjno
 obiektowego za pomocą interfejsów JPA i implementacji JPA o nazwie
 Hibernate.
 
 Połączenie z bazą danych realizowane jest za interfejsu
 JDBC (ang. \textit{Java Database Connectivity}).
-JDBC definiuje interfejsy w jaki sposób klient, czyli tym przypadku aplikacja serwerowa projektu
-pracy inżynierskiej, może połączyć się do bazy danych.
+JDBC definiuje interfejsy określające w jaki sposób klient, czyli tym przypadku aplikacja serwerowa,
+może połączyć się do bazy danych.
 Każdy system zarządzania bazy danych musi mieć odpowiedni sterownik JDBC czyli
 własną implementację tego interfejsu ze względu na różnice w implementacji
 każdego systemu RDBMS\@.
@@ -391,9 +397,8 @@ każdego systemu RDBMS\@.
 
 Aplikacja serwerowa dostarcza własny interfejs dostępny poprzez protokół HTTP, za pomocą którego
 inne aplikacje mogą z niego skorzystać.
-Architektura tego interfejsu oparta jest o REST\@.
-REST (ang.\ \textit{Representational State Transfer}) umożliwia dostęp do zasobów sieciowych
-za pomocą uniwersalnych i bezstanowych operacji.
+Architektura tego interfejsu oparta jest o REST (ang.\ \textit{Representational State Transfer}).
+REST umożliwia dostęp do zasobów sieciowych za pomocą uniwersalnych i bezstanowych operacji.
 W przypadku projektu aplikacji serwerowej, aplikacja kliencka wysyła żądanie HTTP
 wraz z odpowiednimi nagłówkami na odpowiedni adres URI\@.
 
@@ -415,15 +420,16 @@ Najważniejsze z metod HTTP to:
 \end{itemize}
 
 W przypadku zapytań POST, PUT i PATCH wysyłana jest dodatkowa treść żądania.
-Serwer odpowiada na te zapytania wysyłając kod odpowiedzi HTTP definiujący status przetworzonego
-żądania oraz ewentualną treść odpowiedzi, w przypadku projektu format treści odpowiedzi i zapytań to
-JSON\@.
+Serwer odpowiada na te zapytania wysyłając kod odpowiedzi HTTP, definiujący status przetworzonego
+żądania oraz ewentualną treść odpowiedzi.
+W przypadku realizowanego projektu format treści odpowiedzi i zapytań to JSON\@.
+
 Kody odpowiedzi HTTP są również ściśle zdefiniowane w specyfikacji protokołu HTTP\@.
 Kody są 3-cyfrowe, gdzie pierwsza cyfra oznacza kategorię odpowiedzi:
 
 \begin{itemize}
   \item \textbf{1xx}.
-  Kody informacyjne, informują o odebraniu żądania, przetwarzania żądania może wciąż trwać.
+  Kody informacyjne, informują o odebraniu żądania, przetwarzanie żądania może wciąż trwać.
   \item \textbf{2xx}.
   Kody dla pomyślnego przetworzenia żądania, informują że żądanie zostało odebrane, zrozumiane i
   i przetworzone.
@@ -434,8 +440,8 @@ Kody są 3-cyfrowe, gdzie pierwsza cyfra oznacza kategorię odpowiedzi:
   Kody błędu klienta, informują że żądanie wysłane przez klienta zawiera błędy i nie może
   być przetworzone.
   \item \textbf{5xx}.
-  Kody błędu serwera, informują że serwer podczas próby przetworzenia poprawnego żądania napotkał na
-  niespodziewany błąd przez co nie mógł zakończyć pomyślnego przetworzenia tego żądania.
+  Kody błędu serwera, informują, że serwer podczas próby przetworzenia poprawnego żądania napotkał
+  na niespodziewany błąd, przez co nie mógł zakończyć pomyślnego przetworzenia tego żądania.
 \end{itemize}
 
 \subsection{WebSocket}
@@ -444,7 +450,7 @@ Kody są 3-cyfrowe, gdzie pierwsza cyfra oznacza kategorię odpowiedzi:
 Aplikacja serwerowa dostarcza interfejsy do zarządzania kontenerami.
 Są one dostępne poprzez opisany wyżej interfejs REST, jednak czas odpowiedzi na żądanie jest
 niedeterministyczny.
-Z tego powodu aplikacja po przyjęciu takiego żądania zwracana jest odpowiedź HTTP 202 informującą
+Z tego powodu po przyjęciu takiego żądania zwracana jest odpowiedź HTTP 202 informująca
 użytkownika, że żądanie zostało poprawnie przyjęte do realizacji.
 Reszta żądania jest wykonywana asynchronicznie.
 
@@ -463,7 +469,7 @@ internetowej.
 Warstwa widoku jest odpowiedzialna za interakcję z użytkownikiem, przesyłaniem jego akcji
 do aplikacji serwerowej oraz wyświetlanie danych pobranych z serwera w przystępny dla
 człowieka sposób.
-W skład warstwy widoku wchodzi aplikacja kliencka działająca w przeglądarce wykonana
+W skład warstwy widoku wchodzi aplikacja kliencka działająca w przeglądarce internetowej, wykonana
 z użyciem technologii React.
 Dzięki zastosowaniu technologii React aplikacja kliencka jest zupełnie odrębną aplikacją,
 która komunikuje się warstwą widoku za pomocą zapytań HTTP i technologii WebSocket.
@@ -474,8 +480,8 @@ która komunikuje się warstwą widoku za pomocą zapytań HTTP i technologii We
 Aplikacja kliencka została wykonana jako aplikacja typu
 SPA (ang.\ \textit{Single Page Application}).
 SPA to inaczej jednostronicowa aplikacja internetowa.
-Strona wykonana w technologii SPA, podczas interakcji z użytkownikiem,
-aktualizuje tylko wybrane elementy na stronie.
+Strona wykonana w technologii SPA podczas interakcji z użytkownikiem aktualizuje tylko wybrane
+elementy na stronie.
 Nie ma potrzeby odświeżania całej strony i pobierania całej nowej zawartości na nowo, w tym
 danych które nie uległy zmianie i nie wymagają aktualizacji.
 Umożliwia to  oszczędzanie zasobów sieci, serwera i aplikacji klienckiej.
@@ -487,7 +493,7 @@ Dzięki takiej oszczędności cały system informatyczny działa wydajniej.
 
 Podczas implementacji złożonych systemów informatycznych istotną rolę odgrywa struktura kodu
 źródłowego oraz zdefiniowanie powiązań i sposobów komunikacji pomiędzy poszczególnymi elementami
-wchodzącymi w skład tak zdefiniowanej struktury.
+tak zdefiniowanej struktury.
 Wzorce projektowe są uniwersalnymi i sprawdzonymi metodami rozwiązywania tego typu problemów.
 Poniżej zostały opisane najważniejsze ze wzorców, które zostały wykorzystanie podczas projektowania
 pracy inżynierskiej.
@@ -524,7 +530,7 @@ polega na dostarczaniu zależności dla obiektu poprzez inny obiekt.
 Dzięki zastosowaniu wzorca wstrzykiwania obiekty są niezależne od sposobów tworzenia
 pozostałych obiektów, powiązania pomiędzy obiektami stają się bardziej luźne.
 Umożliwia to m.in.\ realizację paradygmatu odwrócenia sterowania
-(ang.\ \textit{Inversion of Control})oraz ułatwia testowanie aplikacji dzięki możliwości
+(ang.\ \textit{Inversion of Control}) oraz ułatwia testowanie aplikacji dzięki możliwości
 wstrzykiwania atrapy obiektów.
 
 \section{Bezpieczeństwo}
@@ -537,7 +543,7 @@ uwierzytelniania i autoryzacji.
 Istotną rolę pełni również szyfrowanie wrażliwych danych.
 Dane wrażliwe powinny być przesłane w postaci niejawnej oraz w ten sam sposób przechowywane
 w systemie.
-Jednak na dzisiejsze systemy informatyczne, a szczególnie te działające za pośrednictwem sieci
+Jednak dzisiejsze systemy informatyczne, a szczególnie te działające za pośrednictwem sieci
 internetowej, są narażone na większą ilość zagrożeń.
 Zabezpieczenia oraz zagrożenia systemu zrealizowanego w ramach pracy inżynierskiej zostały opisane
 w następnych podsekcjach.
@@ -548,7 +554,7 @@ w następnych podsekcjach.
 Aplikacja serwerowa jest aplikacją bezstanową.
 Bezstanowość aplikacji umożliwia jej łatwiejszą skalowalność, ponieważ kilka różnych instancji
 aplikacji może równoważnie obsługiwać żądania od tego samego użytkownika.
-Aby to osiągnąć to autoryzacji użytkowników wykorzystano tokeny JWT\@.
+Aby to osiągnąć do autoryzacji użytkowników wykorzystano tokeny JWT\@.
 Token JWT składa się z trzech części:
 
 \begin{itemize}
