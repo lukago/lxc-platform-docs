@@ -427,8 +427,35 @@ W celu prezentacji działającego rozwiązania integracji z serwerem LXC,
 przedstawiono sposób tworzenia nowego kontenera wraz z rezultatami
 poszczególnych operacji.
 
-websocat
+\lstinputlisting[
+  caption=Wywołanie metody tworzenia kontenera,
+  label=lst:curlcreate,
+]{curlcreate.txt}
 
+Na listingu~\ref{lst:curlcreate} wywołano metodę stworzenia kontenera \textit{example123}.
+W celu prezentacji działania, wykorzystano narzędzie \textit{cURL}, które wysłało żądanie POST
+na odpowiedni adres URI dostarczany przez aplikację serwerową.
+Widać, że po wywołaniu tego żądania, została zwrócona odpowiedź HTTP 202.
+
+\lstinputlisting[
+  caption=Rezultat stworzenia kontenera,
+  label=lst:lxcop,
+]{lxcop.txt}
+
+Rezultat otrzymanego żądania można zobaczyć na listingu~\ref{lst:lxcop} pochodzącym z serwera
+składującego kontenery LXC\@.
+W wyniku żądania tworzona jest operacja tworzenia kontenera, po stworzeniu kontenera
+widać go na liście stworzonych kontenerów.
+
+\lstinputlisting[
+  caption=Informacje wysyłane przez WebSocket,
+  label=lst:websocat,
+]{websocat.txt}
+
+Informacje o statusie przetworzenia zadania stworzenia kontenera, są wysyłanie przez gniazda sieciowe
+w technologii WebSocket.
+Zostało to zaprezentowane na listingu~\ref{lst:websocat} za pomocą programu \textit{websocat},
+które łączy się do zarejestrowanego już kanału w aplikacji serwerowej.
 
 \section{Interfejs REST}
 \label{sec:rest-api}
@@ -487,6 +514,155 @@ kod statusu HTTP oraz dodatkową treść wiadomości informującą o przyczynach
 Do ich implementacji wykorzystano adnotację szkieletu Spring \textit{@ExceptionHandler},
 dzięki czemu taka metoda zostanie dołączona automatycznie do metod przetwarzających
 żądania HTTP\@.
+
+\section{Zabezpieczenia}
+\label{sec:zabezpieczenia}
+
+Aplikacja została zabezpieczona na kilka sposobów.
+Jest to między innymi mechanizm uwierzytelniania za pomocą JWT oraz wymaganie protokołu HTTPS\@.
+Do implementacji tych technologii wykorzystano wiele technologii np.\ szkielet spring czy
+bibliotekę JJWT\@.
+
+Przy każdym żądaniu wysłanym na zabezpieczony punkt dostępowy, aplikacja pobiera nagłówki żądania.
+Do autoryzacji wymagany jest nagłówek \textit{Authorization} zawierający token JWT\@,
+który jest następnie walidowany.
+
+\lstinputlisting[
+  caption=Filtr JWT,
+  label=lst:jwtfilter,
+  language=Java,
+]{jwtfilter.txt}
+
+Do weryfikacji nagłówka z tokenem JWT wykorzystano filtr będący częścią
+specyfikacji \textit{Java Servlet}.
+Filtruje on każde żądanie jeszcze przed obsłużeniem go przez kontrolery.
+Implementacja filtra została przedstawiona na listingu~\ref{lst:jwtfilter}.
+
+Dodatkowo skonfigurowano szkielet Spring w taki sposób aby wymagał zabezpieczeń tylko na
+określonych adresach oraz do autoryzacji używał wcześniej opisanego filtra.
+
+\lstinputlisting[
+  caption=Konfiguracja zabezpieczeń szkieltu Spring,
+  label=lst:springsec,
+  language=Java,
+]{springsec.txt}
+
+Na listingu~\ref{lst:springsec} została przedstawiona konfiguracja zabezpieczeń szkieletu Spring.
+Skonfigurowana została bezstanowość sesji za pomocą \textit{SessionPolicy}, wykorzystanie filtra JWT
+za pomocą \textit{JwtTokenFilterConfigurer} oraz adresy wymagające autoryzacji za pomocą metody
+\textit{authenticated}.
+
+Dodatkowo zabezpieczono również rejestrację kanału WebSocket.
+Tam również jest wykorzystywany nagłówek HTTP z tokenem JWT, który następie jest weryfikowany.
+Obsługa tego zabezpieczenia również jest oparta o szkielet Spring, poprzez przeciążenie odpowiednich
+metod konfiguracyjnych.
+Implementacja tego zabezpieczenia została przedstawiona na listingu~\ref{lst:socketjwt.txt}
+
+\lstinputlisting[
+  caption=Zabezpieczenia dla WebSocket,
+  label=lst:socketjwt,
+  language=Java,
+]{socketjwt.txt}
+
+\section{Warstwa widoku}
+\label{sec:warstwa-widoku}
+
+Widok użytkownika wykonany w technologii React jest reaktywny
+i odświeża tylko wybrane elementów na stronie zgodnie z techniką
+SPA\@.
+W tej sekcji zostaną zaprezentowane poszczególne widoki wraz z
+ich opisem.
+
+\subsection{Panel administratora}
+\label{subsec:panel-administratora}
+
+Projekt systemu zakłada odrębne poziomy dostępu dla administratora i klienta.
+Z tego powodu warstwa widoku dla administratora wygląda inaczej i posiada inne
+funkcje.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.22]{figures/lxclist.png}
+  \caption{Lista kontenerów}
+  \label{fig:lxclist}
+\end{figure}
+
+Zrzut z ekranu~\ref{fig:lxclist} przedstawia listę wszystkich kontenerów.
+Jest to pierwsza strona widoczna po zalogowaniu się na konto administratora,
+dostępna również z poziomu menu bocznego \textit{Panel Główny}.
+Z poziomu tego widoku dodaje się również nowe kontenery.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.22]{figures/lxcdetails.png}
+  \caption{Strona logowania}
+  \label{fig:lxcdetails}
+\end{figure}
+
+Zrzut z ekranu~\ref{fig:lxcdetails} przedstawia szczegóły pojedynczego kontenera.
+W szczegóły można wejść poprzez link w wierszu listy kontenerów~\ref{fig:lxclist}.
+Można tutaj zarządzać stanem kontenera i przypisać do niego użytkownika.
+
+\subsection{Panel klienta}
+\label{subsec:panel-klienta}
+
+Widok dla kont z poziomem dostępu klienta jest podobny do panelu administratora,
+jednak posiada ograniczenia, zgodne z opisem przypadków użycia~\ref{tab:przypadki_uzycia}.
+Poniżej zaprezentowano najważniejsze widoki.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.22]{figures/userhome.png}
+  \caption{Strona główna z listą przypisanych kontenerów}
+  \label{fig:userhome}
+\end{figure}
+
+Zrzut z ekranu~\ref{fig:userhome} przedstawia listę przypisanych kontenerów do konta.
+Jest to pierwsza strona widoczna po zalogowaniu się na konto klienta,
+dostępna również z poziomu menu bocznego \textit{Panel Główny}.
+
+Po włączeniu kontenera użytkownik może zalogować się do kontenera poprzez SSH,
+za pomocą zaprezentowanego adresu i portu.
+Poprawne zalogowanie się na przykładowe konto \textit{user} przedstawiono na
+poniższym listingu.
+Do zalogowania się użytkownik wykorzystuje dane kontenera zaprezentowanie na
+rys.~\ref{fig:userhome}.
+
+\lstinputlisting[
+  caption=Logowanie do kontenera przez protokół SSH,
+  label=lst:sshinfo,
+]{sshinto.txt}
+
+\subsection{Internacjonalizacja}
+\label{subsec:internacjonalizacja}
+
+Warstwa widoku jest dostępna w języku polskim i angielskim.
+Przykład działania internacjonalizacji przedstawiono na poniższych
+zrzutach z ekranu ze strony logowania~\ref{fig:i18npl} oraz~\ref{fig:i18en}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5]{figures/i18npl.png}
+  \caption{Strona logowania w języku polskim}
+  \label{fig:i18npl}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5]{figures/i18en.png}
+  \caption{Strona logowania w języku angielskim}
+  \label{fig:i18en}
+\end{figure}
+
+Mechanizm internacjonalizacji osiągnięto poprzez trzymanie wszystkich wartości tekstowych
+napisanych w danym języku w osobnym pliku.
+Następnie wybierana jest zawartość pliku z wartościami w języku polskim albo angielskim,
+na podstawie wartości \textit{NavigatorLanguage.language} obecnej we wszystkich
+aktualnych przeglądarkach internetowych.
+
+
+
+
 
 \clearpage
 

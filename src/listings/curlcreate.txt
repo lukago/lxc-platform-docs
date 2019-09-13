@@ -1,4 +1,4 @@
-lukasgol@host:~$  curl -X POST "https://localhost:8443/api/lxc" -H "accept: */*" -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGgiOlt7ImF1dGhvcml0eSI6IlJPTEVfQURNSU4ifSx7ImF1dGhvcml0eSI6IlJPTEVfQ0xJRU5UIn1dLCJpYXQiOjE1NjgyMzM2MTEsImV4cCI6MTU2ODI2OTYxMX0.ICR1g5XVcxB2bEb7dAX8oSUf73jlJ3lVNhU-Jn_stj8" -H "Content-Type: application/json" -d "{ \"name\": \"example\", \"port\": \"12125\"}" -k -i
+lukasgol@host:~$ curl -X POST "https://localhost:8443/api/lxc" -H "accept: */*" -H "Authorization: Bearer ${TOKEN}" -H "Content-Type: application/json" -d "{ \"name\": \"example123\", \"port\": \"12125\"}" -k -i
 HTTP/1.1 202
 X-Content-Type-Options: nosniff
 X-XSS-Protection: 1; mode=block
@@ -8,5 +8,4 @@ Expires: 0
 Strict-Transport-Security: max-age=31536000 ; includeSubDomains
 X-Frame-Options: DENY
 Content-Length: 0
-Date: Wed, 11 Sep 2019 20:32:51 GMT
-lxc
+Date: Fri, 13 Sep 2019 09:15:03 GMT

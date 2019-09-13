@@ -1,0 +1,5 @@
+lukasgol@host:~$ websocat wss://localhost:8443/sc/lxcplatform/623/xt0ibge3/websocket -k
+o
+a["MESSAGE\ndestination:/user/sc/topic/jobs\ncontent-type:text/plain;charset=UTF-8\nsubscription:sub-0\nmessage-id:xt0ibge3-7\ncontent-length:293\n\n{\"key\":\"1d1b20a4-9ac3-43c1-af49-ad2af57f2dfe\",\"description\":\"CreateLxcJob: example123, port: 12125\",\"jobStatus\":\"STARTED\",\"jobCode\":\"CREATE\",\"startDate\":\"Sep 13, 2019, 9:15:03 AM\",\"createdBy\":{\"username\":\"admin\",\"email\":\"admin@adminlxc.org\",\"roles\":[\"ROLE_ADMIN\",\"ROLE_CLIENT\"],\"version\":\"0\"}}\u0000"]
+a["MESSAGE\ndestination:/user/sc/topic/jobs\ncontent-type:text/plain;charset=UTF-8\nsubscription:sub-0\nmessage-id:xt0ibge3-8\ncontent-length:369\n\n{\"key\":\"1d1b20a4-9ac3-43c1-af49-ad2af57f2dfe\",\"description\":\"CreateLxcJob: example123, port: 12125\",\"jobStatus\":\"DONE\",\"jobCode\":\"CREATE\",\"startDate\":\"Sep 13, 2019, 9:15:03 AM\",\"endDate\":\"Sep 13, 2019, 9:15:05 AM\",\"result\":{\"statusResult\":\"done\",\"port\":0},\"createdBy\":{\"username\":\"admin\",\"email\":\"admin@adminlxc.org\",\"roles\":[\"ROLE_ADMIN\",\"ROLE_CLIENT\"],\"version\":\"0\"}}\u0000"]
+h

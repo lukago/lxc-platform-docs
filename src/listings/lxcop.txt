@@ -1,18 +1,10 @@
-prince@lxdserver:~$ lxc operation list
-+--------------------------------------+------+--------------------+---------+------------+----------------------+
-|                  ID                  | TYPE |    DESCRIPTION     | STATUS  | CANCELABLE |       CREATED        |
-+--------------------------------------+------+--------------------+---------+------------+----------------------+
-| 9823f216-5b3a-4f54-a06b-324a8d94fabf | TASK | Creating container | SUCCESS | NO         | 2019/08/11 22:47 UTC |
-+--------------------------------------+------+--------------------+---------+------------+----------------------+
-prince@lxdserver:~$ lxc operation list
-+----+------+-------------+--------+------------+---------+
-| ID | TYPE | DESCRIPTION | STATUS | CANCELABLE | CREATED |
-+----+------+-------------+--------+------------+---------+
-prince@lxdserver:~$ lxc ls
-+-------------------+---------+--------------------+---------------------------------------------+------------+-----------+
-|       NAME        |  STATE  |        IPV4        |                    IPV6                     |    TYPE    | SNAPSHOTS |
-+-------------------+---------+--------------------+---------------------------------------------+------------+-----------+
-| climbing-stinkbug | RUNNING | 10.6.48.198 (eth0) | fd42:3a67:db:2098:216:3eff:fe6b:442e (eth0) | PERSISTENT | 0         |
-+-------------------+---------+--------------------+---------------------------------------------+------------+-----------+
-| example           | STOPPED |                    |                                             | PERSISTENT | 0         |
-+-------------------+---------+--------------------+---------------------------------------------+------------+-----------+
+prince@lxcserver:~$ lxc ls --format csv
+first,RUNNING,,fd42:d39e:8cf9:1022:216:3eff:fe50:e0f4 (eth0),PERSISTENT,0
+
+prince@lxcserver:~$ lxc operation list | csv
+22472d73-2b5f-43ed-be4e-16324217756d,TASK,Updating container,SUCCESS,NO,2019/09/13 09:15 UTC
+d375f251-f7c2-4322-ad69-ad98ce17dc88,TASK,Creating container,SUCCESS,NO,2019/09/13 09:15 UTC
+
+prince@lxcserver:~$ lxc ls --format csv
+example123,STOPPED,,,PERSISTENT,0
+first,RUNNING,,fd42:d39e:8cf9:1022:216:3eff:fe50:e0f4 (eth0),PERSISTENT,0
