@@ -127,7 +127,7 @@ Konteneryzacja jest kolejnym logicznym krokiem w rozwoju technologii wirtualizac
 Kontenery dostarczają mechanizm wirtualizacji na poziomie systemu operacyjnego, jak również
 na poziomie aplikacji.
 Projekt pracy inżynierskiej wykorzystuje technologię konteneryzacji na poziomie systemu
-operacyjnego opartego o jądro Linux.
+operacyjnego opartego o jądro Linux~\cite{virtualessential}.
 
 Główne zalety kontenerów Linux to:
 
@@ -143,7 +143,8 @@ Główne zalety kontenerów Linux to:
 Kontener może być zdefiniowany jako osobny obraz systemu operacyjnego, zawierający izolowany
 zestaw aplikacji oraz ich zależności, dzięki któremu mogą one być odseparowane od
 maszyny gospodarza.
-Może istnieć wiele kontenerów działających jednocześnie w obrębie jednej maszyny gospodarza.
+Może istnieć wiele kontenerów działających jednocześnie w obrębie jednej maszyny
+gospodarza~\cite{lxcont}.
 
 Kontenery dzielą się na dwa typy:
 
@@ -189,7 +190,8 @@ maszyny wirtualne i kontenery Linux są zorganizowanie w systemie operacyjnym go
   \label{fig:lxcs}
 \end{figure}
 
-W systemie Linux kontenery mogą działać dzięki specyficznym funkcjonalnościom jądra Linux.
+W systemie Linux kontenery mogą działać dzięki specyficznym funkcjonalnościom jądra
+Linux~\cite{lxdpractical}.
 Najważniejsze z tych funkcjonaliści to:
 
 \begin{itemize}
@@ -254,7 +256,7 @@ Jest to system zarządzania relacyjną bazą danych, inaczej
 RDBMS (ang.\ \textit{Relational Database Management System}).
 RDBMS dostarcza narzędzia potrzebne do interakcji z bazami danych, np.\ poprzez dostarczoną
 implementację specyfikacji języka SQL\@.
-Dodatkowo zawiera mechanizmy pozwalające zachować integralność danych.
+Dodatkowo zawiera mechanizmy pozwalające zachować integralność danych~\cite{psqlmasterbook}.
 Najważniejszym takim mechanizmem są transakcje bazodanowe i blokady optymistyczne, które opisano
 bardziej szczegółowo w następnych podsekcjach.
 
@@ -265,9 +267,9 @@ Transakcje bazodanowe to zbiór operacji, które muszą być wykonane jako cało
 Celem transakcji jest zapewnienie integralności danych.
 Jeśli podczas wykonywania transakcji wystąpi błąd, wszystkie zmiany są wycofywane.
 Dopiero podczas zakończenia transakcji, po weryfikacji poprawności wykonania wszystkich
-operacji, zmiany są trwale zapisywane w pamięci.
+operacji, zmiany są trwale zapisywane w pamięci~\cite{transactions}.
 
-Aby transakcje można było uznać za bezpieczne, powinny spełniać one zasady ACID\@, które określone
+Aby transakcje można było uznać za bezpieczne, powinny spełniać one zasady ACID, które określone
 są następująco:
 
 \begin{enumerate}
@@ -289,7 +291,7 @@ są następująco:
     \item Repeatable reads.
     Transakcja może odczytywać dane z momentu rozpoczęcia transakcji.
     \item Serializable.
-    Transakcje wykonane współbieżnie będą miały ten sam rezultat to transakcje
+    Transakcje wykonane współbieżnie będą miały ten sam rezultat, co transakcje
     wykonywane szeregowo.
   \end{itemize}
   \item \textbf{Trwałość (ang.\ \textit{durability})}.
@@ -308,7 +310,7 @@ Taka sytuacja może naruszyć integralność danych.
 
 Aby rozwiązać ten problem zastosowano mechanizm blokad optymistycznych.
 Każda krotka w bazie danych ma pole wersji, które jest inkrementowane wraz
-z każdą transakcją, która ją modyfikuje.
+z każdą transakcją, która ją modyfikuje~\cite{transactions}.
 Jednocześnie do użytkownika przesyłane są numery wersji dla poszczególnych
 danych, odpowiadające numerom wersji krotek w bazie danych w momencie ich odczytu.
 Użytkownik po wykonaniu zmian przekazuje ten sam numer wersji.
@@ -322,8 +324,8 @@ będzie mógł pobrać dane jeszcze raz w celu aktualizacji danych.
 
 W skład warstwy aplikacji wchodzi aplikacja serwerowa.
 Warstwa aplikacji jest odpowiedzialna za integrację z warstwą prezentacji oraz z warstwą danych.
-W projekcie pracy inżynierskiej aplikacja serwerowa składa się kilku różnych następujących modułów.
-Najważniejsze z modułów aplikacji serwerowej to:
+W projekcie pracy inżynierskiej aplikacja serwerowa składa się kilku modułów.
+Najważniejsze z modułów wchodzących w skład aplikacji serwerowej to:
 
 \begin{itemize}
   \item \textbf{Repozytoria}.
@@ -404,7 +406,7 @@ W przypadku projektu aplikacji serwerowej, aplikacja kliencka wysyła żądanie 
 wraz z odpowiednimi nagłówkami na odpowiedni adres URI\@.
 
 Protokół HTTP przewiduje wiele metod określających typ żądania, które w mają swoje realne
-odzwierciedlenie w aplikacji serwerowej przy zastosowaniu architektury REST\@.
+odzwierciedlenie w aplikacji serwerowej przy zastosowaniu architektury REST\@~\cite{rest}.
 Najważniejsze z metod HTTP to:
 
 \begin{itemize}
@@ -425,20 +427,20 @@ Serwer odpowiada na te zapytania wysyłając kod odpowiedzi HTTP, definiujący s
 żądania oraz ewentualną treść odpowiedzi.
 W przypadku realizowanego projektu format treści odpowiedzi i zapytań to JSON\@.
 
-Kody odpowiedzi HTTP są również ściśle zdefiniowane w specyfikacji protokołu HTTP\@.
+Kody odpowiedzi HTTP są również ściśle zdefiniowane w specyfikacji protokołu HTTP\@~\cite{rest}.
 Kody są 3-cyfrowe, gdzie pierwsza cyfra oznacza kategorię odpowiedzi:
 
 \begin{itemize}
   \item \textbf{1xx}.
   Kody informacyjne, informują o odebraniu żądania, przetwarzanie żądania może wciąż trwać.
   \item \textbf{2xx}.
-  Kody dla pomyślnego przetworzenia żądania, informują że żądanie zostało odebrane, zrozumiane i
+  Kody dla pomyślnego przetworzenia żądania, informują, że żądanie zostało odebrane, zrozumiane i
   i przetworzone.
   \item \textbf{3xx}.
-  Kody przekierowania, informują o dodatkowych czynnościach które muszą być podjęte
+  Kody przekierowania, informują o dodatkowych czynnościach, które muszą być podjęte
   aby zakończyć żądanie.
   \item \textbf{4xx}.
-  Kody błędu klienta, informują że żądanie wysłane przez klienta zawiera błędy i nie może
+  Kody błędu klienta, informują, że żądanie wysłane przez klienta zawiera błędy i nie może
   być przetworzone.
   \item \textbf{5xx}.
   Kody błędu serwera, informują, że serwer podczas próby przetworzenia poprawnego żądania napotkał
@@ -462,7 +464,7 @@ informacji bez wcześniejszego zapytania klienta.
 Technologia WebSocket umożliwiła wykorzystanie gniazd TCP w przeglądarkach internetowych
 w oparciu o istniejącą infrastrukturę HTTP\@.
 Wykorzystanie technologii WebSocket pozwala zmniejszyć obciążenie sieci, serwera oraz przeglądarki
-internetowej.
+internetowej~\cite{websocket}.
 
 \section{Warstwa widoku}
 \label{sec:warstwa_widoku}
@@ -484,9 +486,9 @@ SPA to inaczej jednostronicowa aplikacja internetowa.
 Strona wykonana w technologii SPA podczas interakcji z użytkownikiem aktualizuje tylko wybrane
 elementy na stronie.
 Nie ma potrzeby odświeżania całej strony i pobierania całej nowej zawartości na nowo, w tym
-danych które nie uległy zmianie i nie wymagają aktualizacji.
-Umożliwia to  oszczędzanie zasobów sieci, serwera i aplikacji klienckiej.
-Dzięki takiej oszczędności cały system informatyczny działa wydajniej.
+danych, które nie uległy zmianie i nie wymagają aktualizacji.
+Umożliwia to oszczędzanie zasobów sieci, serwera i aplikacji klienckiej.
+Dzięki takiej oszczędności cały system informatyczny działa wydajniej~\cite{reactpro}.
 
 
 \section{Wzorce projektowe}
@@ -506,7 +508,7 @@ Wzorzec Model-Widok-Kontroler, w skrócie MVC (ang.\ \textit{Model-View-Controll
 architektoniczny służący do organizowania struktury aplikacji posiadających graficzne interfejsy
 użytkownika.
 Wzorzec MVC powstał oryginalnie dla aplikacji desktopowych, dlatego w projekcie została
-wykorzystana jego zmodyfikowana wersja dla aplikacji internetowych.
+wykorzystana jego zmodyfikowana wersja dla aplikacji internetowych~\cite{springinaction}.
 
 Wzorzec MVC dla aplikacji internetowych definiuje strukturę aplikacji podzieloną na trzy części:
 
@@ -532,7 +534,7 @@ Dzięki zastosowaniu wzorca wstrzykiwania obiekty są niezależne od sposobów t
 pozostałych obiektów, powiązania pomiędzy obiektami stają się bardziej luźne.
 Umożliwia to m.in.\ realizację paradygmatu odwrócenia sterowania
 (ang.\ \textit{Inversion of Control}) oraz ułatwia testowanie aplikacji dzięki możliwości
-wstrzykiwania atrapy obiektów.
+wstrzykiwania atrapy obiektów~\cite{springinaction}.
 
 \section{Bezpieczeństwo}
 \label{sec:bezpieczenstwo}
@@ -556,7 +558,7 @@ Aplikacja serwerowa jest aplikacją bezstanową.
 Bezstanowość aplikacji umożliwia jej łatwiejszą skalowalność, ponieważ kilka różnych instancji
 aplikacji może równoważnie obsługiwać żądania od tego samego użytkownika.
 Aby to osiągnąć do autoryzacji użytkowników wykorzystano tokeny JWT\@.
-Token JWT składa się z trzech części:
+Token JWT składa się z trzech części~\cite{jwthandbook}:
 
 \begin{itemize}
   \item \textbf{Nagłówek (ang.\ \textit{header})}.
@@ -566,12 +568,12 @@ Token JWT składa się z trzech części:
   czy datę wygenerowania i ważności.
   \item \textbf{Podpis (ang.\ \textit{signature})}.
   Jest to podpis cyfrowy wygenerowany przez serwer na podstawie nagłówka i zawartości oraz
-  klucza prywatnego znanego tylko w aplikacji serwerowej.
+  klucza prywatnego, znanego tylko w aplikacji serwerowej.
 \end{itemize}
 
 Każda z tych części jest dodatkowo zakodowana algorytmem Base64.
-Ostateczna postać tokenu to konkatenacja zakodowanych trzech części, części są odseparowanie od siebie
-znakiem pojedynczej kropki:
+Ostateczna postać tokenu to konkatenacja zakodowanych trzech części, części są odseparowanie
+od siebie znakiem pojedynczej kropki:
 
 \begin{equation}
   jwt = header_{b64} + \textrm{,,.''} + payload_{b64} + \textrm{,,.''} + signature_{b64}
@@ -589,12 +591,12 @@ Jeśli weryfikacja zakończy się powodzeniem, żądanie jest wykonywane dalej.
 
 Podczas komunikacji aplikacji klienckiej z aplikacją serwerową za pomocą protokołu HTTP,
 klient może przesyłać do serwera poufne dane takie jak hasło, które będzie przesyłane w postaci
-jawnej nim nie trafi do serwera i zostanie przez niego zaszyfrowanie.
+jawnej dopóki nie trafi do serwera i zostanie przez niego zaszyfrowanie.
 Rozwiązaniem tego problemu jest zastosowanie protokołu HTTPS\@.
 Jest to szyfrowana wersja protokołu HTTP\@.
 Główną różnicą między protokołem HTTP i HTTPS jest to, że HTTP bazuje
 na protokole TCP, natomiast HTTPS bazuje na protokole TLS, który działa na bazie protokołu TCP\@.
-TLS zapewnia poufność danych poprzez ich odpowiednie szyfrowanie.
+TLS zapewnia poufność danych poprzez ich odpowiednie szyfrowanie~\cite{http}.
 
 W modelu TCP/IP protokół TLS działa tuż nad warstwą transportową, dzięki czemu nie jest zależny
 od sprzętu czy systemu operacyjnego.
@@ -611,8 +613,8 @@ Proces nawiązania połączenia TLS między klientem i serwerem wygląda następ
   \item Klient potwierdza poprawność certyfikatu.
   \item Następnie klient generuje klucze sesyjne.
   Może to się stać poprzez wylosowanie liczby, zaszyfrowanie jej kluczem publicznym serwera i
-  wysłanie do serwera.
-  Następnie na podstawie tej liczby klient i serwer generują klucz symetryczny,
+  wysłaniem do serwera.
+  Następnie na podstawie tej liczby, klient i serwer generują klucz symetryczny,
   który jest wykorzystany do dalszego szyfrowania i deszyfrowania komunikatów w trakcie sesji TLS\@.
 \end{itemize}
 
@@ -620,16 +622,16 @@ Proces nawiązania połączenia TLS między klientem i serwerem wygląda następ
 \label{subsec:szyfrowanie}
 
 Poza zapewnieniem bezpiecznej komunikacji między aplikacją kliencką i serwerową,
-dane poufne, które są przetwarzane i przechowywane przez system informatyczny powinny być
+dane poufne, które są przetwarzane i przechowywane przez system informatyczny, powinny być
 przetwarzane w bezpieczny sposób.
 W przypadku realizowanego projektu danymi poufnymi są hasła do kont użytkowników.
 Powinny być one znane tylko dla właścicieli tych kont.
 
 Brak zabezpieczeń danych poufnych sprawia, że podczas włamania do systemu atakujący może uzyskać
 hasła i loginy użytkowników i logować się na ich konta bez ich wiedzy.
-Dodatkowo może również włamać się do innych systemów jeśli użytkownik użył tam tego samego hasła.
+Dodatkowo może również włamać się do innych systemów, jeśli użytkownik użył tam tego samego hasła.
 Dlatego administrator systemu również nie powinien znać tych haseł i powinny być one składowane
-w postaci niejawnej.
+w postaci niejawnej~\cite{websecurity}.
 Aby rozwiązać ten problem, podczas tworzeniu konta do bazy danych zapisywany jest tylko skrót hasła
 utworzony za pomocą algorytmu kryptograficznego \textit{bcrypt}.
 
@@ -642,9 +644,9 @@ Następnie te parametry są przekazywane do serwera, serwer wstawia je do szablo
 i wykonuje na zdalnym zdalnym serwerze poprzez SSH, co zostało opisane we wcześniejszej
 sekcji~\ref{subsec:intlxc}.
 
-Tworzy to zagrożenie gdy nie ma walidacji przekazanych parametrów.
+Tworzy to zagrożenie, gdy nie ma walidacji przekazanych parametrów.
 Administrator może przekazywane parametry spreparować w taki sposób, że na serwerze zamiast
-komendy utworzenia kontenera zostanie wykonana inna, na przykład taka, która usunie wszystkie dane.
+komendy utworzenia kontenera, zostanie wykonana inna, na przykład taka, która usunie wszystkie dane.
 Jednak projekt pracy inżynierskiej zakłada, że administrator jest zaufanym użytkownikiem systemu,
 który nie ma na celu działania na jego szkodę.
 Użytkownik bez uprawnień administratora nie ma możliwości wprowadzania danych, które są następnie
@@ -652,10 +654,9 @@ bezpośrednio umieszczanie w linii poleceń, także takie zagrożenie ze strony 
 
 Należy jednak zdawać sobie sprawę z takiego zagrożenia, projektując dodatkowe funkcjonaliści systemu
 w przyszłości oraz dodając nowych użytkowników z uprawnieniami administratora.
-
 Rozwiązaniem tego problemu w projekcie pracy inżynierskiej jest walidacja przekazanych parametrów,
 poprzez wymuszenie jedynie znaków alfanumerycznych w nazwie kontenera oraz znaków numerycznych w
-przekazanym porcie.
+przekazanym porcie~\cite{websecurity}.
 
 \subsection{CSRF}
 \label{subsec:csrf}
@@ -667,7 +668,7 @@ Ofiara ataku jest zalogowana w przeglądarce, a wymuszone żądanie posiada cias
 pozostałe automatycznie załączone informacje o sesji zalogowanego użytkownika.
 Z tego powodu aplikacja serwerowa będzie traktowała takie żądania jako prawdziwe.
 Poprzez atak CSRF ofiara ataku może nieumyślnie wykonać jakąś akcje, np.\ zmodyfikować dane swojego
-konta lub wykonać przelew pieniędzy.
+konta lub wykonać przelew pieniędzy~\cite{websecurity}.
 
 W przypadku realizowanego projektu, sesja użytkownika nie jest oparta o ciasteczka sesyjne i
 inne automatyczne funkcje zaimplementowane w przeglądarkach.
@@ -684,9 +685,9 @@ które zostaną opisane w następnej podsekcji.
 \label{subsec:xss}
 
 Atak XSS podobnie jak CSRF jest to atak na klienta, a nie na część serwerową aplikacji.
-Atak polega na wstrzyknięciu do przeglądarki ofiary fragmentu kodu języka skryptowego który
-może być wykonany przez przeglądarkę, najczęściej jest to kod JavaScript, powszechnie używany
-we wszystkich przeglądarkach.
+Atak polega na wstrzyknięciu do przeglądarki ofiary fragmentu kodu języka skryptowego, który
+może być wykonany przez przeglądarkę.
+Zazwyczaj jest to kod JavaScript, powszechnie używany we wszystkich przeglądarkach.
 
 Podatność na XSS tworzy szereg zagrożeń dla użytkownika.
 Atakujący może wykraść sesje użytkownika, podmienić zawartość strony czy
@@ -695,8 +696,8 @@ Dodatkowo podatność na XSS tworzy jednocześnie podatność na CSRF, ponieważ
 skryptowego atakujący może dodać wymagane nagłówki autoryzacyjne, które nie są automatycznie
 dodawane przez przeglądarkę.
 
-Istnieje wiele metod zabezpieczanie przed XSS\@, nie wszystkie gwarantują całkowitą ochronę
-przed tym atakiem, ale znacząco utrudniają jego przeprowadzenie.
+Istnieje wiele metod zabezpieczanie przed XSS\@, nie wszystkie gwarantują całkowitą ochronę
+przed tym atakiem, ale znacząco utrudniają jego przeprowadzenie~\cite{websecurity}.
 Najpopularniejsze z tych metod to:
 
 \begin{itemize}
@@ -712,6 +713,6 @@ przez co token JWT jest dostępny z poziomu kodu JavaScript.
 Podstawowe zabezpieczenie przed atakami XSS umożliwia zastosowanie biblioteki React.
 React do tworzenia kodu HTML wykorzystuje składnie JSX\@.
 Wszystkie wartości zawarte w kodzie JSX są zamieniane na łańcuchy znaków, co pozwala
-w podstawowy sposób zabezpieczyć się przed umieszczeniem tam kodu wykonywalnego.
+w podstawowy sposób zabezpieczyć się przed umieszczeniem tam kodu wykonywalnego~\cite{reactpro}.
 
 \clearpage

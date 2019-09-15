@@ -1,6 +1,55 @@
 \chapter{Podsumowanie}
 \label{ch:podsumowanie}
 
-Podsumowanie pracy.
+Projekt pracy inżynierskiej miał na celu stworzenie platformy dla studentów, za pomocą której
+będą oni mogli korzystać z wielu systemów operacyjnych opartych o jądro Linux.
+Cel pracy opierał się o wykorzystanie do budowy tej platformy kontenerów Linux
+oraz sprawdzenie czy ta technologia pozwoli stworzyć taką platformę.
+
+Kontenery Linux spełniły swoje zadanie w zrealizowanym systemie.
+Ich wykorzystanie umożliwiło stworzenie wielu izolowanych przestrzeni odzwierciedlających system
+operacyjny Linux, do których użytkownik systemu może się połączyć w prosty sposób za pomocą
+protokołu SSH\@.
+Jednocześnie użycie technologii LXC pozwoliło wykorzystać szereg zalet konteneryzacji.
+Jest to przede wszystkim szybkość i oszczędność zasobów, dzięki współdzieleniu jądra systemu
+gospodarza.
+
+Doskonale sprawdziło się również narzędzie LXD, które pełniło rolę oprogramowania zarządzającego
+kontenerami na serwerze składującym LXC\@.
+Dostarczyło ono prosty interfejs dostępny z poziomu powłoki, który umożliwił tworzenie kontenerów,
+startowanie i zatrzymywanie ich, pobieranie informacji o ich stanie,
+czy przekazywanie portów kontenera na porty znajdujące się w systemie gospodarza.
+
+Podczas implementacji, kontenery Linux potwierdziły swoją stabilność.
+Raz uruchomione kontenery, pozostawały w takim stanie.
+Nie napotkano na nieprzewidziane wyłączenie kontenera spowodowane błędem.
+Kontenery uruchamiały się szybko, bez problemu były dostępne z poziomu sieci internetowej.
+Zgodnie z założeniami technologii LXC, dane kontenerów były poprawnie przechowywane i dostępne po
+ich ponownym uruchomieniu.
+
+Zrealizowany projekt jest złożonym systemem informatycznym, dostępnym dla wielu użytkowników
+za pośrednictwem przeglądarki internetowej.
+Z tego powodu, poza kontenerami Linux, wykorzystano również szereg innych technologii,
+zadbano o bezpieczeństwo i inne dobre praktyki inżynierii oprogramowania.
+System składuje dane użytkowników i ich powiązania z kontenerami w relacyjnej bazie danych
+w bezpieczny sposób, hasła użytkowników są przechowywane w formie niejawnej.
+Aplikacja serwerowa i kliencka są od siebie odseparowane i komunikują się
+za pomocą interfejsów HTTP, opartych o architekturę REST\@.
+Aplikacja serwerowa jest bezstanowa, co umożliwi jej prostą skalowalność w przyszłości.
+Działania na kontenerach są wykonywane asynchronicznie, a wynik tych działań wysyłany jest
+za pośrednictwem technologii WebSocket, co pozwoliło oszczędzić zasoby sieci oraz aplikacji
+serwerowerj i klienckiej.
+Aplikacja klienta została wykonana jako jednostronicowa aplikacja internetowa, dzięki czemu
+nie tylko uzyskano przyjazny dla użytkownika interfejs, ale również pozwoliło to oszczędzić
+zasoby na przekroju całego systemu informatycznego, dzięki ograniczeniu ilości wysyłanych danych.
+Zwiększono również bezpieczeństwo aplikacji, wzięto pod uwagę ataki CSRF, XSS czy wstrzykiwania
+kodu oraz wymuszono wykorzystanie protokołu HTTPS\@.
+
+Cel pracy inżynierskiej został osiągnięty.
+Zrealizowany system informatyczny udowadnia, że wykorzystanie kontenerów Linux pozwoliło stworzyć
+platformę dla studentów umożliwiającą korzystanie z wielu systemów GNU/Linux.
+Projekt realizuje również dodatkowe wymaganie funkcjonalne i niefunkcjonalne związane
+z bezpieczeństwem, czy sposobami integracji pomiędzy warstwami systemu.
+System spełnia potrzeby wykazane podczas analizy istniejących rozwiązań.
 
 \clearpage

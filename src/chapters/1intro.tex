@@ -15,12 +15,12 @@ Podobny trend utrzymuje się nie tylko w Polsce, ale również w pozostałych kr
 W 2018 r.\ 26\% przedsiębiorstw w Unii Europejskiej korzystało z chmur
 obliczeniowych~\cite{eurostat:cloud}.
 
-Jednym z rozwiązań chmury obliczeniowej jest model PaaS (ang. \textit{Platform as a Service})
+Jednym z rozwiązań chmury obliczeniowej jest model PaaS (ang. \textit{Platform as a Service}),
 czyli model platformy jako usługi, w której zewnętrzny system zarządza całym środowiskiem
 aplikacyjnym i udostępnia wybrane usługi użytkownikom.
-Aby ułatwić zarządzanie wieloma systemami operacyjnymi opartymi o jądro Linux,
-które były wykorzystywanie przez studentów Politechniki Łódzkiej, na przedmiocie Systemy Operacyjne,
-prowadzący przedmiot wyrazili zapotrzebowanie na tego typu system informatyczny.
+Prowadzący przedmiotu Systemy Operacyjne na Politechnice Łódzkiej wyrazili zapotrzebowanie
+na tego typu system informatyczny, aby ułatwić studentom zarządzanie wieloma systemami operacyjnymi
+opartymi o jądro Linux.
 
 \section{Cel i zakres pracy}
 \label{sec:cel_zakres}
@@ -45,7 +45,7 @@ Do zakresu pracy inżynierskiej należą następujące czynności:
   przygotowanie środowiska programistycznego i narzędzi deweloperskich
   potrzebnych do stworzenia aplikacji.
   \item Utworzenie projektu aplikacji serwerowej,
-  zarządzanego za pomocą narzędzia narzędzia automatyzującego budowę oprogramowania Apache Maven.
+  zarządzanego za pomocą narzędzia narzędzia automatyzującego budowę oprogramowania Maven.
   \item Utworzenie projektu aplikacji klienckiej,
   zarządzanego za pomocą narzędzia narzędzia automatyzującego budowę oprogramowania npm.
   \item Skonfigurowanie serwera do zarządzania kontenerami Linux.
@@ -56,8 +56,8 @@ Do zakresu pracy inżynierskiej należą następujące czynności:
   \item Zaprojektowanie interfejsu programistycznego aplikacji serwerowej w oparciu
   o REST i WebSocket.
   \item Zaprojektowanie warstwy logiki biznesowej systemu oraz jej implementacja.
-  \item Konfiguracja połączenia między serwerem z aplikacją serwerową a serwerem do zarządzania
-  kontenerami Linux.
+  \item Konfiguracja połączenia między serwerem z aplikacją serwerową a serwerem składującym
+  kontenery Linux.
   \item Zaprojektowanie oraz implementacja aplikacji klienckiej.
   \item Internacjonalizacja aplikacji klienckiej oraz jej lokalizacja w języku polskim i angielskim.
   \item Zabezpieczenie systemu.
@@ -81,8 +81,8 @@ Najpopularniejsze z nich to:
 \end{itemize}
 
 Wymienione rozwiązania posiadają bardzo podobne możliwości.
-Większość z nich wykorzystuje zarówno kontenery Docker jak i LXC\@.
-Użytkownicy mogą korzystać z tych platform przez konsolę Web, linię komend lub poprzez
+Większość z nich wykorzystuje zarówno kontenery Docker, jak i LXC\@.
+Użytkownicy mogą korzystać z tych platform przez przeglądarkę internetową, linię komend lub poprzez
 zintegrowane środowisko.
 Posiadają szereg udogodnień dla konfiguracji szybkich wdrożeń aplikacji oraz dla szerokiego zakresu
 aplikacji rozproszonych.
@@ -134,7 +134,7 @@ Zaprojektowany system powinien spełniać następujące założenia:
   Klient ma również możliwość zarządzania własnym kontem, w tym zmiany hasła.
   Dodatkowo może przeglądać listę zadań wykonanych na kontenerach przypisanych do jego konta.
   \item Pobrane dane o uruchomionym kontenerze powinny zawierać wszystkie dane potrzebne, aby
-  podłączyć się do niego za pomocą protokołu SSH, z wyłączeniem danych wrażliwych tj.\ hasło.
+  podłączyć się do niego za pomocą protokołu SSH, z wyłączeniem danych wrażliwych, takich jak hasło.
   \item Aplikacja kliencka jest dostępna za pomocą przeglądarki internetowej i aktualizuje
   wyświetlane dane reaktywnie, bez potrzeby odświeżania lub ładowania nowej strony.
 \end{itemize}

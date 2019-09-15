@@ -1,5 +1,5 @@
-local@localhost:~$ ssh user@10.122.18.9 -p 12346
-user@10.122.18.9's password:
+local@localhost:~$ ssh user@192.168.144.4 -p 12345
+user@192.168.144.4's password:
 Welcome to Ubuntu 18.04.3 LTS (GNU/Linux 4.15.0-62-generic x86_64)
 
  * Documentation:  https://help.ubuntu.com

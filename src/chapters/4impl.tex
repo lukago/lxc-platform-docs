@@ -103,11 +103,11 @@ Ubuntu Server 18.04.3 LTS\@.
 Jako hipernadzorcę wirtualizacji wykorzystano oprogramowanie VirtualBox.
 Po stworzeniu maszyny wirtualnej wykonano na nim kroki opisane
 w sekcji~\ref{subsec:konfiguracja}.
-Następnie aby umożliwić prosty dostęp do połączenia się przez SSH do maszyny wirtualnej
-z poziomu lokalnej sieci oraz do kontenerów LXC znajdujących się na tej maszynie,
-skonfigurowano adapter sieciowy dla maszyny wirtualnej.
+Następnie skonfigurowano adapter sieciowy dla maszyny wirtualnej, aby umożliwić dostęp
+do połączenia przez SSH do maszyny wirtualnej z poziomu lokalnej sieci oraz do kontenerów
+LXC znajdujących się na tej maszynie.
 W tym celu wybrano adapter zmostkowany (ang.\ \textit{bridged}).
-Dzięki temu maszyna wirtualna będzie korzystać z tego samego interfejsu sieciowego
+Dzięki temu maszyna wirtualna będzie korzystać z tego samego interfejsu sieciowego,
 co maszyna gospodarza.
 Poniżej na rys.~\ref{fig:vboxconf} przedstawiono zrzut z ekranu przedstawiający
 konfigurację w programie VirtualBox.
@@ -146,7 +146,7 @@ Maszyna wirtualna i maszyna gospodarza są w tej samej sieci, co potwierdza,
 
 Dane użytkowników oraz ich powiązania z kontenerami są przechowywane
 w relacyjnej bazie danych zarządzanej przez PostgreSQL\@.
-Dzięki wykorzystaniu biblioteki Hibernate struktura bazy danych generowana
+Dzięki wykorzystaniu biblioteki Hibernate, struktura bazy danych generowana
 jest automatycznie, a jej obsługa wykonana jest w aplikacji serwerowej.
 
 \subsection{Schemat relacji}
@@ -172,7 +172,8 @@ transakcyjny.
 Adnotacja \textit{@Transactional} jest dozwolona tylko dla obiektów zarządzanych przez
 szkielet Spring.
 Działanie adnotacji powoduje utworzenia aspektu dla oznaczonej tak metody, który
-wywoła odpowiednie metody interfejsu JPA do utworzenia i zakończenia transakcji bazodanowej.
+wywoła odpowiednie metody interfejsu JPA do utworzenia i zakończenia transakcji
+bazodanowej~\cite{springinaction}.
 
 \lstinputlisting[
   caption=Transakcjie bazodanowe w aplikacji serwerowej,
@@ -182,14 +183,15 @@ wywoła odpowiednie metody interfejsu JPA do utworzenia i zakończenia transakcj
 
 Fragment programu~\ref{lst:transactions} przedstawia metodę usuwania użytkownika.
 Została ona opatrzona adnotacją \textit{@Transactional} bez dodatkowych parametrów, co oznacza,
-że zostanie wykorzystany domyślny poziom izolacji dla używanego RDBMS\@.
-Dla PostgreSQL jest to poziom \textit{read committed}, który jest wystarczający dla tej operacji.
+że zostanie wykorzystany domyślny poziom izolacji dla używanego RDBMS\@~\cite{springinaction}.
+Dla PostgreSQL jest to poziom \textit{read committed}~\cite{psqlmasterbook},
+który jest wystarczający dla tej operacji.
 
 \subsection{ORM}
 \label{subsec:orm}
 
 ORM czyli mapowanie relacyjno-obiektowe zostało zrealizowane za pomocą adnotacji JPA\@.
-Poniżej przedstawiono przykładową reprezentację tabeli poprzez klasę w języka Java i odpowiednie
+Poniżej przedstawiono przykładową reprezentację tabeli poprzez klasę w języku Java i odpowiednie
 adnotacje JPA\@.
 
 \lstinputlisting[
@@ -210,7 +212,7 @@ Jest to bazowa klasa dla wszystkich encji, definiująca klucz główny oraz pole
 W załączonych fragmentach programów~\ref{lst:usersmodel} oraz~\ref{lst:basemodel} pojawia
 się wiele adnotacji.
 Nie wszystkie z nich są związane z JPA\@.
-Znaczenie najważniejszych adnotacji zostało opisane poniżej:
+Znaczenie najważniejszych adnotacji zostało opisane poniżej~\cite{hibernatejpa}:
 
 \begin{itemize}
   \item \textbf{@Entity}.
@@ -259,7 +261,7 @@ Fragment programu~\ref{lst:lxccmds} przedstawia zdefiniowane szablony poleceń u
 przez program LXD\@.
 Komendy zawierają fragmenty \textit{\%s}, które podczas działania programu są zamieniane
 na określone wartości, np.\ nazwę kontenera czy numer portu.
-Znaczenie poszczególnych wartości konfiguracji:
+Znaczenie poszczególnych wartości konfiguracji~\cite{lxddocs}:
 
 \begin{itemize}
   \item \textbf{copy}.
@@ -299,10 +301,10 @@ Znaczenie poszczególnych wartości konfiguracji:
 Wszystkie metody w serwisach, które wykonują operacje na kontenerach LXC,
 są wykonywane asynchronicznie.
 Do asynchronicznego wykonania wykorzystano szkielet Spring.
-Metody asynchronicznie są oznaczone adnotacją \textit{@Async}.
+Metody asynchronicznie są oznaczone adnotacją \textit{@Async}~\cite{springinaction}.
 Spring uruchomi takie metody na osobnym wątku ze skonfigurowanej wcześniej puli wątków.
 
-Pula wątków tworzy trwałe wątki które nie są zabijane przez system operacyjny
+Pula wątków tworzy trwałe wątki, które nie są zabijane przez system operacyjny
 po ukończeniu jednej operacji.
 Takie wątki istnieją przez cały czas podczas działania aplikacji.
 Wykorzystanie puli wątków jest metodą optymalizacji aplikacji, ponieważ
@@ -324,7 +326,7 @@ skolejkowana.
 
 We fragmencie programu~\ref{lst:lxcasync} widać, że metoda pobierająca status
 jest typu \textit{void}.
-Dzieje się tak ponieważ odpowiedź o statusie przetwarzana jest przez \textit{IProcessor},
+Dzieje się tak, ponieważ odpowiedź o statusie przetwarzana jest przez \textit{IProcessor},
 przekazany jako obiekt o nazwie \textit{processor} do obiektu \textit{LxcGenericTask}.
 
 \lstinputlisting[
@@ -336,8 +338,8 @@ przekazany jako obiekt o nazwie \textit{processor} do obiektu \textit{LxcGeneric
 We fragmencie programu~\ref{lst:msgprocessor} widać, że mechanizm jest zaimplementowany
 za pomocą klasy \textit{EmitterProcessor}.
 Jest to klasa z biblioteki wspierającej paradygmat programowania reaktywnego - Project Reactor.
-Zastosowanie interfejsu \textit{IProcessor} umożliwiło brak zależności metod serwisowych od biblioteki
-Project Reactor.
+Zastosowanie interfejsu \textit{IProcessor} umożliwiło brak zależności metod serwisowych
+od biblioteki Project Reactor.
 Adnotacja \textit{@Component} zapewnia, że jest to obiekt zarządzany przez szkielet Spring.
 Podczas jego wstrzykiwania do różnych klas, będzie dostarczana ta sama instancja tego obiektu.
 Rolą jaką pełni \textit{IProcessor} jest otrzymywanie wiadomości o statusie zadania
@@ -364,7 +366,7 @@ Subskrypcja wykonywana jest tylko raz, w konstruktorze kontrolera.
 Dostarczana jest tam metoda, która konsumuje nowe wiadomości i wysyła je do gniazda sieciowego.
 Warto zauważyć, że istnieje separacja pomiędzy wysyłaniem powiadomień dla
 użytkownika i administratora.
-Do użytkownika wysyłana są tylko powiadomienia o rozpoczętych przez niego akcji, natomiast
+Do użytkownika wysyłane są powiadomienia o rozpoczętych tylko przez niego akcjach, natomiast
 do administratora wysyłane są powiadomienia o wszystkich akcjach.
 
 Adnotacja \textit{@Autowired} zapewnia wstrzyknięcie odpowiedniej instancji obiektów, w tym
@@ -378,8 +380,8 @@ Zgodnie z opisem znajdującym się w sekcji~\ref{sec:serwer_lxc},
 polecenia do zarządzania kontenerami poprzez narzędzie LXD są uruchamiane
 na osobnym serwerze.
 Z tego powodu wykorzystano protokół SSH\@.
-Podczas implementacji połączenia SSH aplikacji serwerowej z serwerem składującym kontenery LXC
-wykorzystani bibliotekę SSHJ\@.
+Do implementacji połączenia SSH aplikacji serwerowej z serwerem LXC
+wykorzystano bibliotekę SSHJ\@.
 
 \lstinputlisting[
   caption=Uruchamianie poleceń powłoki przez SSH,
@@ -388,11 +390,11 @@ wykorzystani bibliotekę SSHJ\@.
 ]{ssh.txt}
 
 Na listingu~\ref{lst:ssh} przedstawiono implementację nawiązania połączenia SSH
-z serwerem LXC wraz z uwierzytelnieniem za pomocą loginu i hasła.
-Po nawiązaniu takiego połączenia tworzona jest sesja SSH w ramach której wykonywane
+z serwerem LXC, wraz z uwierzytelnieniem za pomocą loginu i hasła.
+Po nawiązaniu takiego połączenia tworzona jest sesja SSH, w ramach której wykonywane
 są polecenia powłoki na serwerze LXC\@.
-Przedstawiony listing jest metodą, która implementuje interfejs \textit{ICmdRunner},
-przedstawiony poniżej.
+Przedstawiony listing~\ref{lst:ssh} jest metodą, która implementuje interfejs \textit{ICmdRunner},
+przedstawiony poniżej we fragmencie~\ref{lst:cmdrunner}.
 
 \lstinputlisting[
   caption=Interfejsc \textit{ICmdRunner},
@@ -402,12 +404,12 @@ przedstawiony poniżej.
 
 Utworzenie takiego interfejsu umożliwiło konfigurację sposobu komunikacji
 z serwerem składującym kontenery LXC\@.
-Jeśli zaistniałaby potrzeba np.\ połączenia innym protokołem lub uruchamiania
+Jeśli zaistniałaby potrzeba połączenia innym protokołem lub uruchamiania
 komend na lokalnym serwerze, wystarczyłoby dodać odpowiednią implementację tego
 interfejsu.
-Implementacja wybierania jest na podstawie wartości \textit{cmdRunner}
+Implementacja wybierania jest na podstawie wartości \textit{cmdRunner},
 opisanej w sekcji~\ref{subsec:szablony-komend}.
-Wybieranie implementacji poprzez wartość z konfiguracji jest zaimplementowana
+Wybieranie implementacji poprzez wartość z konfiguracji zaimplementowano
 w klasie \textit{CmdRunnerFactory}.
 
 \lstinputlisting[
@@ -417,14 +419,14 @@ w klasie \textit{CmdRunnerFactory}.
 ]{factory.txt}
 
 Wykorzystanie tej klasy widać na listingu~\ref{lst:lxcasync}, gdzie podczas
-tworzenia obiektu klasy \textit{LxcGenericTask} wywoływana jest statyczna metoda
+tworzenia obiektu klasy \textit{LxcGenericTask}, wywoływana jest statyczna metoda
 \textit{create}.
 
 \subsection{Przykładowe wykonanie}
 \label{subsec:przykladowe-wykonanie}
 
 W celu prezentacji działającego rozwiązania integracji z serwerem LXC,
-przedstawiono sposób tworzenia nowego kontenera wraz z rezultatami
+przedstawiono sposób tworzenia nowego kontenera, wraz z rezultatami
 poszczególnych operacji.
 
 \lstinputlisting[
@@ -434,7 +436,7 @@ poszczególnych operacji.
 
 Na listingu~\ref{lst:curlcreate} wywołano metodę stworzenia kontenera \textit{example123}.
 W celu prezentacji działania, wykorzystano narzędzie \textit{cURL}, które wysłało żądanie POST
-na odpowiedni adres URI dostarczany przez aplikację serwerową.
+na odpowiedni adres URI aplikacjo serwerowej.
 Widać, że po wywołaniu tego żądania, została zwrócona odpowiedź HTTP 202.
 
 \lstinputlisting[
@@ -442,7 +444,7 @@ Widać, że po wywołaniu tego żądania, została zwrócona odpowiedź HTTP 202
   label=lst:lxcop,
 ]{lxcop.txt}
 
-Rezultat otrzymanego żądania można zobaczyć na listingu~\ref{lst:lxcop} pochodzącym z serwera
+Rezultat otrzymanego żądania można zobaczyć na listingu~\ref{lst:lxcop}, pochodzącym z serwera
 składującego kontenery LXC\@.
 W wyniku żądania tworzona jest operacja tworzenia kontenera, po stworzeniu kontenera
 widać go na liście stworzonych kontenerów.
@@ -452,10 +454,10 @@ widać go na liście stworzonych kontenerów.
   label=lst:websocat,
 ]{websocat.txt}
 
-Informacje o statusie przetworzenia zadania stworzenia kontenera, są wysyłanie przez gniazda sieciowe
-w technologii WebSocket.
+Informacje o statusie zadania stworzenia kontenera, są wysyłanie przez gniazda
+sieciowe w technologii WebSocket.
 Zostało to zaprezentowane na listingu~\ref{lst:websocat} za pomocą programu \textit{websocat},
-które łączy się do zarejestrowanego już kanału w aplikacji serwerowej.
+który łączy się do zarejestrowanego już kanału w aplikacji serwerowej.
 
 \section{Interfejs REST}
 \label{sec:rest-api}
@@ -475,11 +477,10 @@ Na listingu~\ref{lst:api} przedstawiono metodę do tworzenia kontenera.
 Warto zauważyć, że metoda wywołuje asynchroniczną metodę \textit{create},
 nie oczekuje na jej wynik, zamiast tego zwraca odpowiedź HTTP 202 ACCEPTED\@.
 
-Dodatkowo na obiektach DTO przekazywanych w punktach dostępowych wykorzystano
+Dodatkowo na obiektach DTO, przekazywanych w punktach dostępowych, wykorzystano
 mechanizm walidacji danych przesłanych od użytkownika za pomocą \textit{Java Bean Validation}.
 Parametr oznaczony adnotacją \textit{@Valid} będzie automatycznie walidowany.
-Taki parametr musi spełnić warunki określone za pomocą adnotacji pochodzących
-Bean Validation.
+Taki parametr musi spełnić warunki określone za pomocą adnotacji Bean Validation.
 
 \lstinputlisting[
   caption=Klasa DTO wraz z adnotacjami \textit{Java Bean Validation},
@@ -513,14 +514,14 @@ Każda metoda obsługuje specyficzny typ wyjątku, który jest mapowany na wła�
 kod statusu HTTP oraz dodatkową treść wiadomości informującą o przyczynach wystąpienia błędu.
 Do ich implementacji wykorzystano adnotację szkieletu Spring \textit{@ExceptionHandler},
 dzięki czemu taka metoda zostanie dołączona automatycznie do metod przetwarzających
-żądania HTTP\@.
+żądania HTTP~\cite{springinaction}.
 
 \section{Zabezpieczenia}
 \label{sec:zabezpieczenia}
 
 Aplikacja została zabezpieczona na kilka sposobów.
 Jest to między innymi mechanizm uwierzytelniania za pomocą JWT oraz wymaganie protokołu HTTPS\@.
-Do implementacji tych technologii wykorzystano wiele technologii np.\ szkielet spring czy
+Do implementacji tych mechanizmów wykorzystano wiele technologii np.\ szkielet Spring czy
 bibliotekę JJWT\@.
 
 Przy każdym żądaniu wysłanym na zabezpieczony punkt dostępowy, aplikacja pobiera nagłówki żądania.
@@ -533,12 +534,12 @@ który jest następnie walidowany.
   language=Java,
 ]{jwtfilter.txt}
 
-Do weryfikacji nagłówka z tokenem JWT wykorzystano filtr będący częścią
+Do weryfikacji nagłówka z tokenem JWT wykorzystano filtr, będący częścią
 specyfikacji \textit{Java Servlet}.
 Filtruje on każde żądanie jeszcze przed obsłużeniem go przez kontrolery.
 Implementacja filtra została przedstawiona na listingu~\ref{lst:jwtfilter}.
 
-Dodatkowo skonfigurowano szkielet Spring w taki sposób aby wymagał zabezpieczeń tylko na
+Dodatkowo skonfigurowano szkielet Spring w taki sposób, aby wymagał zabezpieczeń tylko na
 określonych adresach oraz do autoryzacji używał wcześniej opisanego filtra.
 
 \lstinputlisting[
@@ -551,12 +552,14 @@ Na listingu~\ref{lst:springsec} została przedstawiona konfiguracja zabezpiecze�
 Skonfigurowana została bezstanowość sesji za pomocą \textit{SessionPolicy}, wykorzystanie filtra JWT
 za pomocą \textit{JwtTokenFilterConfigurer} oraz adresy wymagające autoryzacji za pomocą metody
 \textit{authenticated}.
+Za pomocą metody \textit{requiresSecure} wymuszono wykorzystanie protokołu HTTPS
+na wszystkich metodach dostępowych aplikacji serwerowej.
 
 Dodatkowo zabezpieczono również rejestrację kanału WebSocket.
 Tam również jest wykorzystywany nagłówek HTTP z tokenem JWT, który następie jest weryfikowany.
 Obsługa tego zabezpieczenia również jest oparta o szkielet Spring, poprzez przeciążenie odpowiednich
 metod konfiguracyjnych.
-Implementacja tego zabezpieczenia została przedstawiona na listingu~\ref{lst:socketjwt.txt}
+Implementacja tego zabezpieczenia została przedstawiona na listingu~\ref{lst:socketjwt}
 
 \lstinputlisting[
   caption=Zabezpieczenia dla WebSocket,
@@ -567,8 +570,8 @@ Implementacja tego zabezpieczenia została przedstawiona na listingu~\ref{lst:so
 \section{Warstwa widoku}
 \label{sec:warstwa-widoku}
 
-Widok użytkownika wykonany w technologii React jest reaktywny
-i odświeża tylko wybrane elementów na stronie zgodnie z techniką
+Widok użytkownika, wykonany w technologii React, jest reaktywny
+i odświeża tylko wybrane elementów na stronie, zgodnie z techniką
 SPA\@.
 W tej sekcji zostaną zaprezentowane poszczególne widoki wraz z
 ich opisem.
@@ -577,12 +580,12 @@ ich opisem.
 \label{subsec:panel-administratora}
 
 Projekt systemu zakłada odrębne poziomy dostępu dla administratora i klienta.
-Z tego powodu warstwa widoku dla administratora wygląda inaczej i posiada inne
-funkcje.
+Z tego powodu warstwa widoku dla administratora wygląda inaczej od warstwy widoku
+klienta oraz posiada inne funkcje.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[scale=0.22]{figures/lxclist.png}
+  \fcolorbox{frame}{frame}{\includegraphics[scale=0.32]{figures/lxclist2.png}}
   \caption{Lista kontenerów}
   \label{fig:lxclist}
 \end{figure}
@@ -590,11 +593,14 @@ funkcje.
 Zrzut z ekranu~\ref{fig:lxclist} przedstawia listę wszystkich kontenerów.
 Jest to pierwsza strona widoczna po zalogowaniu się na konto administratora,
 dostępna również z poziomu menu bocznego \textit{Panel Główny}.
-Z poziomu tego widoku dodaje się również nowe kontenery.
+Z poziomu tego widoku można dodawać nowe kontenery.
+Menu boczne dostarcza również opcję podglądu wszystkich zadań zrealizowanych na
+istniejących w systemie kontenerach (przycisk \textit{Zadania}) oraz wyświetlenia listy
+wszystkich użytkowników i ich edycję (przycisk \textit{Użytkownicy}).
 
 \begin{figure}[H]
   \centering
-  \includegraphics[scale=0.22]{figures/lxcdetails.png}
+  \fcolorbox{frame}{frame}{\includegraphics[scale=0.32]{figures/lxcdetails2.png}}
   \caption{Strona logowania}
   \label{fig:lxcdetails}
 \end{figure}
@@ -607,12 +613,12 @@ Można tutaj zarządzać stanem kontenera i przypisać do niego użytkownika.
 \label{subsec:panel-klienta}
 
 Widok dla kont z poziomem dostępu klienta jest podobny do panelu administratora,
-jednak posiada ograniczenia, zgodne z opisem przypadków użycia~\ref{tab:przypadki_uzycia}.
-Poniżej zaprezentowano najważniejsze widoki.
+jednak posiada ograniczenia, zgodne z opisem przypadków użycia w tabeli~\ref{tab:przypadki_uzycia}.
+Poniżej zaprezentowano najważniejsze elementy widoku.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[scale=0.22]{figures/userhome.png}
+  \fcolorbox{frame}{frame}{\includegraphics[scale=0.32]{figures/userlxclist2.png}}
   \caption{Strona główna z listą przypisanych kontenerów}
   \label{fig:userhome}
 \end{figure}
@@ -620,6 +626,9 @@ Poniżej zaprezentowano najważniejsze widoki.
 Zrzut z ekranu~\ref{fig:userhome} przedstawia listę przypisanych kontenerów do konta.
 Jest to pierwsza strona widoczna po zalogowaniu się na konto klienta,
 dostępna również z poziomu menu bocznego \textit{Panel Główny}.
+Menu dostarcza również opcję podglądu wszystkich zadań zrealizowanych na przypisanych do swojego
+konta kontenerach (przycisk \textit{Zadania}) oraz edycji swojego profilu, w tym zmiany
+hasła (przycisk \textit{Profil}).
 
 Po włączeniu kontenera użytkownik może zalogować się do kontenera poprzez SSH,
 za pomocą zaprezentowanego adresu i portu.
@@ -630,26 +639,26 @@ rys.~\ref{fig:userhome}.
 
 \lstinputlisting[
   caption=Logowanie do kontenera przez protokół SSH,
-  label=lst:sshinfo,
+  label=lst:sshinto,
 ]{sshinto.txt}
 
 \subsection{Internacjonalizacja}
 \label{subsec:internacjonalizacja}
 
-Warstwa widoku jest dostępna w języku polskim i angielskim.
+Warstwa widoku jest dostępna w języku polskim oraz w języku angielskim.
 Przykład działania internacjonalizacji przedstawiono na poniższych
-zrzutach z ekranu ze strony logowania~\ref{fig:i18npl} oraz~\ref{fig:i18en}.
+zrzutach z ekranu ze strony logowania.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[scale=0.5]{figures/i18npl.png}
+  \includegraphics[scale=0.45]{figures/i18npl.png}
   \caption{Strona logowania w języku polskim}
   \label{fig:i18npl}
 \end{figure}
 
 \begin{figure}[H]
   \centering
-  \includegraphics[scale=0.5]{figures/i18en.png}
+  \includegraphics[scale=0.45]{figures/i18en.png}
   \caption{Strona logowania w języku angielskim}
   \label{fig:i18en}
 \end{figure}
@@ -660,9 +669,4 @@ Następnie wybierana jest zawartość pliku z wartościami w języku polskim alb
 na podstawie wartości \textit{NavigatorLanguage.language} obecnej we wszystkich
 aktualnych przeglądarkach internetowych.
 
-
-
-
-
 \clearpage
-
